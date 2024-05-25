@@ -1,0 +1,89 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+احصائيات مشروع {{shelter_name }}
+{% endblock %}
+{% block body %}
+
+<div dir="rtl" class="main-content">
+    <div class="page-content">
+     <div class="container-fluid">
+      <!-- end page title -->
+      <div class="row">
+       <div class="col-lg-12">
+        <div class="card">
+         <div class="card-body">
+            <h2>تفاصيل {{shelter_name }}</h2> <br>
+            <a href="{% url 'operations:freespots' shelter_id=shelter_id %}">
+                <i class="uil-store">
+                </i>
+                <span>
+                 عرض الشقق المتاحة للتسكين
+                </span> <br>
+             </a>
+            <br>
+          <!-- end row -->
+          <div class="table-responsive mb-4">
+           <table id="theCustomersTable" class="table table-centered table-nowrap mb-0 table_border_color">
+            <thead>
+             <tr>
+                
+              <th scope="col">
+               رقم الشقة
+              </th>
+              <th scope="col">
+                السعة
+               </th>
+              <th scope="col">
+               المستفيدين
+              </th>
+              <th scope="col">
+               الاماكن المتاحة
+              </th>
+             
+             </tr>
+            </thead>
+            <tbody>
+             
+                
+            {% for apartment  in apartment_data  %}    
+             <!-- Start new customer-->   
+             <tr>
+              <td>
+                {{apartment.apartment_name}}
+              </td>
+              <td>
+                {{apartment.capacity}}
+              </td>
+              <td>
+                <ol>
+                    {% for resident in apartment.residents %}
+                        <li>{{ resident }}</li>
+                    {% endfor %}
+                </ol>
+              </td>
+              <td>
+                {{apartment.available_spots}}
+              </td>
+             
+             </tr>
+             <!-- End new customer -->
+             {% endfor %}            
+             </tr>
+            </tbody>
+           </table>
+          </div>
+
+   
+         </div>
+        </div>
+       </div>
+      </div>
+      <!-- end row -->
+     </div>
+     <!-- container-fluid -->
+    </div>
+    
+   </div>
+
+{% endblock %}

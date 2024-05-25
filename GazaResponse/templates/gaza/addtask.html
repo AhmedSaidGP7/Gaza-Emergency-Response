@@ -1,0 +1,8 @@
+
+<h1>Add</h1>
+<form dir="rtl" action="{% url 'GazaReponse:addtask' %}" method="post">
+    {% csrf_token %}
+  {{ form }}
+  <input type="submit">
+</form>
+<a href="{% url 'GazaReponse:index' %}"> View task </a>

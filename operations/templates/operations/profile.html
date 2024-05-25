@@ -1,0 +1,253 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+ ملف المستفيد {{ person.name }}
+{% endblock %}
+{% block body %}
+
+<div dir="rtl" class="main-content">
+    <div class="page-content">
+     <div class="container-fluid">
+     
+      <div class="row mb-4">
+       <div class="col-xl-4">
+        <div class="card h-100">
+         <div class="card-body">
+          <div class="text-center">
+          
+           <div class="clearfix">
+           </div>
+           <div>
+            <img alt="" class="avatar-lg " src="{% static 'gaza/images/users/avatar-4.jpg'%}">
+           </div>
+           <h5 class="mt-3 mb-1">
+            {{ person.name }}
+           </h5>
+           <p class="text-muted">
+            {{ person.theType }}
+           </p>
+         
+          </div>
+          <hr class="my-4">
+          <div class="text-muted">
+           <h5 class="font-size-16">
+            التشخيص
+           </h5>
+           <p>
+            {{ person.diagnosis }}
+           </p>
+           <div class="table-responsive mt-4">
+            <div>
+             <p class="mb-1">
+                النوع:
+             </p>
+             <h5 class="font-size-16">
+                {{ person.gender }}
+             </h5>
+            </div>
+            <div>
+                <p class="mb-1">
+                   مستشفى التحويل :
+                </p>
+                <h5 class="font-size-16">
+                    {{ person.pHospital }}
+                </h5>
+               </div>
+            <div class="mt-4">
+                <p class="mb-1">
+                الحالة:
+                </p>
+                <h5 class="font-size-16">
+                    {{ person.status }}
+                </h5>
+               </div>
+              
+            <div class="mt-4">
+             <p class="mb-1">
+              رقم الهاتف :
+             </p>
+             <h5 class="font-size-16">
+                {{ person.phoneNumber }}
+             </h5>
+            </div>
+            <div class="mt-4">
+             <p class="mb-1">
+             مكان السكن:
+             </p>
+             <h5 class="font-size-16">
+                {{ person.accommodation }}
+             </h5>
+            </div>
+           
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="col-xl-8">
+        <div class="card mb-0">
+         <!-- Nav tabs -->
+         <ul class="nav nav-tabs nav-tabs-custom nav-justified" role="tablist">
+          <li class="nav-item">
+           <a class="nav-link active" data-bs-toggle="tab" href="#about" role="tab">
+            <i class="uil uil-user-circle font-size-20">
+            </i>
+            <span class="d-none d-sm-block">
+             معلومات عن المستفيد
+            </span>
+           </a>
+          </li>
+          <li class="nav-item">
+           <a class="nav-link" data-bs-toggle="tab" href="#tasks" role="tab">
+            <i class="uil uil-clipboard-notes font-size-20">
+            </i>
+            <span class="d-none d-sm-block">
+             الحالة الصحية
+            </span>
+           </a>
+          </li>
+         
+         </ul>
+         <!-- Tab content -->
+         <div class="tab-content p-4">
+          <div class="tab-pane active" id="about" role="tabpanel">
+           <div>
+           
+            <div>
+             <h5 class="font-size-16 mb-4">
+              المرافقين
+             </h5>
+             <div class="table-responsive">
+              <table class="table table-nowrap table-hover mb-0">
+               <thead>
+                <tr>
+                 <th scope="col">
+                  #
+                 </th>
+                 <th scope="col">
+                  الأسم
+                 </th>
+                 <th scope="col">
+                  النوع
+                 </th>
+                 <th scope="col">
+                  الحالة
+                 </th>
+                
+                </tr>
+               </thead>
+               <tbody>
+                {% for relative in relatives %}
+                <tr>
+                 <th scope="row">
+                 {{forloop.counter}}
+                 </th>
+                 <td>
+                  <a class="text-dark" href="{% url 'operations:profile' person_id=relative.id %}">
+                    {{ relative.name }}
+                  </a>
+                 </td>
+                 <td>
+                    {{ relative.gender }}
+                 </td>
+                 <td>
+                  
+                    {{ relative.status }}
+                 </td>
+                </tr>
+                {% endfor %}
+               </tbody>
+              </table>
+             </div>
+            </div>
+           </div>
+          </div>
+
+          <!-- Mid History -->
+          <div class="tab-pane" id="tasks" role="tabpanel">
+           <div>
+            <h5 class="font-size-16 mb-3">
+             الأدوية
+            </h5>
+            <div class="table-responsive">
+             <table class="table table-nowrap table-centered">
+              <tbody>
+               <tr>
+                <td>
+                 <a class="fw-bold text-dark" href="#">
+                  اسم الدواء والجرعة
+                 </a>
+                </td>
+             
+                <td style="width: 160px;">
+                 <span class="badge bg-soft-success font-size-12">
+                  تم الحصول على الدواء
+                 </span>
+                </td>
+               </tr>
+            
+              </tbody>
+             </table>
+            </div>
+            <h5 class="font-size-16 my-3">
+             المستلزمات الطبية
+            </h5>
+            <div class="table-responsive">
+             <table class="table table-nowrap table-centered">
+              <tbody>
+               <tr>
+                <td>
+                 <a class="fw-bold text-dark" href="#">
+                  مسند يدوي
+                 </a>
+                </td>
+                <td>
+                 -
+                </td>
+                <td style="width: 160px;">
+                 <span class="badge bg-soft-secondary font-size-12">
+                  في إنتظار الحصول على الدواء
+                 </span>
+                </td>
+               </tr>
+              </tbody>
+             </table>
+            </div>
+            <h5 class="font-size-16 my-3">
+             الإحتياجات الطبية (اشعات, تحاليل, علاج طبيعي, جراحات..)
+            </h5>
+            <div class="table-responsive">
+             <table class="table table-nowrap table-centered">
+              <tbody>
+               <tr>
+                <td>
+                 <a class="fw-bold text-dark" href="#">
+                  علاج طبيعي على القطانية
+                 </a>
+                </td>
+                <td style="width: 160px;">
+                 <span class="badge bg-soft-success font-size-12">
+                  تمت الجلسات الطبيعية
+                 </span>
+                </td>
+               </tr>
+             </tr>
+              </tbody>
+             </table>
+            </div>
+           </div>
+          </div>
+        
+         </div>
+        </div>
+       </div>
+      </div>
+      <!-- end row -->
+     </div>
+     <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+    
+   </div>
+
+{% endblock %}

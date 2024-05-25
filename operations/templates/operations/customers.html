@@ -1,0 +1,195 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+قائمة المستفيدين
+{% endblock %}
+{% block body %}
+
+<div dir="rtl" class="main-content">
+    <div class="page-content">
+     <div class="container-fluid">
+      <!-- end page title -->
+      <div class="row">
+       <div class="col-lg-12">
+        <div class="card">
+         <div class="card-body">
+          <div class="row mb-2">
+
+       <!--     <div class="col-md-6">
+            <div class="mb-3">
+             <a class="btn btn-success waves-effect waves-light" href="javascript:void(0);">
+              <i  class="mdi mdi-plus me-2">
+              </i>
+              إضافة مستفيد جديد
+             </a>
+            </div>
+           </div> -->
+
+
+           <div class="col-md-6">
+            <div class="form-inline float-md-end mb-3">
+             <div class="search-box ms-2">
+              <div class="position-relative">
+               <input class="form-control rounded bg-light border-0" placeholder="Search..." type="text">
+               <i class="mdi mdi-magnify search-icon">
+               </i>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+          <!-- end row -->
+          <div class="table-responsive mb-4">
+           <table id="theCustomersTable" class="table table-centered table-nowrap mb-0">
+            <thead>
+             <tr>
+                
+              <th scope="col">
+               الأسم
+              </th>
+              <th scope="col">
+                الوضع
+               </th>
+              <th scope="col">
+               رقم الهاتف
+              </th>
+              <th scope="col">
+               السكن
+              </th>
+              <th scope="col" style="width: 200px;">
+               اتخاذ اجراء
+              </th>
+             </tr>
+            </thead>
+            <tbody>
+             
+                
+            {% for customer in customers.object_list %}    
+             <!-- Start new customer-->   
+             <tr>
+              <td>
+               <a class="text-body" href="{% url 'operations:profile' person_id=customer.id %}">
+                {{customer.name}}
+               </a>
+              </td>
+              <td>
+                {{customer.theType}}
+              </td>
+              <td>
+                {{customer.phoneNumber}}
+              </td>
+              <td>
+                {{customer.accommodation}}
+              </td>
+              <td>
+               <ul class="list-inline mb-0">             
+                <li class="list-inline-item dropdown">
+                 <a aria-haspopup="true" class="text-muted dropdown-toggle font-size-18 px-2" data-bs-toggle="dropdown" href="#" role="button">
+                  <i class="uil uil-ellipsis-v">
+                  </i>
+                 </a>
+                 <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" href="#">
+                   Action
+                  </a>
+                  <a class="dropdown-item" href="#">
+                   Another action
+                  </a>
+                  <a class="dropdown-item" href="#">
+                   Something else here
+                  </a>
+                 </div>
+                </li>
+               </ul>
+              </td>
+             </tr>
+             <!-- End new customer -->
+             {% endfor %}            
+             </tr>
+            </tbody>
+           </table>
+          </div>
+          <div class="row mt-4">
+           <div class="col-sm-6">
+            <div>
+             <p class="mb-sm-0">
+              Showing 1 to 10 of 12 entries
+             </p>
+            </div>
+           </div>
+
+
+           <div class="col-sm-6">
+
+            <div class="float-sm-end">
+             <ul class="pagination mb-sm-0">
+                
+                {% if customers.has_previous %}   
+              <li class="page-item">
+               <a class="page-link" href="?page={{ customers.previous_page_number}}">
+                <i class="mdi mdi-chevron-right">
+                </i>
+               </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#">
+                 <i class="mdi mdi-chevron-right">
+                 </i>
+                </a>
+               </li>
+               {%endif%}
+
+               {% for pg in customers.paginator.page_range %}
+               {% if customers.number == pg %}
+              <li class="page-item active">
+               <a class="page-link" href="?page={{pg}}">
+                {{pg}}
+               </a>
+              </li>
+              {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{pg}}">
+                 {{pg}}
+                </a>
+               </li>
+               {%endif%}
+               {% endfor %}
+
+               {% if customers.has_next %} 
+              <li class="page-item">
+               <a class="page-link" href="?page={{ customers.next_page_number}}">
+                <i class="mdi mdi-chevron-left">
+                </i>
+               </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#">
+                 <i class="mdi mdi-chevron-left">
+                 </i>
+                </a>
+               </li>
+               {% endif %}
+
+             </ul>
+            </div>
+
+           </div>
+
+
+
+
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <!-- end row -->
+     </div>
+     <!-- container-fluid -->
+    </div>
+    
+   </div>
+
+{% endblock %}

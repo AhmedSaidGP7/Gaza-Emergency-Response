@@ -1,0 +1,53 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+احصائيات التسكين
+{% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            
+            <div dir="rtl" class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        
+                        <div class="row">
+                            {% for shelter in shelter_data %}
+                        <div class="card-body col-xl-3 col-sm-6">
+                            <div class="col-xl-12">
+                                <div class="card">
+                                <a href="{% url 'operations:shelterDetails' shelter_id=shelter.id %}">   
+                                 <img alt="Card image cap" class="card-img-top img-fluid" src="{% static 'gaza/images/9499174961646553006.jpg'%}">
+                                 </a>
+                                 <div class="card-body">
+                                <a href="{% url 'operations:shelterDetails' shelter_id=shelter.id %}">  
+                                  <h2 class="card-title">
+                                   {{shelter.shelter_name}}
+                                  </h2> <br>
+                                  </a>
+                                  <p class="card-text">
+                                   عدد المقيمين: <span style="font-weight: 800 "> {{shelter.total_residents}} </span>مستفيد
+                                  </p>
+                                  <p class="card-text">
+                                    اجمالي القدرة الإستيعابية: {{shelter.total_capacity}} مستفيد
+                                   </p>
+                                   <p class="card-text" style="font-weight: 800 ">
+                                    يمكن إستقبال {{shelter.available_spots}} مستفيد جديد
+                                   </p>
+                                 </div>
+                                </div>
+                               </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                        
+                    </div>
+                   </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

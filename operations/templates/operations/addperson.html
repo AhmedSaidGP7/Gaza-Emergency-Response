@@ -1,0 +1,281 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+إضافة مستفيد
+{% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            
+
+
+
+            
+            <div dir="rtl" class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                     <div class="card-body">
+                        {% if message %}
+                            <div class="col-sm-12 d-flex justify-content-center">
+                                <div class="alert alert-success alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                                 <i class="uil uil-check-circle d-block display-4 mt-2 mb-3 text-success">
+                                 </i>
+                                 <h5 class="text-success">
+                                  تم بنجاح!
+                                 </h5>
+                                 <p>
+                                  تم إضافة المستفيد بنجاح
+                                 </p>
+                                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                                 </button>
+                                </div>
+                               </div> <br>
+                        {% endif %}
+
+                        {% if errorMessage %}
+                        <div class="col-sm-12 d-flex justify-content-center">
+                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-text-danger">
+                             </i>
+                             <h5 class="text-text-danger">
+                             خطأ في الإدخال
+                             </h5>
+                             <p>
+                               المستفيد {{personName}} موجود بالفعل في قواعد البيانات 
+                             </p>
+                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                             </button>
+                            </div>
+                           </div> <br>
+                        {% endif %}
+                      <h4 class="card-title">
+                       إدخال مستفيد جديد
+                      </h4>
+                      <p class="card-title-desc">
+                        برجاء إدخال بيانات المستفيد, واحرص على إضافة اكبر قدر ممكن من البيانات.
+                      </p>
+                      <form action="{% url 'operations:addperson' %}" enctype="multipart/form-data" method="POST" class="custom-validation" novalidate="">
+                        {% csrf_token %} 
+                        <!-- Start the name label-->
+                        <div class="mb-3">
+                            <label class="form-label">
+                             اسم المستفيد
+                            </label>
+                            <input autocomplete="off" class="form-control" name="name" placeholder="قم بإدخال اسم المستفيد" required="" type="text">      
+                           </div>
+                       <!-- End the name label -->
+
+                       <!-- Start the id number label-->
+                       <div class="mb-3">
+                        <label class="form-label">
+                         رقم الهوية
+                        </label>
+                        <input autocomplete="off" class="form-control" name="idNumber" placeholder="قم بإدخال رقم هوية المستفيد" required=""  type="text">      
+                       </div>
+                        <!-- End the id number label -->
+
+                        <!-- Start the Birthdate label-->
+                        <div class="mb-3">
+                            <label class="col-md-2 col-form-label" for="example-date-input">
+                             تاريخ ميلاد المستفيد
+                            </label>
+                            <div class="col-md-10">
+                             <input class="form-control" name="birthday" id="example-date-input" type="date" value="2019-08-19">
+                            </div>
+                           </div>
+                        <!-- End the Birthdate label-->
+
+                        <!-- Start a new label -->
+                        <div class="mb-3">
+                            <label class="col-md-2 col-form-label">
+                             نوع المستفيد
+                            </label>
+                            <div class="col-md-10">
+                             <select name="gender" class="form-select">
+                              <option value="ذكر">
+                               ذكر
+                              </option>
+                              <option value="انثى">
+                               انثى
+                              </option>
+                             </select>
+                            </div>
+                           </div>
+                       <!-- End a new label -->
+                        
+                        <!-- Start a new label -->
+                        <div class="mb-3">
+                            <label class="col-md-2 col-form-label">
+                             صفة المستفيد
+                            </label>
+                            <div class="col-md-10">
+                             <select name="theType" class="form-select">
+                              <option value="مصاب">
+                               مصاب
+                              </option>
+                              <option value="مرافق">
+                               مرافق
+                              </option>
+                             </select>
+                            </div>
+                           </div>
+                       <!-- End a new label -->
+
+                       <!-- Start a new label -->
+                       <div class="mb-3">
+                        <label class="col-md-2 col-form-label">
+                         حالة المستفيد
+                        </label>
+                        <div class="col-md-10">
+                         <select name="status" class="form-select">
+                          <option value="داخل السكن">
+                            داخل السكن
+                          </option>
+                          <option value="استلام اقارب في مصر">
+                           استلام اقارب في مصر
+                          </option>
+                          <option value="رجوع لغزة">
+                            رجوع لغزة
+                           </option>
+                           <option value="استلام السفارة الفلسطينية">
+                            استلام السفارة الفلسطينية
+                           </option>
+                           <option value="خروج لسكن خاص">
+                            خروج لسكن خاص
+                           </option>
+                           <option value="سفر للخارج">
+                            سفر للخارج
+                           </option>
+                           <option value="وفاة بعد العودة إلى المستشفى">
+                            وفاة بعد العودة إلى المستشفى    
+                           </option>
+                         </select>
+                        </div>
+                       </div>
+                   <!-- End a new label -->
+               
+                   <!-- Start the phone number label-->
+                   <div class="mb-3">
+                    <label class="form-label">
+                     رقم الهاتف
+                    </label>
+                    <input class="form-control" name="phoneNumber" placeholder="قم بإدخال رقم هاتف للمتفيد إن وجد"  type="text">      
+                   </div>
+                    <!-- End the phone number label -->
+
+                     <!-- Start Group label -->
+                     <div>
+                        <label class="col-md-2 col-form-label selecttwoform" for="exampleDataList0">
+                         المستفيد تابع للمصاب
+                        </label>
+                        <div class="col-md-10 form-control">                       
+                        <select name="Group" id="mySelect" class="form-control selecttwoform" style="width: 100%;">
+                        {% for member in Group %}
+                            <option value="{{member.id}}">{{member.groupName}}</option>
+                        {% endfor %}
+                        <!-- Add more options as needed -->
+                    </select>        
+                        </div>
+                       </div> <br>
+                    <!-- End Group label -->
+
+
+                 
+                    <!-- Start Hospital label -->
+                    <div>
+                        <label class="col-md-2 col-form-label selecttwoform" for="exampleDataList0">
+                         مستشفى التحويل
+                        </label>
+                        <div class="col-md-10 form-control">                       
+                        <select name="Hospital" id="mySelect1" class="form-control selecttwoform" style="width: 100%;">
+                        {% for Hospital in Hospitals %}
+                            <option value="{{Hospital.id}}">{{Hospital.name}}</option>
+                        {% endfor %}
+                        <!-- Add more options as needed -->
+                    </select>        
+                        </div>
+                       </div> <br>
+                    <!-- End Hosptial label -->
+                       
+                
+                      
+
+                    <!-- Start Accommodation label -->
+                    <div>
+                        <label class="col-md-2 col-form-label selecttwoform" for="exampleDataList0">
+                        مكان السكن
+                        </label>
+                        <div class="col-md-10 form-control">                       
+                        <select name="Apartment" id="mySelect2" class="form-control selecttwoform" style="width: 100%;">
+                        {% for Apartment in Apartments %}
+                            <option value="{{Apartment.id}}">{{Apartment}}</option>
+                        {% endfor %}
+                        <!-- Add more options as needed -->
+                    </select>        
+                        </div>
+                       </div> <br>
+                    <!-- End Accommodation label -->
+
+                    <!-- Start Diagnosis label -->
+                    <div class="mt-3">
+                        <label class="form-label">
+                         التشخيص
+                        </label>
+                        <p class="text-muted mb-2">
+                         يرجى ادخال تشخيص المستفيد في حال كان مصاب او مريض
+                        </p>
+                        <textarea name="diagnosis" class="form-control" id="textarea" placeholder="قم بإدخال التشخيص" rows="3"></textarea>
+                       </div> <br>
+
+                    <!-- End Diagnosis label-->
+
+                    <!-- Start "Has cancer" label -->
+                    <div class="d-flex justify-content-start">
+                        <div class="form-check form-check-right mb-3">
+                         <input name="hasCancer" value="True" class="form-check-input" id="formCheckRight1" type="checkbox">
+                         <label class="form-check-label" for="formCheckRight1">
+                          المرافق مصاب بالكانسر
+                         </label>
+                        </div>
+                       </div>
+                    <!-- End "Has cancer" label -->
+                    
+                    <!-- Start "is disabled" label -->
+                    <div class="d-flex justify-content-start">
+                        <div class="form-check form-check-right mb-3">
+                         <input name="isDisabled" value="True" class="form-check-input" id="formCheckRight1" type="checkbox">
+                         <label class="form-check-label" for="formCheckRight1">
+                          المرافق لا يستطيع صعود سلم
+                         </label>
+                        </div>
+                       </div>
+                    <!-- End "Has cancer" label -->
+
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">هوية وتقارير المستفيد</label>
+                        <input name="uploadedfile"  class="form-control" type="file" id="formFile">
+                      </div>
+               
+
+                       <div>
+                        <div>
+                         <button class="btn btn-primary waves-effect waves-light me-1" type="submit">
+                          إرسال
+                         </button>
+                         <button class="btn btn-secondary waves-effect" type="reset">
+                          محو الحقول
+                         </button>
+                        </div>
+                       </div>
+                      </form>
+                     </div>
+                    </div>
+                   </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

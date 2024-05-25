@@ -1,0 +1,797 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+        <link href = "{% static 'gaza/css/app.min.css'%}" rel="stylesheet">
+        <link href = "{% static 'gaza/css/bootstrap.min.css'%}" rel="stylesheet">
+        <link href = "{% static 'gaza/css/icons.min.css'%}" rel="stylesheet">
+        <link href = "{% static 'gaza/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css'%}" rel="stylesheet">
+        <link href = "{% static 'gaza/libs/select2/css/select2.min.css'%}" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link href = "{% static 'gaza/css/style.css'%}" rel="stylesheet">
+        <script src="{% static 'gaza/js/scripts.js'%}">
+        </script>
+        <script src="{% static 'gaza/js/pages/form-repeater.int.js'%}">
+        </script>
+        
+        {% block head %}
+        {% endblock %}
+        
+    </head>
+
+    <body>
+       
+        {% if user.is_authenticated %}
+        <!-- Start navbar -->
+
+        <header id="page-topbar">
+            <div class="navbar-header">
+             <div class="d-flex">
+              <!-- LOGO -->
+              <div class="navbar-brand-box">
+               <a class="logo logo-dark" href="index.html">
+                <span class="logo-sm">
+                 <img alt="" height="22" src="assets/images/logo-sm.png">
+                </span>
+                <span class="logo-lg">
+                 <img alt="" height="20" src="assets/images/logo-dark.png">
+                </span>
+               </a>
+               <a class="logo logo-light" href="index.html">
+                <span class="logo-sm">
+                 <img alt="" height="22" src="assets/images/logo-sm.png">
+                </span>
+                <span class="logo-lg">
+                 <img alt="" height="20" src="assets/images/logo-light.png">
+                </span>
+               </a>
+              </div>
+              
+              <!-- App Search-->
+            
+             </div>
+             <div class="d-flex">
+              <div class="dropdown d-inline-block d-lg-none ms-2">
+               <button aria-expanded="false" aria-haspopup="true" class="btn header-item noti-icon waves-effect" data-bs-toggle="dropdown" id="page-header-search-dropdown" type="button">
+                <i class="uil-search">
+                </i>
+               </button>
+               <div aria-labelledby="page-header-search-dropdown" class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
+                <form class="p-3">
+                 <div class="m-0">
+                  <div class="input-group">
+                   <input aria-label="Recipient's username" class="form-control" placeholder="Search ..." type="text">
+                   <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                     <i class="mdi mdi-magnify">
+                     </i>
+                    </button>
+                   </div>
+                  </div>
+                 </div>
+                </form>
+               </div>
+              </div>
+
+            <!--  Other apps 
+              <div class="dropdown d-none d-lg-inline-block ms-1">
+               <button aria-expanded="false" aria-haspopup="true" class="btn header-item noti-icon waves-effect" data-bs-toggle="dropdown" type="button">
+                <i class="uil-apps">
+                </i>
+               </button>
+               <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                <div class="px-lg-2">
+                 <div class="row g-0">
+                  <div class="col">
+                   <a class="dropdown-icon-item" href="#">
+                    <img alt="Github" src="{% static 'gaza/images/brands/github.png'%}">
+                    <span>
+                     GitHub
+                    </span>
+                   </a>
+                  </div>
+                  <div class="col">
+                   <a class="dropdown-icon-item" href="#">
+                    <img alt="bitbucket" src="{% static 'gaza/images/brands/github.png'%}">
+                    <span>
+                     Bitbucket
+                    </span>
+                   </a>
+                  </div>
+                  <div class="col">
+                   <a class="dropdown-icon-item" href="#">
+                    <img alt="dribbble" src="{% static 'gaza/images/brands/github.png'%}">
+                    <span>
+                     Dribbble
+                    </span>
+                   </a>
+                  </div>
+                 </div>
+                 <div class="row g-0">
+                  <div class="col">
+                   <a class="dropdown-icon-item" href="#">
+                    <img alt="dropbox" src="{% static 'gaza/images/brands/github.png'%}">
+                    <span>
+                     Dropbox
+                    </span>
+                   </a>
+                  </div>
+                  <div class="col">
+                   <a class="dropdown-icon-item" href="#">
+                    <img alt="mail_chimp" src="{% static 'gaza/images/brands/github.png'%}">
+                    <span>
+                     Mail Chimp
+                    </span>
+                   </a>
+                  </div>
+                  <div class="col">
+                   <a class="dropdown-icon-item" href="#">
+                    <img alt="slack" src="{% static 'gaza/images/brands/github.png'%}">
+                    <span>
+                     Slack
+                    </span>
+                   </a>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+            End of other apps -->
+
+              <div class="dropdown d-none d-lg-inline-block ms-1">
+               <button class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen" type="button">
+                <i class="uil-minus-path">
+                </i>
+               </button>
+              </div>
+              <div class="dropdown d-inline-block">
+               <button aria-expanded="false" aria-haspopup="true" class="btn header-item waves-effect" data-bs-toggle="dropdown" id="page-header-user-dropdown" type="button">
+                <img alt="Header Avatar" class="rounded-circle header-profile-user" src="{% static 'gaza/images/users/avatar-4.jpg'%}">
+                <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">
+                 {{user.first_name}}
+                </span>
+                <i class="uil-angle-down d-none d-xl-inline-block font-size-15">
+                </i>
+               </button>
+               <div class="dropdown-menu dropdown-menu-end">
+                <!-- item-->
+                <a class="dropdown-item" href="#">
+                 <i class="uil uil-user-circle font-size-18 align-middle text-muted me-1">
+                 </i>
+                 <span class="align-middle">
+                  View Profile
+                 </span>
+                </a>
+                <a class="dropdown-item" href="#">
+                 <i class="uil uil-wallet font-size-18 align-middle me-1 text-muted">
+                 </i>
+                 <span class="align-middle">
+                  My Wallet
+                 </span>
+                </a>
+                <a class="dropdown-item d-block" href="#">
+                 <i class="uil uil-cog font-size-18 align-middle me-1 text-muted">
+                 </i>
+                 <span class="align-middle">
+                  Settings
+                 </span>
+                 <span class="badge bg-soft-success rounded-pill mt-1 ms-2">
+                  03
+                 </span>
+                </a>
+                <a class="dropdown-item" href="#">
+                 <i class="uil uil-lock-alt font-size-18 align-middle me-1 text-muted">
+                 </i>
+                 <span class="align-middle">
+                  Lock screen
+                 </span>
+                </a>
+                <a class="dropdown-item" href="{% url 'users:signout' %}">
+                 <i class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted">
+                 </i>
+                 <span class="align-middle">
+                  Sign out
+                 </span>
+                </a>
+               </div>
+              </div>
+              <div class="dropdown d-inline-block">
+                <a href="/admin">
+                <button class="btn header-item noti-icon right-bar-toggle waves-effect" type="button">
+                    <i class="uil-cog">
+                    </i>
+                </button>
+               </a>
+              </div>
+             </div>
+            </div>
+           </header>
+
+           <!-- End navbar -->
+
+
+           <!-- Start vertical menu bar -->
+
+           <div class="vertical-menu mm-active">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+             <a class="logo logo-dark" href="index.html">
+              <span class="logo-sm">
+               <img alt="" height="22" src="assets/images/logo-sm.png">
+              </span>
+              <span class="logo-lg">
+               <img alt="" height="20" src="assets/images/logo-dark.png">
+              </span>
+             </a>
+             <a class="logo logo-light" href="index.html">
+              <span class="logo-sm">
+               <img alt="" height="22" src="assets/images/logo-sm.png">
+              </span>
+              <span class="logo-lg">
+               <img alt="" height="20" src="assets/images/logo-light.png">
+              </span>
+             </a>
+            </div>
+            <button class="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn" type="button">
+             <i class="fa fa-fw fa-bars">
+             </i>
+            </button>
+            <div class="sidebar-menu-scroll mm-show" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: -20px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: 100%; padding-right: 20px; padding-bottom: 0px; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
+             <!--- Sidemenu -->
+             <div id="sidebar-menu" class="mm-active">
+              <!-- Left Menu Start -->
+              <ul class="metismenu list-unstyled mm-show" id="side-menu">
+               <li class="menu-title text-right">
+                القائمة
+               </li>
+               <li class="waves-effect">
+                <a href="{% url 'users:index' %}" class="active">
+                 <i class="uil-home-alt">
+                 </i>
+                 <span>
+                  الرئيسية
+                 </span>
+                </a>
+               </li>
+               
+               <li class="menu-title text-right">
+                العمليات    
+               </li>
+               <li>
+                <a class="waves-effect" href="{% url 'operations:addcasualty' %}">
+                 <i class="fa fa-users">
+                 </i>
+                 <span>
+                  تسجيل مصاب جديد
+                 </span>
+                </a>
+               </li>
+               <li>
+                <a class="waves-effect" href="{% url 'operations:addperson' %}">
+                 <i class="fa fa-male">
+                 </i>
+                 <span>
+                  إضافة مرافق
+                 </span>
+                </a>
+               </li>
+               <li>
+                <a class="waves-effect" href="{% url 'operations:accommodation' %}">
+                 <i class="uil-store">
+                 </i>
+                 <span>
+                  تسكين مستفيد
+                 </span>
+                </a>
+               </li>
+               <li>
+                <a class="waves-effect" href="{% url 'operations:customers' %}">
+                 <i class="uil-file-alt">
+                 </i>
+                 <span>
+                   بيانات المستفيدين
+                 </span>
+                </a>
+               </li>
+               <li>
+                <a class="waves-effect" href="{% url 'operations:shelters' %}">
+                 <i class="uil-invoice">
+                 </i>
+                 <span>
+                  احصائيات التسكين
+                 </span>
+                </a>
+               </li>
+               
+               <li class="menu-title text-right">
+                إدارة الحالات
+               </li>
+               <li>
+                <a class="waves-effect" href="#">
+                 <i class="uil-user-circle">
+                 </i>
+                 <span>
+                  إضافة حالة جديدة
+                 </span>
+                </a>
+               </li>
+               <li>
+                <a class="has-arrow waves-effect" href="javascript: void(0);">
+                 <i class="uil-file-alt">
+                 </i>
+                 <span>
+                  متابعة الحالات
+                 </span>
+                </a>
+                <ul aria-expanded="false" class="sub-menu mm-collapse">
+                 <li>
+                  <a href="pages-starter.html">
+                   الحالات المغلقة
+                  </a>
+                 </li>
+                 <li>
+                  <a href="pages-maintenance.html">
+                   حالات جاري العمل عليها
+                  </a>
+                 </li>
+                 <li>
+                    <a href="pages-maintenance.html">
+                     حالات جديدة
+                    </a>
+                   </li>
+                </ul>
+               </li>
+
+               <li dir="rtl" class="menu-title text-right">
+                الدعم اللوجستي
+               </li>
+               <li>
+                <a class="waves-effect" href="#">
+                 <i class="uil-user-circle">
+                 </i>
+                 <span>
+                  إدارة المخازن
+                 </span>
+                </a>
+               </li>
+               <li>
+                <a class="has-arrow waves-effect" href="javascript: void(0);">
+                 <i class="uil-file-alt">
+                 </i>
+                 <span>
+                  إدارة التبرعات
+                 </span>
+                </a>
+                <ul aria-expanded="false" class="sub-menu mm-collapse">
+                 <li>
+                  <a href="pages-starter.html">
+                   الحالات المغلقة
+                  </a>
+                 </li>
+                 <li>
+                  <a href="pages-maintenance.html">
+                   حالات جاري العمل عليها
+                  </a>
+                 </li>
+                 <li>
+                    <a href="pages-maintenance.html">
+                     حالات جديدة
+                    </a>
+                   </li>
+                </ul>
+               </li>
+
+
+               <li class="menu-title text-right">
+                الفريق الطبي
+               </li>
+               <li>
+                <a class="has-arrow waves-effect" href="javascript: void(0);">
+                 <i class="uil-flask">
+                 </i>
+                 <span>
+                  UI Elements
+                 </span>
+                </a>
+                <ul aria-expanded="false" class="sub-menu mm-collapse">
+                 <li>
+                  <a href="ui-alerts.html">
+                   Alerts
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-buttons.html">
+                   Buttons
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-cards.html">
+                   Cards
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-carousel.html">
+                   Carousel
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-dropdowns.html">
+                   Dropdowns
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-grid.html">
+                   Grid
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-images.html">
+                   Images
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-lightbox.html">
+                   Lightbox
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-modals.html">
+                   Modals
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-offcanvas.html">
+                   Offcanvas
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-rangeslider.html">
+                   Range Slider
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-session-timeout.html">
+                   Session Timeout
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-progressbars.html">
+                   Progress Bars
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-sweet-alert.html">
+                   Sweet-Alert
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-tabs-accordions.html">
+                   Tabs &amp; Accordions
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-typography.html">
+                   Typography
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-video.html">
+                   Video
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-general.html">
+                   General
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-colors.html">
+                   Colors
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-rating.html">
+                   Rating
+                  </a>
+                 </li>
+                 <li>
+                  <a href="ui-notifications.html">
+                   Notifications
+                  </a>
+                 </li>
+                </ul>
+               </li>
+               <li>
+                <a class="waves-effect" href="javascript: void(0);">
+                 <i class="uil-shutter-alt">
+                 </i>
+                 <span class="badge rounded-pill bg-info float-end">
+                  9
+                 </span>
+                 <span>
+                  Forms
+                 </span>
+                </a>
+                <ul aria-expanded="false" class="sub-menu mm-collapse">
+                 <li>
+                  <a href="form-elements.html">
+                   Basic Elements
+                  </a>
+                 </li>
+                 <li>
+                  <a href="form-validation.html">
+                   Validation
+                  </a>
+                 </li>
+                 <li>
+                  <a href="form-advanced.html">
+                   Advanced Plugins
+                  </a>
+                 </li>
+                 <li>
+                  <a href="form-editors.html">
+                   Editors
+                  </a>
+                 </li>
+                 <li>
+                  <a href="form-uploads.html">
+                   File Upload
+                  </a>
+                 </li>
+                 <li>
+                  <a href="form-xeditable.html">
+                   Xeditable
+                  </a>
+                 </li>
+                 <li>
+                  <a href="form-repeater.html">
+                   Repeater
+                  </a>
+                 </li>
+                 <li>
+                  <a href="form-wizard.html">
+                   Wizard
+                  </a>
+                 </li>
+                 <li>
+                  <a href="form-mask.html">
+                   Mask
+                  </a>
+                 </li>
+                </ul>
+               </li>
+               <li>
+                <a class="has-arrow waves-effect" href="javascript: void(0);">
+                 <i class="uil-list-ul">
+                 </i>
+                 <span>
+                  Tables
+                 </span>
+                </a>
+                <ul aria-expanded="false" class="sub-menu mm-collapse">
+                 <li>
+                  <a href="tables-basic.html">
+                   Bootstrap Basic
+                  </a>
+                 </li>
+                 <li>
+                  <a href="tables-datatable.html">
+                   Datatables
+                  </a>
+                 </li>
+                 <li>
+                  <a href="tables-responsive.html">
+                   Responsive
+                  </a>
+                 </li>
+                 <li>
+                  <a href="tables-editable.html">
+                   Editable
+                  </a>
+                 </li>
+                </ul>
+               </li>
+               <li>
+                <a class="has-arrow waves-effect" href="javascript: void(0);">
+                 <i class="uil-chart">
+                 </i>
+                 <span>
+                  Charts
+                 </span>
+                </a>
+                <ul aria-expanded="false" class="sub-menu mm-collapse">
+                 <li>
+                  <a href="charts-apex.html">
+                   Apex
+                  </a>
+                 </li>
+                 <li>
+                  <a href="charts-chartjs.html">
+                   Chartjs
+                  </a>
+                 </li>
+                 <li>
+                  <a href="charts-flot.html">
+                   Flot
+                  </a>
+                 </li>
+                 <li>
+                  <a href="charts-knob.html">
+                   Jquery Knob
+                  </a>
+                 </li>
+                 <li>
+                  <a href="charts-sparkline.html">
+                   Sparkline
+                  </a>
+                 </li>
+                </ul>
+               </li>
+               <li>
+                <a class="has-arrow waves-effect" href="javascript: void(0);">
+                 <i class="uil-streering">
+                 </i>
+                 <span>
+                  Icons
+                 </span>
+                </a>
+                <ul aria-expanded="false" class="sub-menu mm-collapse">
+                 <li>
+                  <a href="icons-unicons.html">
+                   Unicons
+                  </a>
+                 </li>
+                 <li>
+                  <a href="icons-boxicons.html">
+                   Boxicons
+                  </a>
+                 </li>
+                 <li>
+                  <a href="icons-materialdesign.html">
+                   Material Design
+                  </a>
+                 </li>
+                 <li>
+                  <a href="icons-dripicons.html">
+                   Dripicons
+                  </a>
+                 </li>
+                 <li>
+                  <a href="icons-fontawesome.html">
+                   Font Awesome
+                  </a>
+                 </li>
+                </ul>
+               </li>
+               <li>
+                <a class="has-arrow waves-effect" href="javascript: void(0);">
+                 <i class="uil-location-point">
+                 </i>
+                 <span>
+                  Maps
+                 </span>
+                </a>
+                <ul aria-expanded="false" class="sub-menu mm-collapse">
+                 <li>
+                  <a href="maps-google.html">
+                   Google
+                  </a>
+                 </li>
+                 <li>
+                  <a href="maps-vector.html">
+                   Vector
+                  </a>
+                 </li>
+                 <li>
+                  <a href="maps-leaflet.html">
+                   Leaflet
+                  </a>
+                 </li>
+                </ul>
+               </li>
+               <li>
+                <a class="has-arrow waves-effect" href="javascript: void(0);">
+                 <i class="uil-share-alt">
+                 </i>
+                 <span>
+                  Multi Level
+                 </span>
+                </a>
+                <ul aria-expanded="true" class="sub-menu mm-collapse">
+                 <li>
+                  <a href="javascript: void(0);">
+                   Level 1.1
+                  </a>
+                 </li>
+                 <li>
+                  <a class="has-arrow" href="javascript: void(0);">
+                   Level 1.2
+                  </a>
+                  <ul aria-expanded="true" class="sub-menu mm-collapse">
+                   <li>
+                    <a href="javascript: void(0);">
+                     Level 2.1
+                    </a>
+                   </li>
+                   <li>
+                    <a href="javascript: void(0);">
+                     Level 2.2
+                    </a>
+                   </li>
+                  </ul>
+                 </li>
+                </ul>
+               </li>
+              </ul>
+             </div>
+             <!-- Sidebar -->
+            </div></div></div></div><div class="simplebar-placeholder" style="width: auto; height: 957px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="transform: translate3d(0px, 0px, 0px); display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 926px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
+           </div>
+           
+           <!-- End vertical menu bar -->
+           {% endif %}
+
+
+      {% block body %}
+      {% endblock %}
+
+      <!-- JAVASCRIPT -->
+        <script src="{% static 'gaza/libs/jquery/jquery.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/bootstrap/js/bootstrap.bundle.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/metismenu/metisMenu.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/simplebar/simplebar.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/node-waves/waves.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/waypoints/lib/jquery.waypoints.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/jquery.counterup/jquery.counterup.min.js'%}">
+        </script>
+        <!-- apexcharts -->
+        <script src="{% static 'gaza/libs/apexcharts/apexcharts.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/js/pages/dashboard.init.js'%}" >
+        </script>
+         <!-- parsleyjs -->
+        <script src="{% static 'gaza/libs/parsleyjs/parsley.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/js/pages/form-validation.init.js'%}">
+        </script>
+        <!-- plugins -->
+        <script src="{% static 'gaza/libs/select2/js/select2.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/spectrum-colorpicker2/spectrum.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/bootstrap-maxlength/bootstrap-maxlength.min.js'%}">
+        </script>
+        <script src="{% static 'gaza/libs/@chenfengyuan/datepicker/datepicker.min.js'%}">
+        </script>
+     
+
+
+        <!-- init js -->
+        <script src="{% static 'gaza/js/pages/form-advanced.init.js'%}">
+        </script>
+       
+        <!-- App js -->
+        <script src="{% static 'gaza/js/app.js'%}">
+        </script>
+
+    </body>
+</html>
