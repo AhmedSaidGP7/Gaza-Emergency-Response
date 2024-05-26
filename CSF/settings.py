@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-2^!-5c6vm)=vn7xe9u*6=kuq4%97l(dzwcj+6=b632cya1y^f8
 DEBUG = True
 
 ALLOWED_HOSTS = ["emregencyrresponsegaza.azurewebsites.net", "127.0.0.1"]
-CSRF_TRUSTED_ORIGINS = ["emregencyrresponsegaza.azurewebsites.net", "127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ["https://emregencyrresponsegaza.azurewebsites.net", "127.0.0.1"]
 
 
 # Application definition
