@@ -1,0 +1,68 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+تسكين مستفيد
+{% endblock %}
+{% block body %}
+
+<script>
+    
+
+function getLocationAndCheckArrival() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(sendLocation);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function sendLocation(position) {
+    var csrfToken = '{{ csrf_token }}';
+    fetch("{% url 'volunteers:arrival' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrfToken
+        },
+        body: `latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+<div dir="rtl" class="main-content">
+    <div class="page-content">
+   
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                 <div class="card">
+                  <div class="card-body">
+                   <h4 class="card-title">
+                    تسجيل حضور للتطوع في موقع خدمة الإيواء
+                   </h4>
+                   <p class="card-title-desc">
+                    عند وصولك لموقع التطوع, قم بالضغط على هذا الزر حتى يتم تسجيل حضورك واحتساب ساعات تطوعك.
+                   </p>
+                   <div class="d-grid gap-2">
+                    <button onclick="getLocationAndCheckArrival()" class="btn btn-primary btn-lg waves-effect waves-light mb-1" type="button">
+                        لقد وصلت لموقع العمل
+                    </button>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+              
+               </div>
+        </div>
+     <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+ 
+   </div>
+
+
+{% endblock %}

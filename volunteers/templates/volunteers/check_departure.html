@@ -1,0 +1,60 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+تسكين مستفيد
+{% endblock %}
+{% block body %}
+
+<script>
+   
+        function checkDeparture() {
+            var csrfToken = '{{ csrf_token }}';
+            fetch("{% url 'volunteers:check_departure' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    
+</script>
+
+<div dir="rtl" class="main-content">
+    <div class="page-content">
+   
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                 <div class="card">
+                  <div class="card-body">
+                   <h4 class="card-title">
+                    تسجيل إنصراف من موقع خدمة الإيواء
+                   </h4>
+                   <p class="card-title-desc">
+                    بعد إنتهاءك من اعمالك التطوعية, يرجى الضغط على هذا الزر لتسجيل إنصراف
+                   </p>
+                   <div class="d-grid gap-2">
+                    <button onclick="checkDeparture()" class="btn btn-primary btn-lg waves-effect waves-light mb-1" type="button">
+                        لقد إنتهيت من زيارتي!
+                    </button>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+              
+               </div>
+        </div>
+     <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+ 
+   </div>
+
+
+{% endblock %}

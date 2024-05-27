@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'GazaResponse',
     'users',
     'operations',
+    'volunteers',
 ]
 
 MIDDLEWARE = [

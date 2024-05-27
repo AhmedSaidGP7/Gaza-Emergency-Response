@@ -22,7 +22,7 @@
         </script>
         <script src="{% static 'gaza/js/pages/form-repeater.int.js'%}">
         </script>
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block head %}
         {% endblock %}
         
@@ -35,6 +35,14 @@
 
         <header id="page-topbar">
             <div class="navbar-header">
+
+
+              <button class="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn d-block d-lg-none d-xl-none" type="button">
+                <i class="fa fa-fw fa-bars">
+                </i>
+               </button>
+
+
              <div class="d-flex">
               <!-- LOGO -->
               <div class="navbar-brand-box">
@@ -81,7 +89,7 @@
                 </form>
                </div>
               </div>
-
+             
             <!--  Other apps 
               <div class="dropdown d-none d-lg-inline-block ms-1">
                <button aria-expanded="false" aria-haspopup="true" class="btn header-item noti-icon waves-effect" data-bs-toggle="dropdown" type="button">
@@ -148,6 +156,7 @@
             End of other apps -->
 
               <div class="dropdown d-none d-lg-inline-block ms-1">
+                
                <button class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen" type="button">
                 <i class="uil-minus-path">
                 </i>
@@ -164,7 +173,7 @@
                </button>
                <div class="dropdown-menu dropdown-menu-end">
                 <!-- item-->
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{% url 'GazaReponse:tesst' %}">
                  <i class="uil uil-user-circle font-size-18 align-middle text-muted me-1">
                  </i>
                  <span class="align-middle">
@@ -252,7 +261,7 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'operations:addcasualty' %}">
-                 <i class="fa fa-users">
+                 <i class="fas fa-user-injured">
                  </i>
                  <span>
                   تسجيل مصاب جديد
@@ -270,7 +279,7 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'operations:accommodation' %}">
-                 <i class="uil-store">
+                 <i class="fa fa-home">
                  </i>
                  <span>
                   تسكين مستفيد
@@ -288,8 +297,7 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'operations:shelters' %}">
-                 <i class="uil-invoice">
-                 </i>
+                  <i class="fas fa-chart-pie"></i>
                  <span>
                   احصائيات التسكين
                  </span>
@@ -353,6 +361,29 @@
                  </i>
                  <span>
                   إدارة التبرعات
+                 </span>
+                </a>
+               </li>
+
+               <li dir="rtl" class="menu-title text-right">
+                بوابة المتطوعين
+               </li>
+               <li>
+                <a class="waves-effect" href="{% url 'volunteers:arrival' %}">
+                 <i class="far fa-check-circle">
+                 </i>
+                 <span>
+                  تسجيل حضور
+                 </span>
+                </a>
+               </li>
+
+               <li>
+                <a class="waves-effect" href="{% url 'volunteers:check_departure' %}">
+                 <i class="fas fa-sign-out-alt">
+                 </i>
+                 <span>
+                  تسجيل إنصراف
                  </span>
                 </a>
                </li>

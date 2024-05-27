@@ -40,6 +40,13 @@ class Shelter(models.Model):
     def __str__(self):
         return f'{self.shelterName}'
 
+# Model representing a geographic location with latitude and longitude coordinates associated with each shelter.
+class Location(models.Model):
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    shelter = models.ForeignKey(Shelter, on_delete=models.CASCADE)
+
+
 # This class represents the buildings owned by the Ministry of Social Solidarity and
 # designated for housing the affected individuals and their companions, such as
 # the "Al-Khayalah" building and "Al-A'bor" building, etc.
@@ -123,3 +130,8 @@ class Dontation(models.Model):
     personWhoReceived = models.CharField(max_length = 64)
     def __str__(self):
         return f'{self.itemsName} - {self.toBuilding}'
+
+
+
+
+
