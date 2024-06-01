@@ -16,7 +16,10 @@ def auth(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("users:index"))
+            if 'next'in request.POST:
+                return HttpResponseRedirect(request.POST.get('next'))
+            else:    
+                return HttpResponseRedirect(reverse("users:index"))
         else:
             return render(request, "users/login.html", {
                 "message": "برجاء التأكد من اسم المستخدم وكلمة المرور "

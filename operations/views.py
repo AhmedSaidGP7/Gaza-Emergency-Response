@@ -296,7 +296,7 @@ def shelterDetails(request, shelter_id):
         apartments = building.apartments.all()  # Get all apartments related to the building
         for apartment in apartments:
             residents = apartment.residents.filter(status="داخل السكن")  # Get all residents in the apartment
-            resident_names = [resident.name for resident in residents]
+            resident_names = [{'name': resident.name, 'id': resident.id} for resident in residents]
             available_spots = apartment.apartmentCapacity - len(residents)
 
             apartment_data.append({
@@ -340,7 +340,7 @@ def availableApartments(request, shelter_id):
 
         for apartment in   apartments_with_available_spots:
             residents = apartment.residents.filter(status="داخل السكن")  # Get all residents in the apartment
-            resident_names = [resident.name for resident in residents]
+            resident_names = [{'name': resident.name, 'id': resident.id} for resident in residents]
             available_spots = apartment.apartmentCapacity - len(residents)
 
             apartment_data.append({

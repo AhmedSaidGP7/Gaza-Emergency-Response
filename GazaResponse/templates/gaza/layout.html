@@ -173,7 +173,7 @@
                </button>
                <div class="dropdown-menu dropdown-menu-end">
                 <!-- item-->
-                <a class="dropdown-item" href="{% url 'GazaReponse:tesst' %}">
+                <a class="dropdown-item" href="#">
                  <i class="uil uil-user-circle font-size-18 align-middle text-muted me-1">
                  </i>
                  <span class="align-middle">
@@ -308,39 +308,23 @@
                 إدارة الحالات
                </li>
                <li>
-                <a class="waves-effect" href="#">
+                <a class="waves-effect" href="{% url 'case_management:addpost'%}">
                  <i class="uil-user-circle">
                  </i>
                  <span>
-                  إضافة حالة جديدة
+                  إضافة شكوى جديدة
                  </span>
                 </a>
                </li>
                <li>
-                <a class="has-arrow waves-effect" href="javascript: void(0);">
+                <a class="waves-effect" href="{% url 'case_management:cases'%}">
                  <i class="uil-file-alt">
                  </i>
                  <span>
-                  متابعة الحالات
+                  متابعة الشكاوى
                  </span>
                 </a>
-                <ul aria-expanded="false" class="sub-menu mm-collapse">
-                 <li>
-                  <a href="#">
-                   الحالات المغلقة
-                  </a>
-                 </li>
-                 <li>
-                  <a href="#">
-                   حالات جاري العمل عليها
-                  </a>
-                 </li>
-                 <li>
-                    <a href="#">
-                     حالات جديدة
-                    </a>
-                   </li>
-                </ul>
+              
                </li>
 
                <li dir="rtl" class="menu-title text-right">

@@ -109,16 +109,7 @@ class Person(models.Model):
 
 
 
-class Tickets(models.Model):
-    title = models.CharField(max_length = 32)
-    belongsTo = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="PersonTickets")
-    status = models.IntegerField()
-    date = models.DateTimeField(auto_now_add=True, blank=True)
-    content = models.TextField()
-    ticketScannedDocs = models.FileField()
-    caseResponsible = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="responsible")
-    def __str__(self):
-        return f'{self.title}'
+
 
 
 class Dontation(models.Model):

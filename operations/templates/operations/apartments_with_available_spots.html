@@ -51,7 +51,7 @@
               <td>
                 <ol>
                     {% for resident in apartment.residents %}
-                        <li>{{ resident }}</li>
+                    <a href="{% url 'operations:profile' person_id=resident.id %}"><li class="Operations_residentNames">{{ resident.name }}</li></a>
                     {% endfor %}
                 </ol>
               </td>

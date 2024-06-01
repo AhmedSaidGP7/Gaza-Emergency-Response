@@ -42,3 +42,10 @@ a,h1,h2,h3,h4,h5,h6,p,button,label,div{
 .table_border_color{
     border-color: #000000 !important;
 }
+
+
+.Operations_residentNames
+{
+    color: #000000 !important;
+    margin-bottom: 10px;
+}
