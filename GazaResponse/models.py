@@ -129,7 +129,7 @@ class Dontation(models.Model):
 
 
 class logOutLogs(models.Model):
-    date = models.DateTimeField()
+    date = models.DateField()
     person = models.ForeignKey(Person, on_delete = models.CASCADE, related_name="departures")
     scannedDocs = models.FileField(upload_to="LogOutLogs", blank=True)
     def __str__(self):

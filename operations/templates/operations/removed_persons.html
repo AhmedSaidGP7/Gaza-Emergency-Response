@@ -40,6 +40,9 @@
               <th scope="col">
                 الإقرار
                </th>
+               <th scope="col">
+                تاريخ الخروج
+               </th>
               <th scope="col">
                 الحالة
                </th>
@@ -91,6 +94,14 @@
                 {% endif %}
             {% endwith %}
               </td>
+              
+              <td>
+                {% with logOutLog=customer.departures.last %}
+                    {{ logOutLog.date }}
+                {% endwith %}
+            </td>
+            
+
               <td>
                 {{customer.status}}
               </td>

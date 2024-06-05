@@ -18,7 +18,7 @@
            <div class="clearfix">
            </div>
            <div>
-            {% if person.profile_pic and person.profile_pic.name  %}
+            {% if person.profile_pic != '' and person.profile_pic != 'False' %}
             <a href="{{person.profile_pic.url}}" target="_blank" >
             <img alt="" class="avatar-lg " src="{{person.profile_pic.url}}">
               </a>
