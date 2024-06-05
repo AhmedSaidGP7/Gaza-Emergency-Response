@@ -112,12 +112,12 @@
                             </label>
                             <div class="col-md-10">
                              <select name="theType" class="form-select">
-                              <option value="مصاب">
-                               مصاب
-                              </option>
                               <option value="مرافق">
                                مرافق
                               </option>
+                              <option value="مصاب">
+                                مصاب
+                               </option>
                              </select>
                             </div>
                            </div>
@@ -132,6 +132,9 @@
                          <select name="status" class="form-select">
                           <option value="داخل السكن">
                             داخل السكن
+                          </option>
+                          <option value="داخل السكن">
+                            داخل المستشفى
                           </option>
                           <option value="استلام اقارب في مصر">
                            استلام اقارب في مصر
@@ -171,7 +174,7 @@
                          المستفيد تابع للمصاب
                         </label>
                         <div class="col-md-10 form-control">                       
-                        <select name="Group" id="mySelect" class="form-control selecttwoform" style="width: 100%;">
+                        <select name="Group" id="mySelect" required="" class="form-control selecttwoform" style="width: 100%;">
                         {% for member in Group %}
                             <option value="{{member.id}}">{{member.groupName}}</option>
                         {% endfor %}
@@ -252,6 +255,11 @@
                         </div>
                        </div>
                     <!-- End "Has cancer" label -->
+
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">صورة شخصية للمستفيد</label>
+                        <input name="profilePic"  class="form-control" type="file" accept="image/png, image/jpeg" id="formFile">
+                      </div>
 
                     <div class="mb-3">
                         <label for="formFile" class="form-label">هوية وتقارير المستفيد</label>

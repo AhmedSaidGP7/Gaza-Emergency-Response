@@ -1,0 +1,186 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+قائمة المستفيدين
+{% endblock %}
+{% block body %}
+
+<div dir="rtl" class="main-content">
+    <div class="page-content">
+     <div class="container-fluid">
+      <!-- end page title -->
+      <div class="row">
+       <div class="col-lg-12">
+        <div class="card">
+         <div class="card-body">
+         
+          <div class="table-responsive mb-4">
+           <table id="theCustomersTable" class="table table-centered table-nowrap mb-0">
+            <thead>
+             <tr>
+                
+              <th scope="col">
+               الأسم
+              </th>
+              <th scope="col">
+                الصفة
+               </th>
+              <th scope="col">
+               رقم الهاتف
+              </th>
+              <th scope="col">
+                رقم الهوية
+               </th>
+              <th scope="col">
+               السكن
+              </th>
+              <th scope="col">
+               الهوية
+              </th>
+              <th scope="col">
+                الإقرار
+               </th>
+              <th scope="col">
+                الحالة
+               </th>
+             </tr>
+            </thead>
+            <tbody>
+             
+                
+            {% for customer in customers.object_list %}    
+             <!-- Start new customer-->   
+             <tr>
+              <td>
+               <a class="text-body" href="{% url 'operations:profile' person_id=customer.id %}">
+                {{customer.name}}
+               </a>
+              </td>
+              <td>
+                {{customer.theType}}
+              </td>
+              <td>
+                {{customer.phoneNumber}}
+              </td>
+              <td>
+                {{customer.idNumber}}
+              </td>
+              <td>
+                {{customer.accommodation}}
+              </td>
+              <td>
+                {% if customer.scannedDocs != 'False' %}
+                <a class="fw-medium" href="{{customer.scannedDocs.url}}" target="_blank">
+                  <i class="bx bx-archive-out">
+                  </i>
+
+                </a>
+                {% else %}
+                <i class="fas fa-times"></i>
+                {% endif %}
+
+              </td>
+              <td>
+                {% with departure=customer.departures.last %}
+                {% if departure and departure.scannedDocs %}
+                    <a class="fw-medium" href="{{departure.scannedDocs.url}}" target="_blank">
+                        <i class="bx bx-archive-out"></i>
+                    </a>
+                {% else %}
+                    <i class="fas fa-times"></i>
+                {% endif %}
+            {% endwith %}
+              </td>
+              <td>
+                {{customer.status}}
+              </td>
+           
+             </tr>
+             <!-- End new customer -->
+             {% endfor %}            
+             </tr>
+            </tbody>
+           </table>
+          </div>
+          <div class="row mt-4">
+           <div class="col-sm-6">
+            <div>
+             
+            </div>
+           </div>
+
+
+           <div class="col-sm-6">
+
+            <div class="float-sm-end">
+             <ul class="pagination mb-sm-0">
+                
+                {% if customers.has_previous %}   
+              <li class="page-item">
+               <a class="page-link" href="?page={{ customers.previous_page_number}}">
+                <i class="mdi mdi-chevron-right">
+                </i>
+               </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#">
+                 <i class="mdi mdi-chevron-right">
+                 </i>
+                </a>
+               </li>
+               {%endif%}
+
+               {% for pg in customers.paginator.page_range %}
+               {% if customers.number == pg %}
+              <li class="page-item active">
+               <a class="page-link" href="?page={{pg}}">
+                {{pg}}
+               </a>
+              </li>
+              {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{pg}}">
+                 {{pg}}
+                </a>
+               </li>
+               {%endif%}
+               {% endfor %}
+
+               {% if customers.has_next %} 
+              <li class="page-item">
+               <a class="page-link" href="?page={{ customers.next_page_number}}">
+                <i class="mdi mdi-chevron-left">
+                </i>
+               </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#">
+                 <i class="mdi mdi-chevron-left">
+                 </i>
+                </a>
+               </li>
+               {% endif %}
+
+             </ul>
+            </div>
+
+           </div>
+
+
+
+
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <!-- end row -->
+     </div>
+     <!-- container-fluid -->
+    </div>
+    
+   </div>
+
+{% endblock %}

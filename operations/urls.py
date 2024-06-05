@@ -11,5 +11,7 @@ urlpatterns = [
     path("shelter/<int:shelter_id>/", views.shelterDetails, name="shelterDetails"),
     path("freespots/<int:shelter_id>/", views.availableApartments, name="freespots"),
     path('profile/<int:person_id>/', views.profile, name='profile'),
+    path("remove", views.removePerson, name='remove'),
+    path("reomved", views.customersOut, name="removed"),
     
 ]

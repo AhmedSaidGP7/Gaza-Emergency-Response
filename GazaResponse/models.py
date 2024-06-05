@@ -90,6 +90,7 @@ class Group(models.Model):
 # The property "type" indicates whether it is a patient (affected) or a companion.
 class Person(models.Model):
     name = models.CharField(max_length = 64)
+    profile_pic = models.ImageField(upload_to="ProfilePics", blank = True)
     birthday = models.DateField()
     theType = models.CharField(max_length = 64)
     gender = models.CharField(max_length = 64, default = 'ذكر')
@@ -126,3 +127,10 @@ class Dontation(models.Model):
 
 
 
+
+class logOutLogs(models.Model):
+    date = models.DateTimeField()
+    person = models.ForeignKey(Person, on_delete = models.CASCADE, related_name="departures")
+    scannedDocs = models.FileField(upload_to="LogOutLogs", blank=True)
+    def __str__(self):
+        return f'{self.person}'

@@ -21,30 +21,21 @@
                                   تم بنجاح!
                                  </h5>
                                  <p>
-                                  تم تسكين {{thePerson}} في {{theApartment}}
+                                    {% if updated_persons %}
+                                    <ul>
+                                        {% for person in updated_persons %}
+                                            <li> تم تسكين {{ person.name }} في {{ theApartment }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                                  </p>
                                  <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
                                  </button>
                                 </div>
                                </div> <br>
                         {% endif %}
-
-                        {% if errorMessage %}
-                        <div class="col-sm-12 d-flex justify-content-center">
-                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
-                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-text-danger">
-                             </i>
-                             <h5 class="text-text-danger">
-                             خطأ في الإدخال
-                             </h5>
-                             <p>
-                               المستفيد {{thePerson}} موجود بالفعل في قواعد البيانات 
-                             </p>
-                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
-                             </button>
-                            </div>
-                           </div> <br>
-                        {% endif %}
+                       
+                          
                       <h4 class="card-title">
                        اختيار سكن مستفيد
                       </h4>
@@ -54,30 +45,31 @@
                       <form action="{% url 'operations:accommodation' %}"  method="POST" class="custom-validation" novalidate="">
                         {% csrf_token %} 
 
+                    
+
                      <!-- Start Group label -->
                      <div>
-                        <label class="col-md-2 col-form-label selecttwoform" for="exampleDataList0">
+                        <label class="col-md-2 col-form-label " for="exampleDataList0">
                          اسم المستفيد
                         </label>
-                        <div class="col-md-10 form-control">                       
-                        <select name="Group" id="mySelect" class="form-control selecttwoform" style="width: 100%;">
-                        {% for member in Person %}
+
+                        <select required="" dir="rtl" class="col-md-10 form-control js-example-basic-multiple" name="names[]" multiple="multiple">
+                            {% for member in Person %}
                             <option value="{{member.id}}">{{member.name}}</option>
                         {% endfor %}
-                        <!-- Add more options as needed -->
-                    </select>        
-                        </div>
+                          </select>
                        </div> <br>
                     <!-- End Group label -->
                        
     
                     <!-- Start Accommodation label -->
+                    
                     <div>
-                        <label class="col-md-2 col-form-label selecttwoform" for="exampleDataList0">
+                        <label class="col-md-2 col-form-label" for="exampleDataList0">
                         مكان السكن
                         </label>
-                        <div class="col-md-10 form-control">                       
-                        <select name="Apartment" id="mySelect2" class="form-control selecttwoform" style="width: 100%;">
+                        <div class="col-md-10">                       
+                        <select name="Apartment" id="mySelect2" class="col-md-10 form-control selecttwoform" style="width: 100%;">
                         {% for Apartment in Apartments %}
                             <option value="{{Apartment.id}}">{{Apartment}}</option>
                         {% endfor %}

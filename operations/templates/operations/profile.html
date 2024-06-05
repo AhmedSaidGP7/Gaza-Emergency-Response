@@ -18,7 +18,13 @@
            <div class="clearfix">
            </div>
            <div>
-            <img alt="" class="avatar-lg " src="{% static 'gaza/images/users/avatar-4.jpg'%}">
+            {% if person.profile_pic and person.profile_pic.name  %}
+            <a href="{{person.profile_pic.url}}" target="_blank" >
+            <img alt="" class="avatar-lg " src="{{person.profile_pic.url}}">
+              </a>
+            {% else %}
+            <i class="fas fa-user" style="font-size: 50px;"></i>
+            {% endif %}
            </div>
            <h5 class="mt-3 mb-1">
             {{ person.name }}
@@ -30,15 +36,18 @@
           </div>
           <hr class="my-4">
           <div class="text-muted">
-           <h5 class="font-size-16">
-            التشخيص
-           </h5>
-           <p>
-            {{ person.diagnosis }}
-           </p>
+
            <div class="table-responsive mt-4">
+            {% if person.diagnosis %}
+            <p class="mb-3">
+               التشخيص:
+              </p>
+              <h5 class="font-size-16">
+               {{ person.diagnosis }}
+              </h5>
+              {% endif %}
             <div>
-             <p class="mb-1">
+             <p class="mb-3">
                 النوع:
              </p>
              <h5 class="font-size-16">
@@ -46,7 +55,7 @@
              </h5>
             </div>
             <div>
-                <p class="mb-1">
+                <p class="mb-3">
                    مستشفى التحويل :
                 </p>
                 <h5 class="font-size-16">
@@ -54,14 +63,16 @@
                 </h5>
                </div>
             <div class="mt-4">
-                <p class="mb-1">
+                <p class="mb-3">
                 الحالة:
                 </p>
                 <h5 class="font-size-16">
                     {{ person.status }}
                 </h5>
                </div>
-              
+
+
+            {% if person.phoneNumber %}  
             <div class="mt-4">
              <p class="mb-1">
               رقم الهاتف :
@@ -70,6 +81,7 @@
                 {{ person.phoneNumber }}
              </h5>
             </div>
+            {% endif %}
             <div class="mt-4">
              <p class="mb-1">
              مكان السكن:
@@ -93,10 +105,12 @@
             <i class="uil uil-user-circle font-size-20">
             </i>
             <span class="d-none d-sm-block">
-             معلومات عن المستفيد
+             مرافقين المستفيد
             </span>
            </a>
           </li>
+      
+
           <li class="nav-item">
            <a class="nav-link" data-bs-toggle="tab" href="#tasks" role="tab">
             <i class="uil uil-clipboard-notes font-size-20">
@@ -114,9 +128,16 @@
            <div>
            
             <div>
+            {% if not relatives %}  
              <h5 class="font-size-16 mb-4">
-              المرافقين
+              هذا المستفيد بدون مرافقين
              </h5>
+             {% endif %}
+             {% if relatives %}
+             <h5 class="font-size-16 mb-4">
+               المرافقين
+              </h5>
+ 
              <div class="table-responsive">
               <table class="table table-nowrap table-hover mb-0">
                <thead>
@@ -159,6 +180,7 @@
                </tbody>
               </table>
              </div>
+             {%endif%}
             </div>
            </div>
           </div>

@@ -103,6 +103,7 @@ def ticket_detail(request, ticket_id):
     })
 
 
+@login_required(login_url="/auth")
 def CloseCase(request):
     caseID =  request.POST.get("caseID")
     case = get_object_or_404(Tickets, id=caseID)
@@ -110,7 +111,7 @@ def CloseCase(request):
     case.save()
     return HttpResponseRedirect(reverse('case_management:cases'))
 
-
+@login_required(login_url="/auth")
 def addComment(request):
     caseID = request.POST.get("theticket")
     comment = request.POST.get("comment")

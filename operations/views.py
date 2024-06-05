@@ -6,14 +6,16 @@ from GazaResponse.models import *
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Sum, Count
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from datetime import datetime, timedelta
 
 
 
 
 # Add person
+@login_required(login_url="/auth")
 def addPerson(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("users:login"))
     if request.method == "GET":    
         return render(request, 'operations/addperson.html', {
             "users" : User.objects.all(),
@@ -37,6 +39,7 @@ def addPerson(request):
         diagnosis = request.POST["diagnosis"]
         hasCancer = request.POST.get("hasCancer", False)
         isDisabled = request.POST.get("isDisabled", False)
+        profilePic = request.FILES.get("profilePic", False)
         uploadedfile = request.FILES.get("uploadedfile", False)
 
         # Check if the person exists in the DB
@@ -80,6 +83,7 @@ def addPerson(request):
             pHospital = hosptialInst,
             accommodation = apartmentInst,
             scannedDocs = uploadedfile,
+            profile_pic = profilePic,
             hasCancer = hasCancer,
             isDisabled = isDisabled
 
@@ -93,9 +97,8 @@ def addPerson(request):
 
             })     
 
+@login_required(login_url="/auth")
 def addCasualty(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("users:login"))
     if request.method == "GET":    
         return render(request, 'operations/addcasualty.html', {
             "users" : User.objects.all(),
@@ -117,6 +120,7 @@ def addCasualty(request):
         diagnosis = request.POST["diagnosis"]
         hasCancer = request.POST.get("hasCancer", False)
         isDisabled = request.POST.get("isDisabled", False)
+        profilePic = request.FILES.get("profilePic", False)
         uploadedfile = request.FILES.get("uploadedfile", False)
    
         # Inserting the date into the database
@@ -176,6 +180,7 @@ def addCasualty(request):
             pHospital = hosptialInst,
             accommodation = apartmentInst,
             scannedDocs = uploadedfile,
+            profile_pic = profilePic,
             hasCancer = hasCancer,
             isDisabled = isDisabled
 
@@ -190,61 +195,86 @@ def addCasualty(request):
 
             })    
 
-
-
-def accommodation(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("users:login"))
+@login_required(login_url="/auth")
+def accommodation(request):    
     if request.method == "GET":
         return render(request, 'operations/accommodation.html', {
-            "users" : User.objects.all(),
-            "Person" : Person.objects.all(),
+            "users": User.objects.all(),
+            "Person": Person.objects.all(),
             "Apartments": Apartment.objects.all(),
-
         })
     else:
-        # Handle the POST date
-        name = request.POST["Group"]
-        Apartmente = request.POST["Apartment"]
-        apartmentInst = Apartment.objects.get(id = Apartmente)
-        update = Person.objects.filter(id=name).update(accommodation=apartmentInst)
-        thename = Person.objects.get(id = name)
-        return render(request, "operations/accommodation.html", {
-            "message" : "تم إضافة المستفيد بنجاح!",
-            "users" : User.objects.all(),
-            "Person" : Person.objects.all(),
-            "Apartments": Apartment.objects.all(),
-            "thePerson": thename,
-            "theApartment": apartmentInst,
-
-            })    
+        # Handle the POST data
+        person_ids = request.POST.getlist("names[]")
+        apartment_id = request.POST["Apartment"]
+        apartment_instance = Apartment.objects.get(id=apartment_id)
         
+        # Update accommodation for each selected person
+        for person_id in person_ids:
+            Person.objects.filter(id=person_id).update(accommodation=apartment_instance)
+        
+        # Get updated persons and the apartment instance for the context
+        updated_persons = Person.objects.filter(id__in=person_ids)
+        
+        return render(request, "operations/accommodation.html", {
+            "message": "تم إضافة المستفيدين بنجاح!",
+            "users": User.objects.all(),
+            "Person": Person.objects.all(),
+            "Apartments": Apartment.objects.all(),
+            "updated_persons": updated_persons,
+            "theApartment": apartment_instance,
+        })
 
+
+@login_required(login_url="/auth")
 def customers(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("users:login"))
+    query = request.GET.get('q', '')
+    whichCases = request.GET.get('whichCases', '')
 
     customersList = Person.objects.all()
-    paginator = Paginator(customersList, 5) 
+
+    if query:
+        customersList = customersList.filter(
+            Q(name__icontains=query) |
+            Q(idNumber__icontains=query) |
+            Q(phoneNumber__icontains=query) |
+            Q(diagnosis__icontains=query)
+        )
+
+    if whichCases:
+        if whichCases == '0':
+            customersList = customersList.filter(status='داخل السكن')
+        elif whichCases == '1':
+            two_years_ago = datetime.now() - timedelta(days=2*365)
+            customersList = customersList.filter(birthday__gte=two_years_ago)
+        elif whichCases == '2':
+            customersList = customersList.filter(gender='انثى')
+        elif whichCases == '3':
+            customersList = customersList.filter(gender='ذكر')
+        elif whichCases == '4':
+            customersList = customersList.filter(hasCancer=True)
+        elif whichCases == '5':
+            customersList = customersList.filter(isDisabled=True)
+
+    paginator = Paginator(customersList, 30)
     try:
         page = int(request.GET.get('page', '1'))
     except:
-        page = 1    
+        page = 1
 
     try:
         customers = paginator.page(page)
-    except(EmptyPage, InvalidPage):
+    except (EmptyPage, InvalidPage):
         customers = paginator.page(paginator.num_pages)
+
     return render(request, "operations/customers.html", {
-        "customers" : customers
+        "customers": customers,
+        "query": query,
+        "whichCases": whichCases
     })
 
-
+@login_required(login_url="/auth")
 def sheltersStat(request):
-    # Check if the user is authenticated
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("users:login"))
-    
     # Get all shelter instances
     shelters = Shelter.objects.all()
     shelter_data = []
@@ -279,11 +309,8 @@ def sheltersStat(request):
     return render(request, 'operations/shelters.html', context)
 
 
-
+@login_required(login_url="/auth")
 def shelterDetails(request, shelter_id):
-    # Check if the user is authenticated
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("users:login"))
 
     # Get the shelter instance based on the ID
     shelter = get_object_or_404(Shelter, id=shelter_id)
@@ -314,11 +341,8 @@ def shelterDetails(request, shelter_id):
     }
     return render(request, 'operations/apartment_details.html', context)
 
+@login_required(login_url="/auth")
 def availableApartments(request, shelter_id):
-    # Check if the user is authenticated
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("users:login"))
-
     # Get the shelter instance based on the ID
     shelter = get_object_or_404(Shelter, id=shelter_id)
     buildings = shelter.Buildings.all()  # Get all buildings related to the shelter
@@ -357,11 +381,8 @@ def availableApartments(request, shelter_id):
     return render(request, 'operations/apartments_with_available_spots.html', context)
 
 
-
+@login_required(login_url="/auth")
 def profile(request, person_id):
-    # Check if the user is authenticated
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("users:login"))
 
     # Get the person instance based on the ID
     person = get_object_or_404(Person, id=person_id)
@@ -374,3 +395,52 @@ def profile(request, person_id):
         'relatives': relatives
     }
     return render(request, 'operations/profile.html', context)
+
+@login_required(login_url="/auth")
+def removePerson(request):
+    if request.method == "GET":
+        return render(request, 'operations/remove_person.html', {
+            "Person": Person.objects.all()
+        })
+    else:
+        # Handle the POST data
+        person_ids = request.POST.getlist("names[]")
+        date = request.POST["thedate"]
+        status = request.POST["status"]
+        uploadedfile = request.FILES.get("uploadedfile", False)
+        # Update accommodation for each selected person
+        for person_id in person_ids:
+            logOutLogs.objects.create(
+                date = date,
+                person = Person.objects.get(id=person_id),
+                scannedDocs = uploadedfile
+            )
+            Person.objects.filter(id=person_id).update(status=status)
+            
+        
+        # Get updated persons and the apartment instance for the context
+        updated_persons = Person.objects.filter(id__in=person_ids)
+
+        return render(request, "operations/remove_person.html", {
+            "message": "تم تسجيل خروج المستفيدين بنجاح!",
+            "Person": Person.objects.all(),
+            "updated_persons": updated_persons,
+        })
+
+@login_required(login_url="/auth")
+def customersOut(request):
+    customersList = Person.objects.exclude(status = "داخل السكن")
+    paginator = Paginator(customersList, 30) 
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1    
+
+    try:
+        customers = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        customers = paginator.page(paginator.num_pages)
+    return render(request, "operations/removed_persons.html", {
+        "customers" : customers,
+        "logOutLogs": logOutLogs.objects.all()
+    })
