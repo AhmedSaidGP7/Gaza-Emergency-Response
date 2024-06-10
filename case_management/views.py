@@ -26,6 +26,8 @@ def addPost(request):
         ticketScannedDocs = request.FILES.get("uploadedfile", False)
         if request.POST["theType"] == "True":
             is_urgent = True
+        else:
+            is_urgent = False
 
         getPersonInstance = Person.objects.get(id = belongsTo)
         user = request.user

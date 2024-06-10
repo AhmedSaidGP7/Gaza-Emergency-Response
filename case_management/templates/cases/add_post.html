@@ -34,22 +34,7 @@
                                </div> <br>
                         {% endif %}
 
-                        {% if errorMessage %}
-                        <div class="col-sm-12 d-flex justify-content-center">
-                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
-                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-text-danger">
-                             </i>
-                             <h5 class="text-text-danger">
-                             خطأ في الإدخال
-                             </h5>
-                             <p>
-                               المستفيد {{personName}} موجود بالفعل في قواعد البيانات 
-                             </p>
-                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
-                             </button>
-                            </div>
-                           </div> <br>
-                        {% endif %}
+                       
                       <h4 class="card-title">
                        فتح شكوى جديدة
                       </h4>
@@ -104,7 +89,7 @@
                            </div>
                        <!-- End a new label -->
 
-                    <!-- Start Diagnosis label -->
+                    <!-- Start Ticket label -->
                     <div class="mt-3">
                         <label class="form-label">
                          تفاصيل الشكوى / الطلب
@@ -112,10 +97,10 @@
                         <p class="text-muted mb-2">
                         يرجى ادخال تفاصيل شكوى / طلب المستفيد
                         </p>
-                        <textarea required="" name="content" class="form-control" id="textarea" placeholder="قم بإدخال التفاصيل" rows="3"></textarea>
+                        <textarea required="" name="content" class="form-control" placeholder="قم بإدخال التفاصيل" rows="3"></textarea>
                        </div> <br>
 
-                    <!-- End Diagnosis label-->
+                    <!-- End Ticket label-->
 
 
                     <div class="mb-3">

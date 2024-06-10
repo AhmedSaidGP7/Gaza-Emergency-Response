@@ -79,7 +79,7 @@
                                                 <td>{{ customer.idNumber }}</td>
                                                 <td>{{ customer.accommodation }}</td>
                                                 <td>
-                                                    {% if customer.scannedDocs != 'False' %}
+                                                    {% if customer.scannedDocs != '' and customer.scannedDocs != 'False' %}
                                                         <a class="fw-medium" href="{{ customer.scannedDocs.url }}" target="_blank">
                                                             <i class="bx bx-archive-out"></i>
                                                         </a>
