@@ -30,17 +30,6 @@ ALLOWED_HOSTS = ["emregencyrresponsegaza.azurewebsites.net", "127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = ["https://emregencyrresponsegaza.azurewebsites.net", "https://127.0.0.1"]
 
 
-# Enforce HTTPS for 1 year
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-
-
-# Set cookies to secure
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-
 # Application definition
 
 INSTALLED_APPS = [
