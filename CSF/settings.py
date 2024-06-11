@@ -34,7 +34,6 @@ CSRF_TRUSTED_ORIGINS = ["https://emregencyrresponsegaza.azurewebsites.net", "htt
 SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
-SECURE_SSL_REDIRECT = True  # Redirect HTTP to HTTPS
 
 
 # Set cookies to secure
