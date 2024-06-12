@@ -6,9 +6,12 @@
             {% block title %}
             {% endblock %}
         </title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" integrity="sha384-t4mhKlrc5xqGGMU2sWP1udURK78W8NQZc2VraEzSqdwUOXUSJXUvJuZY+0NAQJPn" crossorigin="anonymous">        <link href = "{% static 'gaza/css/app.min.css'%}" rel="stylesheet">
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" integrity="0wcy8qFgK2KW18OIp7CDk5LA4IXc+dCW2jh5umyKxHgJWDx+o57w1LK/ZVNi73PQ" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.gstatic.com" integrity="o+SdmONPZGMQfeWYDOyRHbCBLFsppgowAJHA03UUCGF5mIUIeuD1EYnqbMqOqxeT" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" integrity="OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous">
+        <!-- Style files -->
+        <link href = "{% static 'gaza/css/app.min.css'%}" rel="stylesheet">
         <link href = "{% static 'gaza/css/bootstrap.min.css'%}" rel="stylesheet">
         <link href = "{% static 'gaza/css/icons.min.css'%}" rel="stylesheet">
         <link href = "{% static 'gaza/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css'%}" rel="stylesheet">
@@ -18,9 +21,9 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
         <link href = "{% static 'gaza/css/style.css'%}" rel="stylesheet">
         <script src="{% static 'gaza/js/scripts.js'%}">
-        </script>
-        <script src="{% static 'gaza/js/pages/form-repeater.int.js'%}">
-        </script>
+        </script> 
+        <script src="https://kit.fontawesome.com/235e39cfaf.js" integrity="sha384-vqeDBEMxUyWzTIodJzZCEOzD2Rz/AdgmWVzQZw6EwaBJBY6Dl9gvPEQWkCftilp8" crossorigin="anonymous"></script>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self' https://app.powerbi.com;">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block head %}
         {% endblock %}
@@ -28,7 +31,7 @@
     </head>
 
     <body>
-       
+
         {% if user.is_authenticated %}
         <!-- Start navbar -->
 
@@ -43,7 +46,7 @@
 
 
              <div class="d-flex">
-              <!-- LOGO -->
+              <!-- LOGO 
               <div class="navbar-brand-box">
                <a class="logo logo-dark" href="index.html">
                 <span class="logo-sm">
@@ -62,6 +65,8 @@
                 </span>
                </a>
               </div>
+
+              -->
               
               <!-- App Search-->
             
@@ -161,7 +166,7 @@
               <div class="dropdown d-none d-lg-inline-block ms-1">
                 
                <button class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen" type="button">
-                <i class="uil-minus-path">
+                <i class="fas fa-expand">
                 </i>
                </button>
               </div>
@@ -171,20 +176,20 @@
                 <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">
                  {{user.first_name}}
                 </span>
-                <i class="uil-angle-down d-none d-xl-inline-block font-size-15">
+                <i class="fas fa-sort-down d-none d-xl-inline-block font-size-15">
                 </i>
                </button>
                <div class="dropdown-menu dropdown-menu-end">
                 <!-- item-->
                 <a class="dropdown-item" href="#">
-                 <i class="uil uil-user-circle font-size-18 align-middle text-muted me-1">
+                 <i class="fas fa-user font-size-18 align-middle text-muted me-1">
                  </i>
                  <span class="align-middle">
                   ملفي الشخصي
                  </span>
                 </a>
                 <a class="dropdown-item" href="#">
-                 <i class="uil-file-alt font-size-18 align-middle me-1 text-muted">
+                 <i class="far fa-envelope-open font-size-18 align-middle me-1 text-muted">
                  </i>
                  <span class="align-middle">
                   الحالات المسندة إلي
@@ -192,7 +197,7 @@
                 </a>
               
                 <a class="dropdown-item" href="{% url 'users:signout' %}">
-                 <i class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted">
+                 <i class="fas fa-sign-out-alt font-size-18 align-middle me-1 text-muted">
                  </i>
                  <span class="align-middle">
                   تسجيل الخروج
@@ -221,7 +226,7 @@
            <!-- Start vertical menu bar -->
 
            <div class="vertical-menu mm-active">
-            <!-- LOGO -->
+            <!-- LOGO 
             <div class="navbar-brand-box">
              <a class="logo logo-dark" href="index.html">
               <span class="logo-sm">
@@ -240,6 +245,7 @@
               </span>
              </a>
             </div>
+          -->
             <button class="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn" type="button">
              <i class="fa fa-fw fa-bars">
              </i>
@@ -254,7 +260,7 @@
                </li>
                <li class="waves-effect">
                 <a href="{% url 'users:index' %}" >
-                 <i class="uil-home-alt">
+                 <i class="fas fa-home">
                  </i>
                  <span>
                   الرئيسية
@@ -285,9 +291,8 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'operations:remove' %}">
-                 <i class="uil-user-times">
-                 </i>
-                 <span>
+                  <i class="fas fa-arrow-alt-circle-right"></i>
+                <span>
                   خروج مستفيد
                  </span>
                 </a>
@@ -303,7 +308,7 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'operations:customers' %}">
-                 <i class="uil-file-alt">
+                 <i class="far fa-chart-bar">
                  </i>
                  <span>
                    بيانات المستفيدين
@@ -324,7 +329,7 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'case_management:addpost'%}">
-                 <i class="uil-user-circle">
+                 <i class="far fa-file-alt">
                  </i>
                  <span>
                   إضافة شكوى جديدة
@@ -333,7 +338,7 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'case_management:cases'%}">
-                 <i class="uil-file-alt">
+                 <i class="fas fa-archive">
                  </i>
                  <span>
                   متابعة الشكاوى
@@ -347,7 +352,7 @@
                </li>
                <li>
                 <a class="waves-effect" href="#">
-                 <i class="uil-user-circle">
+                 <i class="fas fa-warehouse">
                  </i>
                  <span>
                   إدارة المخازن
@@ -356,7 +361,7 @@
                </li>
                <li>
                 <a class="has-arrow waves-effect" href="javascript: void(0);">
-                 <i class="uil-file-alt">
+                 <i class="fas fa-donate">
                  </i>
                  <span>
                   إدارة التبرعات
@@ -413,11 +418,6 @@
         <script src="{% static 'gaza/libs/waypoints/lib/jquery.waypoints.min.js'%}">
         </script>
         <script src="{% static 'gaza/libs/jquery.counterup/jquery.counterup.min.js'%}">
-        </script>
-        <!-- apexcharts -->
-        <script src="{% static 'gaza/libs/apexcharts/apexcharts.min.js'%}">
-        </script>
-        <script src="{% static 'gaza/js/pages/dashboard.init.js'%}" >
         </script>
          <!-- parsleyjs -->
         <script src="{% static 'gaza/libs/parsleyjs/parsley.min.js'%}">
