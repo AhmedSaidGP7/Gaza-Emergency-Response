@@ -48,13 +48,13 @@ CSRF_TRUSTED_ORIGINS = ["https://emregencyrresponsegaza.azurewebsites.net", "htt
 
 # Configure CSP settings
 
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_IMG_SRC = ("'self'", "https://i.imgur.com", "https://fonts.gstatic.com")
-CSP_OBJECT_SRC = ("'none'",)
-CSP_SCRIPT_SRC = ("'self'", "https://cdn.jsdelivr.net", "https://code.jquery.com")
-CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
-CSP_CONNECT_SRC = ("'self'", "https://fonts.googleapis.com")
+#CSP_DEFAULT_SRC = ("'self'",)
+#CSP_IMG_SRC = ("'self'", "https://i.imgur.com", "https://fonts.gstatic.com")
+#CSP_OBJECT_SRC = ("'none'",)
+#CSP_SCRIPT_SRC = ("'self'", "https://cdn.jsdelivr.net", "https://code.jquery.com")
+#CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")
+#CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
+#CSP_CONNECT_SRC = ("'self'", "https://fonts.googleapis.com")
 
 
 
@@ -69,7 +69,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'csp',
     'GazaResponse',
     'users',
     'operations',
@@ -85,7 +84,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'CSF.urls'
