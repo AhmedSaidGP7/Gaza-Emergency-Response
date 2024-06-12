@@ -49,10 +49,10 @@ CSRF_TRUSTED_ORIGINS = ["https://emregencyrresponsegaza.azurewebsites.net", "htt
 # Configure CSP settings
 
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_IMG_SRC = ("'self'", "https://i.imgur.com", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net")
+CSP_IMG_SRC = ("'self'", "https://i.imgur.com", "https://fonts.gstatic.com")
 CSP_OBJECT_SRC = ("'none'",)
 CSP_SCRIPT_SRC = ("'self'", "https://cdn.jsdelivr.net", "https://code.jquery.com")
-CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://unicons.iconscout.com")
+CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
 CSP_CONNECT_SRC = ("'self'", "https://fonts.googleapis.com")
 
