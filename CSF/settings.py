@@ -55,7 +55,7 @@ CSP_SCRIPT_SRC = ("'self'", "https://cdn.jsdelivr.net", "https://code.jquery.com
 CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://unicons.iconscout.com")
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
 CSP_CONNECT_SRC = ("'self'", "https://fonts.googleapis.com")
-CSP_FRAME_SRC = ["'self'", "https://app.powerbi.com"]
+
 
 
 
