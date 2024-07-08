@@ -520,3 +520,22 @@ def removePerson(request):
         })
 
 
+
+@login_required
+def customersOut(request):
+    customersList = Person.objects.exclude(status = "داخل السكن")
+    paginator = Paginator(customersList, 30) 
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1    
+
+    try:
+        customers = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        customers = paginator.page(paginator.num_pages)
+    return render(request, "operations/removed_persons.html", {
+        "customers" : customers,
+        "logOutLogs": logOutLogs.objects.all()
+    })
+
