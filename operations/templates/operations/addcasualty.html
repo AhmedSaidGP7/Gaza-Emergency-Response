@@ -52,6 +52,12 @@
                       <p class="card-title-desc">
                         برجاء إدخال اسم المصاب, مع العلم انه سيتم إستخدامه كمرجع لإضافة مرافقين آخرين.
                       </p>
+                      <a href="{% url 'operations:upload_excel' %}">
+                        <i class="uil-user-times"></i>
+                        <span>رفع قائمة Excel</span><br>
+                         </a>
+
+                         <br>
                       <form action="{% url 'operations:addcasualty' %}" enctype="multipart/form-data" method="POST" class="custom-validation" novalidate="">
                         {% csrf_token %} 
                         <!-- Start the name label-->
@@ -82,6 +88,28 @@
                             </div>
                            </div>
                         <!-- End the Birthdate label-->
+
+                        <!-- Start the Entry date label-->
+                        <div class="mb-3">
+                            <label class="col-md-2 col-form-label" for="example-date-input">
+                             تاريخ دخول مصر
+                            </label>
+                            <div class="col-md-10">
+                             <input class="form-control" name="entrydate" id="example-date-input" type="date" value="2019-08-19">
+                            </div>
+                           </div>
+                        <!-- End the Entry date label-->
+
+                        <!-- Start the hostingStartDate label-->
+                        <div class="mb-3">
+                            <label class="col-md-2 col-form-label" for="example-date-input">
+                            تاريخ استقبال المصاب
+                            </label>
+                            <div class="col-md-10">
+                             <input class="form-control" name="hostingStartDate" id="example-date-input" type="date" value="2019-08-19">
+                            </div>
+                           </div>
+                        <!-- End the hostingStartDate label-->
 
                         <!-- Start a new label -->
                         <div class="mb-3">

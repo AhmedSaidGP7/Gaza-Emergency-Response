@@ -1,20 +1,104 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 import datetime
 from GazaResponse.models import *
 from django.contrib.auth.models import User
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.db.models import Sum, Count
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from datetime import datetime, timedelta
+from django.core.files.uploadedfile import SimpleUploadedFile
+import pandas as pd
+from django.core.exceptions import ObjectDoesNotExist  
+from django.core.files.storage import FileSystemStorage
+import pytesseract
+from PIL import Image
+import re
+from .forms import *
+from django.db import transaction
+import os
+from django.views import View
+
+# Import excel file to addCasualty
+@login_required
+def upload_excel(request):
+    if request.method == 'POST' and request.FILES['excel_file']:
+        excel_file = request.FILES['excel_file']
+        df = pd.read_excel(excel_file)
+
+        # Fill NaN with a default value (e.g., 1900-01-01) for the birthday column
+        df['تاريخ الميلاد'].fillna('1900-01-01', inplace=True)
+        
+        for index, row in df.iterrows():
+            name = row['الاسم']
+            hospital_name = row['الجهة الفرعية']
+            gender = row['النوع']
+            id_number = row['رقم الهوية']
+            diagnosis = row['التشخيص']
+            birthday = row['تاريخ الميلاد']
+            building_number = row['رقم المبنى']
+            apartment_number = row['رقم الوحدة/الغرفة']
+            TheshelterName = row['مقدم خدمةالإيواء']
+
+            try:
+                hospital = Hospital.objects.get(name=hospital_name)
+            except ObjectDoesNotExist:
+                return render(request, 'operations/upload_excel.html', {
+                    "errorMessage": f"Hospital '{hospital_name}' does not exist."
+                })
+
+            try:
+                shelter = Shelter.objects.get(shelterName=TheshelterName)
+            except ObjectDoesNotExist:
+                return render(request, 'operations/upload_excel.html', {
+                    "errorMessage": f"Shelter '{TheshelterName}' does not exist."
+                })
+
+            try:
+                building = Building.objects.get(name=str(building_number), bshelter=shelter)
+            except ObjectDoesNotExist:
+                return render(request, 'operations/upload_excel.html', {
+                    "errorMessage": f"Building number '{building_number}' does not exist in '{TheshelterName}'."
+                })
+
+            try:
+                apartment = Apartment.objects.get(apartmentNum=apartment_number, whichBuilding=building)
+            except ObjectDoesNotExist:
+                return render(request, 'operations/upload_excel.html', {
+                    "errorMessage": f"Apartment number '{apartment_number}' does not exist in building '{building_number}'."
+                })
+
+            group, created = Group.objects.get_or_create(groupName=name)
+
+            person = Person(
+                name=name,
+                birthday=birthday,
+                theType='مصاب',
+                idNumber=id_number,
+                gender=gender,
+                diagnosis=diagnosis,
+                personGroup=group,
+                pHospital=hospital,
+                accommodation=apartment,
+                status='داخل السكن',
+                entryDate='1900-01-01',
+                hostingStartDate='1900-01-01'
+            )
+            person.save()
+
+        return render(request, 'operations/upload_excel.html', {
+            "message": "تم إضافة المستفيدين بنجاح!"
+        })
+
+    return render(request, 'operations/upload_excel.html')
 
 
 
 
 # Add person
-@login_required(login_url="/auth")
+@login_required
 def addPerson(request):
     if request.method == "GET":    
         return render(request, 'operations/addperson.html', {
@@ -29,6 +113,8 @@ def addPerson(request):
         name = request.POST["name"]
         idNumber = request.POST["idNumber"]
         birthday = request.POST["birthday"]
+        entrydate = request.POST["entrydate"]
+        hostingStartDate = request.POST["hostingStartDate"]
         theType = request.POST["theType"]
         gender = request.POST["gender"]
         status = request.POST["status"]
@@ -85,7 +171,9 @@ def addPerson(request):
             scannedDocs = uploadedfile,
             profile_pic = profilePic,
             hasCancer = hasCancer,
-            isDisabled = isDisabled
+            isDisabled = isDisabled,
+            entryDate = entrydate,
+            hostingStartDate = hostingStartDate,
 
         )
         return render(request, "operations/addperson.html", {
@@ -97,7 +185,7 @@ def addPerson(request):
 
             })     
 
-@login_required(login_url="/auth")
+@login_required
 def addCasualty(request):
     if request.method == "GET":    
         return render(request, 'operations/addcasualty.html', {
@@ -110,6 +198,8 @@ def addCasualty(request):
         name = request.POST["name"]
         idNumber = request.POST["idNumber"]
         birthday = request.POST["birthday"]
+        entrydate = request.POST["entrydate"]
+        hostingStartDate = request.POST["hostingStartDate"]
         theType = 'مصاب '
         gender = request.POST["gender"]
         status = request.POST["status"]
@@ -182,7 +272,9 @@ def addCasualty(request):
             scannedDocs = uploadedfile,
             profile_pic = profilePic,
             hasCancer = hasCancer,
-            isDisabled = isDisabled
+            isDisabled = isDisabled,
+            entryDate = entrydate,
+            hostingStartDate = hostingStartDate,
 
         )
 
@@ -195,7 +287,7 @@ def addCasualty(request):
 
             })    
 
-@login_required(login_url="/auth")
+@login_required
 def accommodation(request):    
     if request.method == "GET":
         return render(request, 'operations/accommodation.html', {
@@ -226,7 +318,7 @@ def accommodation(request):
         })
 
 
-@login_required(login_url="/auth")
+@login_required
 def customers(request):
     query = request.GET.get('q', '')
     whichCases = request.GET.get('whichCases', '')
@@ -248,7 +340,7 @@ def customers(request):
             two_years_ago = datetime.now() - timedelta(days=2*365)
             customersList = customersList.filter(birthday__gte=two_years_ago)
         elif whichCases == '2':
-            customersList = customersList.filter(gender='انثى')
+            customersList = customersList.filter(Q(gender='انثى') | Q(gender='أنثى'))
         elif whichCases == '3':
             customersList = customersList.filter(gender='ذكر')
         elif whichCases == '4':
@@ -273,7 +365,7 @@ def customers(request):
         "whichCases": whichCases
     })
 
-@login_required(login_url="/auth")
+@login_required
 def sheltersStat(request):
     # Get all shelter instances
     shelters = Shelter.objects.all()
@@ -309,7 +401,7 @@ def sheltersStat(request):
     return render(request, 'operations/shelters.html', context)
 
 
-@login_required(login_url="/auth")
+@login_required
 def shelterDetails(request, shelter_id):
 
     # Get the shelter instance based on the ID
@@ -341,7 +433,7 @@ def shelterDetails(request, shelter_id):
     }
     return render(request, 'operations/apartment_details.html', context)
 
-@login_required(login_url="/auth")
+@login_required
 def availableApartments(request, shelter_id):
     # Get the shelter instance based on the ID
     shelter = get_object_or_404(Shelter, id=shelter_id)
@@ -381,7 +473,7 @@ def availableApartments(request, shelter_id):
     return render(request, 'operations/apartments_with_available_spots.html', context)
 
 
-@login_required(login_url="/auth")
+@login_required
 def profile(request, person_id):
 
     # Get the person instance based on the ID
@@ -396,7 +488,7 @@ def profile(request, person_id):
     }
     return render(request, 'operations/profile.html', context)
 
-@login_required(login_url="/auth")
+@login_required
 def removePerson(request):
     if request.method == "GET":
         return render(request, 'operations/remove_person.html', {
@@ -427,7 +519,9 @@ def removePerson(request):
             "updated_persons": updated_persons,
         })
 
-@login_required(login_url="/auth")
+
+
+@login_required
 def customersOut(request):
     customersList = Person.objects.exclude(status = "داخل السكن")
     paginator = Paginator(customersList, 30) 
@@ -444,3 +538,108 @@ def customersOut(request):
         "customers" : customers,
         "logOutLogs": logOutLogs.objects.all()
     })
+
+
+
+def extract_id_number(image_path):
+    # Use pytesseract to do OCR on the image
+    text = pytesseract.image_to_string(Image.open(image_path))
+
+    # Use regex to find all sequences of exactly 9 digits, ignoring spaces
+    potential_ids = re.findall(r'\b\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\b', text)
+
+    # Remove spaces from the extracted numbers
+    potential_ids = [id_number.replace(' ', '') for id_number in potential_ids]
+
+    # Filter the list to find IDs that start with 9, 8, or 4
+    valid_ids = [id_number for id_number in potential_ids if id_number.startswith(('9', '8', '4'))]
+
+    return valid_ids    
+
+@login_required
+def upload_document(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        files = request.FILES.getlist('document')
+        if form.is_valid() and files:
+            associated_persons = []
+            extracted_ids = []
+            temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
+            os.makedirs(temp_dir, exist_ok=True)
+            for f in files:
+                # Save the file to a temporary location
+                temp_file_path = os.path.join(temp_dir, f.name)
+                with open(temp_file_path, 'wb+') as temp_file:
+                    for chunk in f.chunks():
+                        temp_file.write(chunk)
+                
+                id_numbers = extract_id_number(temp_file_path)
+                
+                if id_numbers:
+                    unique_id_numbers = set(id_numbers)
+                    with transaction.atomic():
+                        for id_number in unique_id_numbers:
+                            try:
+                                person = Person.objects.get(idNumber=id_number)
+                                if not UploadedDocument.objects.filter(document=f, person=person).exists():
+                                    # Save the file permanently associated with the person
+                                    uploaded_document = UploadedDocument(document=f, person=person, id_number=id_number)
+                                    uploaded_document.save()
+                                    associated_persons.append(person)
+                            except Person.DoesNotExist:
+                                extracted_ids.append(f"{id_number} (اسم الملف: {f.name})")
+                
+                # Remove the temporary file
+                os.remove(temp_file_path)
+            
+            # حذف المستندات الغير مسندة إلى أي شخص
+            UploadedDocument.objects.filter(person__isnull=True).delete()
+            
+            if associated_persons:
+                return render(request, 'operations/upload.html', {
+                    'form': form,
+                    'message': "الملف الذي تم رفعه مسند إلى الأشخاص:",
+                    'persons': associated_persons,
+                    'error_message': f"لا يوجد اشخاص يحملوا أرقام الهويات الآتية:" if extracted_ids else None,
+                    'wrongID' : extracted_ids
+                })
+            else:
+                return render(request, 'operations/upload.html', {
+                    'form': form,
+                    'error_message': f"لا يوجد اشخاص يحملوا أرقام الهويات الآتية:",
+                    'wrongID' : extracted_ids
+                })
+        else:
+            return render(request, 'operations/upload.html', {
+                'form': form,
+                'error_message': "ملف غير مدعم او لا يوجد ملفات تم رفعها"
+            })
+    else:
+        form = DocumentForm()
+    return render(request, 'operations/upload.html', {'form': form})
+
+
+@login_required
+def ManualUploadDocument(request):
+    if request.method == 'GET':
+        return render(request, 'operations/manual_upload.html', {'Persons': Person.objects.all()})
+
+    elif request.method == 'POST' and request.FILES:
+        # Handle the POST data
+        person_ids = request.POST.getlist("names[]")
+        uploaded_files = request.FILES.getlist("document")
+
+        # Update accommodation for each selected person
+        for person_id in person_ids:
+            person = Person.objects.get(id=person_id)
+            for uploaded_file in uploaded_files:
+                UploadedDocument.objects.create(
+                    person=person,
+                    document=uploaded_file,
+                    title=uploaded_file.name  # Ensure title is set to file name
+                )
+
+        return render(request, "operations/manual_upload.html", {
+            "message": "تم رفع المستندات بنجاح",
+            "Persons": Person.objects.all(),
+        })

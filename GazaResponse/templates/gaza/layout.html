@@ -23,7 +23,6 @@
         <script src="{% static 'gaza/js/scripts.js'%}">
         </script> 
         <script src="https://kit.fontawesome.com/235e39cfaf.js" integrity="sha384-vqeDBEMxUyWzTIodJzZCEOzD2Rz/AdgmWVzQZw6EwaBJBY6Dl9gvPEQWkCftilp8" crossorigin="anonymous"></script>
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self' https://app.powerbi.com;"> 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block head %}
         {% endblock %}
@@ -259,7 +258,51 @@
                  </span>
                 </a>
                </li>
+               <li>
+                <a class="waves-effect" href="{% url 'operations:upload_document' %}">
+                  <i class="fa-solid fa-cloud"></i>
+                 <span>
+                  رفع مستندات (ذكي)
+                 </span>
+                </a>
+               </li>
+               <li>
+                <a class="waves-effect" href="{% url 'operations:manual_upload_document' %}">
+                  <i class="fa-solid fa-upload"></i>
+                 <span>
+                  رفع مستندات (يدوي)
+                 </span>
+                </a>
+               </li>
                
+               <li class="menu-title text-right">
+                التنسيق الطبي
+               </li>
+               <li>
+                <a class="waves-effect" href="{% url 'medical:ambulance'%}">
+                  <i class="fa-solid fa-truck-medical"></i>
+                 <span>
+                  طلبات سيارات الإسعاف
+                 </span>
+                </a>
+               </li>
+               <li>
+                <a class="waves-effect" href="{% url 'operations:manual_upload_document' %}">
+                  <i class="fa-solid fa-file-medical"></i>
+                 <span>
+                  رفع تقرير طبي
+                 </span>
+                </a>
+               </li>
+               <li>
+                <a class="waves-effect" href="{% url 'medical:assign_diseases'%}">
+                  <i class="fa-solid fa-disease"></i>
+                 <span>
+                  تشخيص بأمراض شائعة
+                </span>
+                </a> 
+               </li>
+
                <li class="menu-title text-right">
                 إدارة الحالات
                </li>
@@ -279,8 +322,7 @@
                  <span>
                   متابعة الشكاوى
                  </span>
-                </a>
-              
+                </a> 
                </li>
 
                <li dir="rtl" class="menu-title text-right">

@@ -1,0 +1,84 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+اسناد مرض لـ مستفيد
+{% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div dir="rtl" class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                     <div class="card-body">
+                        {% if message %}
+                            <div class="col-sm-12 d-flex justify-content-center">
+                                <div class="alert alert-success alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                                 <i class="uil uil-check-circle d-block display-4 mt-2 mb-3 text-success">
+                                 </i>
+                                 <h5 class="text-success">
+                                  تم بنجاح!
+                                 </h5>
+                                 <p>
+                                    {{ message }}
+                                 </p>
+                                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                                 </button>
+                                </div>
+                               </div> <br>
+                        {% endif %}
+                       
+                          
+                      <h4 class="card-title">
+                       اختيار الأمراض للمستفيدين
+                      </h4>
+                      <p class="card-title-desc">
+                        يمكنك اختيار الأمراض للأشخاص المستفيدين من هنا
+                      </p>
+                      <form action="{% url 'medical:assign_diseases' %}" method="POST" class="custom-validation" novalidate="">
+                        {% csrf_token %} 
+
+                        <!-- Start Group label -->
+                        <div>
+                            <label class="col-md-2 col-form-label " for="exampleDataList0">
+                             اسم المستفيد
+                            </label>
+                            <select required="" dir="rtl" class="col-md-10 form-control js-example-basic-multiple" name="names[]" multiple="multiple">
+                                {% for person in Persons %}
+                                <option value="{{person.id}}">{{person.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div> 
+                        <br>
+                        <!-- End Group label -->
+
+                        <!-- Start Disease label -->
+                        <div>
+                            <label class="col-md-2 col-form-label " for="exampleDataList0">
+                             اسم المرض
+                            </label>
+                            <select required="" dir="rtl" class="col-md-10 form-control js-example-basic-multiple" name="diseases[]" multiple="multiple">
+                                {% for disease in diseases %}
+                                <option value="{{disease.id}}">{{disease.diseases_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div> 
+                        <br>
+                        <!-- End Disease label -->
+                        
+                        <div>
+                            <button class="btn btn-primary waves-effect waves-light me-1" type="submit">
+                              إرسال
+                            </button>
+                        </div>
+                      </form>
+                     </div>
+                    </div>
+                   </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

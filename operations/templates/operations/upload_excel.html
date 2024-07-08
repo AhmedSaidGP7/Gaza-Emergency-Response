@@ -1,0 +1,57 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+رفع ملف المصابين
+{% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div dir="rtl" class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                     <div class="card-body">
+                        {% if message %}
+                            <div class="col-sm-12 d-flex justify-content-center">
+                                <div class="alert alert-success alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                                 <i class="uil uil-check-circle d-block display-4 mt-2 mb-3 text-success"></i>
+                                 <h5 class="text-success">تم بنجاح!</h5>
+                                 <p>تم رفع الملف وإضافة المصابين بنجاح</p>
+                                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                                </div>
+                               </div> <br>
+                        {% endif %}
+
+                        {% if errorMessage %}
+                        <div class="col-sm-12 d-flex justify-content-center">
+                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-danger"></i>
+                             <h5 class="text-danger">خطأ في رفع الملف</h5>
+                             <p>{{ errorMessage }}</p>
+                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                            </div>
+                           </div> <br>
+                        {% endif %}
+                       
+                      <h4 class="card-title">رفع ملف المصابين</h4>
+                      <p class="card-title-desc">برجاء رفع ملف Excel يحتوي على تفاصيل المصابين.</p>
+                      <form action="{% url 'operations:upload_excel' %}" enctype="multipart/form-data" method="POST" class="custom-validation" novalidate="">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">ملف Excel</label>
+                            <input class="form-control" name="excel_file" type="file" accept=".xlsx, .xls" required="">
+                        </div>
+                        <div>
+                            <button class="btn btn-primary waves-effect waves-light me-1" type="submit">رفع الملف</button>
+                        </div>
+                      </form>
+                     </div>
+                    </div>
+                   </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

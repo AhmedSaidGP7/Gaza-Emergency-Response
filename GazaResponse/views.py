@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from geopy.distance import geodesic
+from django.core.files.storage import FileSystemStorage
 
 
 @login_required

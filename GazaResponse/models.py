@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
-
+import cv2
+import pytesseract
+import re
 # Create your models here.
 
 # This class represents the governorates with which we deal, whether they have service centers or hospitals.
@@ -58,7 +60,7 @@ class Building(models.Model):
     bshelter = models.ForeignKey(Shelter, on_delete = models.CASCADE, related_name = "Buildings")
     bGovernorate = models.ForeignKey(Governorate, on_delete = models.CASCADE)
     def __str__(self):
-        return f'{self.name}'
+        return f'{"عمارة"} {self.name}'
 
 # This class represents apartments in buildings or room. The apartment number represents the apartment
 # number in the case of buildings or the room number in the case of relief centers. Capacity represents the
@@ -105,6 +107,8 @@ class Person(models.Model):
     diagnosis = models.TextField(blank = True)
     accommodation  = models.ForeignKey(Apartment, on_delete = models.CASCADE, related_name="residents")
     scannedDocs = models.FileField(upload_to="IDs", blank=True)
+    entryDate =  models.DateField(null=True, blank=True)
+    hostingStartDate = models.DateField(null=True, blank=True)
     def __str__(self):
         return f'{self.name}'
 
@@ -134,3 +138,21 @@ class logOutLogs(models.Model):
     scannedDocs = models.FileField(upload_to="LogOutLogs", blank=True)
     def __str__(self):
         return f'{self.person}'
+
+
+
+
+
+class UploadedDocument(models.Model):
+    document = models.FileField(upload_to="uploaded_documents")
+    title = models.CharField(max_length=255, blank=True)
+    person = models.ForeignKey('Person', on_delete=models.CASCADE, related_name="documents", null=True)
+    id_number = models.CharField(max_length=64, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.title:
+            self.title = self.document.name
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Document for {self.person.name if self.person else 'Unknown'}"

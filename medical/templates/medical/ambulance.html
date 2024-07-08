@@ -1,0 +1,150 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+إضافة طلب سيارة إسعاف
+{% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div dir="rtl" class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                     <div class="card-body">
+                        {% if message %}
+                            <div class="col-sm-12 d-flex justify-content-center">
+                                <div class="alert alert-success alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                                 <i class="uil uil-check-circle d-block display-4 mt-2 mb-3 text-success">
+                                 </i>
+                                 <h5 class="text-success">
+                                  تم بنجاح!
+                                 </h5>
+                                 <p>
+                                  تم إضافة البلاغ بنجاح
+                                 </p>
+                                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                                 </button>
+                                </div>
+                               </div> <br>
+                        {% endif %}
+
+                        {% if errorMessage %}
+                        <div class="col-sm-12 d-flex justify-content-center">
+                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-text-danger">
+                             </i>
+                             <h5 class="text-text-danger">
+                             خطأ في الإدخال
+                             </h5>
+                             <p>
+                               البلاغ {{report_num}} تم تسجيله بالفعل من قبل!
+                             </p>
+                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                             </button>
+                            </div>
+                           </div> <br>
+                        {% endif %}
+                       
+                      <h4 class="card-title">
+                       إضافة طلب لسيارة إسعاف
+                      </h4>
+                      <p class="card-title-desc">
+                       برجاء إدخال البيانات الآتية:
+                      </p>
+                      <a href="{% url 'medical:ambulance_log' %}">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>إطلاع على الطلبات المسجلة</span><br>
+                         </a>
+
+                         <br>
+                      <form action="{% url 'medical:ambulance' %}" enctype="multipart/form-data" method="POST" class="custom-validation" novalidate="">
+                        {% csrf_token %} 
+                        
+                    <!-- Start Group label -->
+                     <div>
+                        <label class="col-md-2 col-form-label selecttwoform" for="exampleDataList0">
+                         اسم المصاب
+                        </label>
+                        <div class="col-md-10 form-control">                       
+                        <select name="casualty" id="mySelect" required="" class="form-control selecttwoform" style="width: 100%;">
+                        {% for person in Persons %}
+                            <option value="{{person.id}}">{{person.name}}</option>
+                        {% endfor %}
+                        <!-- Add more options as needed -->
+                    </select>        
+                        </div>
+                       </div> <br>
+                    <!-- End Group label -->
+
+                       <!-- Start the id number label-->
+                       <div class="mb-3">
+                        <label class="form-label">
+                         رقم البلاغ
+                        </label>
+                        <input autocomplete="off" data-parsley-type="digits" class="form-control" name="report_num" placeholder="قم بإدخال رقم البلاغ" required=""  type="text">      
+                       </div>
+                        <!-- End the id number label -->
+
+                    <!-- Start the id number label-->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            رقم سيارة الاسعاف
+                        </label>
+                        <input autocomplete="off" class="form-control" name="ambulance_code" placeholder="قم بإدخال رقم سيارة الإسعاف" required=""  type="text">      
+                        </div>
+                        <!-- End the id number label -->
+
+                        <!-- Start the id number label-->
+                       <div class="mb-3">
+                        <label class="form-label">
+                        اسم المسعف
+                        </label>
+                        <input autocomplete="off" class="form-control" name="paramedic_name" placeholder="قم بإدخال اسم المسعف" required=""  type="text">      
+                       </div>
+                        <!-- End the id number label -->
+
+                         <!-- Start the id number label-->
+                       <div class="mb-3">
+                        <label class="form-label">
+                        رقم هاتف المسعف
+                        </label>
+                        <input autocomplete="off" class="form-control" name="paramedic_phone" placeholder="قم بإدخال رقم هاتف المسعف" required=""  type="text">      
+                       </div>
+                        <!-- End the id number label -->
+               
+                    <!-- Start Hospital label -->
+                    <div>
+                        <label class="col-md-2 col-form-label selecttwoform" for="exampleDataList0">
+                         مستشفى التحويل
+                        </label>
+                        <div class="col-md-10 form-control">                       
+                        <select name="Hospital" id="mySelect1" class="form-control selecttwoform" style="width: 100%;">
+                        {% for Hospital in Hospitals %}
+                            <option value="{{Hospital.id}}">{{Hospital.name}}</option>
+                        {% endfor %}
+                        <!-- Add more options as needed -->
+                    </select>        
+                        </div>
+                       </div> <br>
+                    <!-- End Hosptial label -->
+                    <div>
+                        <div>
+                         <button class="btn btn-primary waves-effect waves-light me-1" type="submit">
+                          إرسال
+                         </button>
+                         <button class="btn btn-secondary waves-effect" type="reset">
+                          محو الحقول
+                         </button>
+                        </div>
+                       </div>
+                      </form>
+                     </div>
+                    </div>
+                   </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

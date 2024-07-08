@@ -1,0 +1,61 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+قائمة بلاغات الاسعافات
+{% endblock %}
+{% block body %}
+
+<div dir="rtl" class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- end page title -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                        
+                            <div class="table-responsive mb-4">
+                                <table id="theCustomersTable" class="table table-centered table-nowrap mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">المصاب</th>
+                                            <th scope="col">رقم البلاغ</th>
+                                            <th scope="col">رقم سيارة الاسعاف</th>
+                                            <th scope="col">اسم المسعف</th>
+                                            <th scope="col">رقم المسعف</th>
+                                            <th scope="col">المستشفى</th>
+                                            <th scope="col">التاريخ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for record in ambulance_logs %}
+                                            <!-- Start new record -->
+                                            <tr >
+                                                <td>{{forloop.counter}}</td>
+                                                <td>{{ record.casualty }}</td>
+                                                <td>{{ record.report_num }}</td>
+                                                <td>{{ record.ambulance_code }}</td>
+                                                <td>{{ record.paramedic_name }}</td>
+                                                <td>{{ record.paramedic_phone }}</td>
+                                                <td>{{ record.hospital }}</td>
+                                                <td>{{ record.date }}</td>
+                                             
+                                            </tr>
+                                            <!-- End new record -->
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- container-fluid -->
+    </div>
+</div>
+
+{% endblock %}

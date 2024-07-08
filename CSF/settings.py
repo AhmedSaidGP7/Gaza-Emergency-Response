@@ -29,33 +29,25 @@ DEBUG = True
 ALLOWED_HOSTS = ["emregencyrresponsegaza.azurewebsites.net", "127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = ["https://emregencyrresponsegaza.azurewebsites.net", "https://127.0.0.1"]
 
+LOGIN_URL = 'users:login'
 
 # Enforce HTTPS for 1 year
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+#SECURE_HSTS_SECONDS = 31536000
+#SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+#SECURE_HSTS_PRELOAD = True
 
 # Enable the SSL redirect
-SECURE_SSL_REDIRECT = True
+#SECURE_SSL_REDIRECT = True
 
 # Ensure Django knows when requests are secure
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Set cookies to secure
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
 
-# Configure CSP settings
 
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_IMG_SRC = ("'self'", "https://i.imgur.com", "https://fonts.gstatic.com")
-CSP_OBJECT_SRC = ("'none'",)
-CSP_SCRIPT_SRC = ("'self'", "https://cdn.jsdelivr.net", "https://code.jquery.com")
-CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
-CSP_CONNECT_SRC = ("'self'", "https://fonts.googleapis.com")
-CSP_FRAME_SRC = ["'self'", "https://app.powerbi.com"]
 
 
 
@@ -76,7 +68,7 @@ INSTALLED_APPS = [
     'operations',
     'volunteers',
     'case_management',
-    'csp'
+    'medical',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +79,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'CSF.urls'
@@ -114,12 +105,16 @@ WSGI_APPLICATION = 'CSF.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
 
 
 # Password validation
