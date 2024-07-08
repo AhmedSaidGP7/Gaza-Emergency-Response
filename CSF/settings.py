@@ -65,9 +65,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'GazaResponse',
     'users',
-    'operations',
     'volunteers',
     'case_management',
+    'medical',
 ]
 
 MIDDLEWARE = [
