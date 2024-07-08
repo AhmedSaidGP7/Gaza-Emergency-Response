@@ -1,6 +1,5 @@
 asgiref==3.8.1
 blinker==1.4
-command-not-found==0.3
 contourpy==1.2.1
 cryptography==3.4.8
 cycler==0.12.1
