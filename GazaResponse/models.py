@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
-import pytesseract
-import re
+
 # Create your models here.
 
 # This class represents the governorates with which we deal, whether they have service centers or hospitals.
