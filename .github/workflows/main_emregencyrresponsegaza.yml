@@ -33,11 +33,21 @@ jobs:
           python -m venv venv
           source venv/bin/activate
 
+      - name: Upgrade pip and install build dependencies
+        run: |
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install cython
+
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          source venv/bin/activate
+          pip install -r requirements.txt
 
       - name: Run collectstatic
-        run: python3 manage.py collectstatic --noinput
+        run: |
+          source venv/bin/activate
+          python3 manage.py collectstatic --noinput
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Zip artifact for deployment
