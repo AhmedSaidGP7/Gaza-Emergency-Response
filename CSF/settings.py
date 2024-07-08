@@ -68,7 +68,6 @@ INSTALLED_APPS = [
     'operations',
     'volunteers',
     'case_management',
-    'medical',
 ]
 
 MIDDLEWARE = [
