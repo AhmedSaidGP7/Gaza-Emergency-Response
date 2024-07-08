@@ -1,4 +1,4 @@
-name: Build and deploy Python app to Azure Web App - EmergencyResponseGaza
+name: Build and deploy Python app to Azure Web App - EmregencyRresponseGaza
 
 on:
   push:
@@ -35,14 +35,11 @@ jobs:
           pip install --upgrade pip
           pip install setuptools wheel cython
 
-      - name: Install PyYAML separately
-        run: |
-          source venv/bin/activate
-          pip install PyYAML==5.4.1
-
       - name: Install dependencies
         run: |
           source venv/bin/activate
+          pip install --upgrade setuptools wheel
+          pip install PyYAML==5.4.1
           pip install -r requirements.txt
 
       - name: Run collectstatic
@@ -50,7 +47,6 @@ jobs:
           source venv/bin/activate
           python3 manage.py collectstatic --noinput
 
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
@@ -82,6 +78,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'EmergencyResponseGaza'
+          app-name: 'EmregencyRresponseGaza'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E3257619E1C74BDFA5CC2AD9C3F487AE }}
