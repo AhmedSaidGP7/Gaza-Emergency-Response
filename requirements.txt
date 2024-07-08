@@ -1,2 +1,10 @@
 Django==5.0.4
 geopy==2.4.1
+pytesseract==0.3.10
+Pillow==9.4.0
+opencv-python==4.5.5.64
+django-crispy-forms==1.14.0
+django-widget-tweaks==1.4.8
+pandas
+psycopg2-binary
+djangorestframework
