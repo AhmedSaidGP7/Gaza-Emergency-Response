@@ -48,6 +48,12 @@ LOGIN_URL = 'users:login'
 #CSRF_COOKIE_SECURE = True
 
 
+
+
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
