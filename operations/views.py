@@ -19,7 +19,6 @@ import re
 from .forms import *
 from django.db import transaction
 import os
-from django.views import View
 
 # Import excel file to addCasualty
 @login_required
