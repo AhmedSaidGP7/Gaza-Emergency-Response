@@ -40,7 +40,7 @@ def upload_excel(request):
             birthday = row['تاريخ الميلاد']
             building_number = row['رقم المبنى']
             apartment_number = row['رقم الوحدة/الغرفة']
-            TheshelterName = row['مقدم خدمةالإيواء']
+            TheshelterName = row['مقدم خدمة الإيواء']
 
             try:
                 hospital = Hospital.objects.get(name=hospital_name)
