@@ -48,12 +48,6 @@ LOGIN_URL = 'users:login'
 #CSRF_COOKIE_SECURE = True
 
 
-
-
-
-
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -65,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'GazaResponse',
     'users',
+    'operations',
     'volunteers',
     'case_management',
     'medical',
