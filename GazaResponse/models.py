@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
-import cv2
 import pytesseract
 import re
 # Create your models here.
