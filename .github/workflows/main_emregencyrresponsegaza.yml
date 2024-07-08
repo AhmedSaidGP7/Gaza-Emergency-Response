@@ -1,8 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
-
-name: Build and deploy Python app to Azure Web App - EmregencyRresponseGaza
+name: Build and deploy Python app to Azure Web App - EmergencyResponseGaza
 
 on:
   push:
@@ -38,6 +34,11 @@ jobs:
           source venv/bin/activate
           pip install --upgrade pip
           pip install setuptools wheel cython
+
+      - name: Install PyYAML separately
+        run: |
+          source venv/bin/activate
+          pip install PyYAML==5.4.1
 
       - name: Install dependencies
         run: |
@@ -81,6 +82,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'EmregencyRresponseGaza'
+          app-name: 'EmergencyResponseGaza'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E3257619E1C74BDFA5CC2AD9C3F487AE }}
