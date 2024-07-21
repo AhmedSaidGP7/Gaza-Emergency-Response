@@ -16,7 +16,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .utils import *
 from .forms import *
 from django.db import transaction
-import os
+#import os
 
 
 @login_required
