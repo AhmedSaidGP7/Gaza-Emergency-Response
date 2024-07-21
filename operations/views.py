@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist  
 from .utils import *
 from .forms import *
-from django.db import transaction
+#from django.db import transaction
 #import os
 
 
