@@ -183,7 +183,7 @@
                         <select name="Hospital" id="mySelect1" class="form-control selecttwoform" style="width: 100%;"  required>
                             <option value="" disabled selected>اختر اسم المستشفى</option>
                         {% for Hospital in Hospitals %}
-                            <option value="{{Hospital.id}}">{{Hospital.name}}</option>
+                            <option value="{{Hospital.name}}">{{Hospital.name}}</option>
                         {% endfor %}
                         <!-- Add more options as needed -->
                     </select>        

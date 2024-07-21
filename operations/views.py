@@ -10,21 +10,43 @@ from django.db.models import Sum, Count
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from datetime import datetime, timedelta
-#from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.uploadedfile import SimpleUploadedFile
 import pandas as pd
 from django.core.exceptions import ObjectDoesNotExist  
 from dateutil import parser
-#from django.core.files.storage import FileSystemStorage
-#import pytesseract
-#from PIL import Image
-#import re
-#from .forms import *
-#from django.db import transaction
-#import os
+from django.core.files.storage import FileSystemStorage
+import pytesseract
+from PIL import Image
+import re
+from .utils import validate_date_format
+from .forms import *
+from django.db import transaction
+import os
 
 
 @login_required
 def upload_excel(request):
+
+    """
+    upload_excel Handles the upload of an Excel file containing casualty data. 
+    The view parses the uploaded file, validates its contents, and 
+    saves the data into the database (person model).
+
+    Request Method:
+    - GET: Renders the upload form page.
+    - POST: Processes the uploaded Excel file.
+
+    POST Workflow:
+    1. Retrieve and read the uploaded Excel file into a pandas DataFrame.
+    2. Validate the presence of expected columns in the DataFrame.
+    3. Validate and format date fields.
+    4. Validate phone number fields.
+    5. Iterate through each row in the DataFrame and validate mandatory fields.
+    6. Retrieve or create database records based on the Excel data.
+    7. Save valid records to the database.
+    8. Render success or error messages based on the outcome.
+    """
+
     if request.method == 'POST' and request.FILES.get('excel_file'):
         excel_file = request.FILES['excel_file']
         df = pd.read_excel(excel_file, dtype=str)
@@ -311,17 +333,93 @@ def addPerson(request):
     else:
         # Handle the POST date
         name = request.POST["name"]
+        # Check this value is not empty
+        if not name:
+                return render(request, 'operations/addperson.html', {
+                    "errorMessage": "خانة اسم المرافق خانة إلزامية",
+                    "users" : User.objects.all(),
+                    "Hospitals": Hospital.objects.all(),
+                    "Apartments": Apartment.objects.all(),
+                    "Group" : Group.objects.all(),
+                })
         idNumber = request.POST["idNumber"]
+        # Check this value is not empty
+        if not idNumber:
+                return render(request, 'operations/addperson.html', {
+                    "errorMessage": "خانة رقم هوية المرافق خانة إلزامية",
+                    "users" : User.objects.all(),
+                    "Hospitals": Hospital.objects.all(),
+                    "Apartments": Apartment.objects.all(),   
+                    "Group" : Group.objects.all(),                 
+                })
         birthday = request.POST["birthday"]
         entrydate = request.POST["entrydate"]
-        hostingStartDate = request.POST["hostingStartDate"]
+        hostingStartDate = request.POST.get('hostingStartDate', '')
+        # Validate the date format
+        if not validate_date_format(hostingStartDate) or not validate_date_format(birthday) or not validate_date_format(entrydate) :
+            error_message = 'احدى التواريخ مدخلة بشكل غير صحيح، يجب أن يكون بتنسيق MM/DD/YYYY'
+            return render(request, 'operations/addperson.html', {
+                "errorMessage": error_message,
+                "users" : User.objects.all(),
+                "Hospitals": Hospital.objects.all(),
+                "Apartments": Apartment.objects.all(),   
+                "Group" : Group.objects.all(),  
+                })
         theType = request.POST["theType"]
+        if not theType:
+                return render(request, 'operations/addperson.html', {
+                    "errorMessage": "خانة صفة المستفيد خانة إلزامية",
+                    "users" : User.objects.all(),
+                    "Hospitals": Hospital.objects.all(),
+                    "Apartments": Apartment.objects.all(),   
+                    "Group" : Group.objects.all(),                 
+                })
         gender = request.POST["gender"]
+        if not gender:
+                return render(request, 'operations/addperson.html', {
+                    "errorMessage": "خانة نوع المستفيد خانة إلزامية",
+                    "users" : User.objects.all(),
+                    "Hospitals": Hospital.objects.all(),
+                    "Apartments": Apartment.objects.all(),   
+                    "Group" : Group.objects.all(),                 
+                })
         status = request.POST["status"]
+        if not status:
+                return render(request, 'operations/addperson.html', {
+                    "errorMessage": "خانة الوضع الحالي للمستفيد خانة إلزامية",
+                    "users" : User.objects.all(),
+                    "Hospitals": Hospital.objects.all(),
+                    "Apartments": Apartment.objects.all(),   
+                    "Group" : Group.objects.all(),                 
+                })
         phoneNumber = request.POST["phoneNumber"]
-        GroupName = request.POST["Group"]
+        GroupName = request.POST.get('Group')
+        if not GroupName:
+                return render(request, 'operations/addperson.html', {
+                    "errorMessage": "خانة المصاب التابع له المستفيد خانة إلزامية",
+                    "users" : User.objects.all(),
+                    "Hospitals": Hospital.objects.all(),
+                    "Apartments": Apartment.objects.all(),   
+                    "Group" : Group.objects.all(),                 
+                })
         HospitalName = request.POST["Hospital"]
-        Apartmente = request.POST["Apartment"]
+        if not HospitalName:
+                return render(request, 'operations/addperson.html', {
+                    "errorMessage": "خانة المستشفى القادم منها المستفيد خانة إلزامية",
+                    "users" : User.objects.all(),
+                    "Hospitals": Hospital.objects.all(),
+                    "Apartments": Apartment.objects.all(),   
+                    "Group" : Group.objects.all(),                 
+                })
+        Apartmente = request.POST.get("Apartment")
+        if not Apartmente or not Apartmente.isdigit() :
+                return render(request, 'operations/addperson.html', {
+                    "errorMessage": "خانة المكان الذي سيقيم فيه المستفيد خانة إلزامية",
+                    "users" : User.objects.all(),
+                    "Hospitals": Hospital.objects.all(),
+                    "Apartments": Apartment.objects.all(),   
+                    "Group" : Group.objects.all(),                 
+                })
         diagnosis = request.POST["diagnosis"]
         hasCancer = request.POST.get("hasCancer", False)
         isDisabled = request.POST.get("isDisabled", False)
@@ -332,7 +430,7 @@ def addPerson(request):
         personExists = Person.objects.filter(idNumber = idNumber)
         if personExists:
             return render(request, "operations/addperson.html", {
-                "errorMessage" : "Error",
+                "errorMessage" : f"المستفيد {name} موجود بالفعل في قواعد البيانات",
                 "personName" : name,
                 "users" : User.objects.all(),
                 "Group" : Group.objects.all(),
@@ -341,9 +439,20 @@ def addPerson(request):
 
             })
         # Get the instance of 
-        groupInst = Group.objects.get(id = GroupName)
-        hosptialInst = Hospital.objects.get(id = HospitalName)
-        apartmentInst = Apartment.objects.get(id = Apartmente)
+        
+        try:
+            groupInst = Group.objects.get(groupName = GroupName)
+            hosptialInst = Hospital.objects.get(name=HospitalName)
+            apartmentInst = Apartment.objects.get(id = Apartmente)
+        except ObjectDoesNotExist:
+            return render(request, 'operations/addperson.html', {
+                "errorMessage": f"حدث خطأ اثناء الإدخال, برجاء التواصل مع الدعم الفني",
+                "users" : User.objects.all(),
+                "Group" : Group.objects.all(),
+                "Hospitals": Hospital.objects.all(),
+                "Apartments": Apartment.objects.all(),
+            })
+       
         
         if hasCancer == 'True':
             hasCancer = True
@@ -416,6 +525,15 @@ def addCasualty(request):
         birthday = request.POST["birthday"]
         entrydate = request.POST["entrydate"]
         hostingStartDate = request.POST["hostingStartDate"]
+        # Validate the date format
+        if not validate_date_format(hostingStartDate) or not validate_date_format(birthday) or not validate_date_format(entrydate) :
+            error_message = 'احدى التواريخ مدخلة بشكل غير صحيح، يجب أن يكون بتنسيق MM/DD/YYYY'
+            return render(request, 'operations/addcasualty.html', {
+                "errorMessage": error_message,
+                "users" : User.objects.all(),
+                "Hospitals": Hospital.objects.all(),
+                "Apartments": Apartment.objects.all(),   
+                })
         theType = 'مصاب '
         gender = request.POST.get("gender", None)
         # Check this value is not empty
@@ -446,7 +564,7 @@ def addCasualty(request):
                     "Apartments": Apartment.objects.all(),
                 })
         Apartmente =request.POST.get("Apartment", None)
-        if not Apartmente:
+        if not Apartmente or not Apartmente.isdigit():
                 return render(request, 'operations/addcasualty.html', {
                     "errorMessage": "برجاء اختيار الشقة التي سيقيم المصاب فيها",
                     "users" : User.objects.all(),
@@ -488,7 +606,7 @@ def addCasualty(request):
 
 
         try:
-            hosptialInst = Hospital.objects.get(id = HospitalName)
+            hosptialInst = Hospital.objects.get(name = HospitalName)
         except ObjectDoesNotExist:
             return render(request, 'operations/addcasualty.html', {
                 "errorMessage": "حدث خطأ عند اختيار المستشفى, برجاء المحاولة مجددًا",
@@ -571,6 +689,8 @@ def accommodation(request):
         person_ids = request.POST.getlist("names[]")
         apartment_id = request.POST["Apartment"]
         apartment_instance = Apartment.objects.get(id=apartment_id)
+
+        
         
         # Update accommodation for each selected person
         for person_id in person_ids:
@@ -809,7 +929,7 @@ def removePerson(request):
 @login_required
 def customersOut(request):
     customersList = Person.objects.exclude(status = "داخل السكن")
-    paginator = Paginator(customersList, 30) 
+    paginator = Paginator(customersList, 100) 
     try:
         page = int(request.GET.get('page', '1'))
     except:
@@ -826,82 +946,82 @@ def customersOut(request):
 
 
 
-# def extract_id_number(image_path):
-#     # Use pytesseract to do OCR on the image
-#     text = pytesseract.image_to_string(Image.open(image_path))
+def extract_id_number(image_path):
+    # Use pytesseract to do OCR on the image
+    text = pytesseract.image_to_string(Image.open(image_path))
 
-#     # Use regex to find all sequences of exactly 9 digits, ignoring spaces
-#     potential_ids = re.findall(r'\b\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\b', text)
+    # Use regex to find all sequences of exactly 9 digits, ignoring spaces
+    potential_ids = re.findall(r'\b\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\b', text)
 
-#     # Remove spaces from the extracted numbers
-#     potential_ids = [id_number.replace(' ', '') for id_number in potential_ids]
+    # Remove spaces from the extracted numbers
+    potential_ids = [id_number.replace(' ', '') for id_number in potential_ids]
 
-#     # Filter the list to find IDs that start with 9, 8, or 4
-#     valid_ids = [id_number for id_number in potential_ids if id_number.startswith(('9', '8', '4'))]
+    # Filter the list to find IDs that start with 9, 8, or 4
+    valid_ids = [id_number for id_number in potential_ids if id_number.startswith(('9', '8', '4'))]
 
-#     return valid_ids    
+    return valid_ids    
 
-# @login_required
-# def upload_document(request):
-#     if request.method == 'POST':
-#         form = DocumentForm(request.POST, request.FILES)
-#         files = request.FILES.getlist('document')
-#         if form.is_valid() and files:
-#             associated_persons = []
-#             extracted_ids = []
-#             temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
-#             os.makedirs(temp_dir, exist_ok=True)
-#             for f in files:
-#                 # Save the file to a temporary location
-#                 temp_file_path = os.path.join(temp_dir, f.name)
-#                 with open(temp_file_path, 'wb+') as temp_file:
-#                     for chunk in f.chunks():
-#                         temp_file.write(chunk)
+@login_required
+def upload_document(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        files = request.FILES.getlist('document')
+        if form.is_valid() and files:
+            associated_persons = []
+            extracted_ids = []
+            temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
+            os.makedirs(temp_dir, exist_ok=True)
+            for f in files:
+                # Save the file to a temporary location
+                temp_file_path = os.path.join(temp_dir, f.name)
+                with open(temp_file_path, 'wb+') as temp_file:
+                    for chunk in f.chunks():
+                        temp_file.write(chunk)
                 
-#                 id_numbers = extract_id_number(temp_file_path)
+                id_numbers = extract_id_number(temp_file_path)
                 
-#                 if id_numbers:
-#                     unique_id_numbers = set(id_numbers)
-#                     with transaction.atomic():
-#                         for id_number in unique_id_numbers:
-#                             try:
-#                                 person = Person.objects.get(idNumber=id_number)
-#                                 if not UploadedDocument.objects.filter(document=f, person=person).exists():
-#                                     # Save the file permanently associated with the person
-#                                     uploaded_document = UploadedDocument(document=f, person=person, id_number=id_number)
-#                                     uploaded_document.save()
-#                                     associated_persons.append(person)
-#                             except Person.DoesNotExist:
-#                                 extracted_ids.append(f"{id_number} (اسم الملف: {f.name})")
+                if id_numbers:
+                    unique_id_numbers = set(id_numbers)
+                    with transaction.atomic():
+                        for id_number in unique_id_numbers:
+                            try:
+                                person = Person.objects.get(idNumber=id_number)
+                                if not UploadedDocument.objects.filter(document=f, person=person).exists():
+                                    # Save the file permanently associated with the person
+                                    uploaded_document = UploadedDocument(document=f, person=person, id_number=id_number)
+                                    uploaded_document.save()
+                                    associated_persons.append(person)
+                            except Person.DoesNotExist:
+                                extracted_ids.append(f"{id_number} (اسم الملف: {f.name})")
                 
-#                 # Remove the temporary file
-#                 os.remove(temp_file_path)
+                # Remove the temporary file
+                os.remove(temp_file_path)
             
-#             # حذف المستندات الغير مسندة إلى أي شخص
-#             UploadedDocument.objects.filter(person__isnull=True).delete()
+            # حذف المستندات الغير مسندة إلى أي شخص
+            UploadedDocument.objects.filter(person__isnull=True).delete()
             
-#             if associated_persons:
-#                 return render(request, 'operations/upload.html', {
-#                     'form': form,
-#                     'message': "الملف الذي تم رفعه مسند إلى الأشخاص:",
-#                     'persons': associated_persons,
-#                     'error_message': f"لا يوجد اشخاص يحملوا أرقام الهويات الآتية:" if extracted_ids else None,
-#                     'wrongID' : extracted_ids
-#                 })
-#             else:
-#                 return render(request, 'operations/upload.html', {
-#                     'form': form,
-#                     'error_message': f"لا يوجد اشخاص يحملوا أرقام الهويات الآتية:",
-#                     'wrongID' : extracted_ids
-#                 })
-#         else:
-#             return render(request, 'operations/upload.html', {
-#                 'form': form,
-#                 'error_message': "ملف غير مدعم او لا يوجد ملفات تم رفعها"
-#             })
-#     else:
-#         form = DocumentForm()
-#     return render(request, 'operations/upload.html', {'form': form})
+            if associated_persons:
+                return render(request, 'operations/upload.html', {
+                    'form': form,
+                    'message': "الملف الذي تم رفعه مسند إلى الأشخاص:",
+                    'persons': associated_persons,
+                    'error_message': f"لا يوجد اشخاص يحملوا أرقام الهويات الآتية:" if extracted_ids else None,
+                    'wrongID' : extracted_ids
+                })
+            else:
+                return render(request, 'operations/upload.html', {
+                    'form': form,
+                    'error_message': f"لا يوجد اشخاص يحملوا أرقام الهويات الآتية:",
+                    'wrongID' : extracted_ids
+                })
+        else:
+            return render(request, 'operations/upload.html', {
+                'form': form,
+                'error_message': "ملف غير مدعم او لا يوجد ملفات تم رفعها"
+            })
+    else:
+        form = DocumentForm()
+    return render(request, 'operations/upload.html', {'form': form})
 
 
 @login_required

@@ -15,7 +15,7 @@ admin.site.register(Apartment)
 admin.site.register(Dontation)
 admin.site.register(Location)
 admin.site.register(UploadedDocument)
-
+admin.site.register(logOutLogs)
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     list_per_page = 1500
