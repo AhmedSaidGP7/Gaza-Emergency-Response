@@ -63,7 +63,11 @@
                 </ol>
               </td>
               <td>
+                {% if apartment.available_spots < 0 %}
+                0
+                {% else %}
                 {{apartment.available_spots}}
+                {% endif %}
               </td>
              
              </tr>

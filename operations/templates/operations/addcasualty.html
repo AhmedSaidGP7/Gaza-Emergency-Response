@@ -38,7 +38,7 @@
                              خطأ في الإدخال
                              </h5>
                              <p>
-                               المصاب {{personName}} موجود بالفعل في قواعد البيانات 
+                               {{errorMessage}}
                              </p>
                              <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
                              </button>
@@ -65,7 +65,7 @@
                             <label class="form-label">
                              اسم المصاب
                             </label>
-                            <input autocomplete="off" class="form-control" name="name" placeholder="قم بإدخال اسم المصاب" required="" type="text">      
+                            <input autocomplete="off" class="form-control" name="name" placeholder="قم بإدخال اسم المصاب" required  type="text">      
                            </div>
                        <!-- End the name label -->
 
@@ -74,7 +74,7 @@
                         <label class="form-label">
                          رقم الهوية
                         </label>
-                        <input autocomplete="off" class="form-control" name="idNumber" placeholder="قم بإدخال رقم هوية المصاب" required=""  type="text">      
+                        <input autocomplete="off" class="form-control" name="idNumber" data-parsley-type="digits" placeholder="قم بإدخال رقم هوية المصاب" required  type="text">      
                        </div>
                         <!-- End the id number label -->
 
@@ -84,7 +84,7 @@
                              تاريخ ميلاد المصاب
                             </label>
                             <div class="col-md-10">
-                             <input class="form-control" name="birthday" id="example-date-input" type="date" value="2019-08-19">
+                             <input class="form-control" name="birthday" id="example-date-input" type="date"  required>
                             </div>
                            </div>
                         <!-- End the Birthdate label-->
@@ -95,7 +95,7 @@
                              تاريخ دخول مصر
                             </label>
                             <div class="col-md-10">
-                             <input class="form-control" name="entrydate" id="example-date-input" type="date" value="2019-08-19">
+                             <input class="form-control" name="entrydate" id="example-date-input" type="date"  required>
                             </div>
                            </div>
                         <!-- End the Entry date label-->
@@ -106,7 +106,7 @@
                             تاريخ استقبال المصاب
                             </label>
                             <div class="col-md-10">
-                             <input class="form-control" name="hostingStartDate" id="example-date-input" type="date" value="2019-08-19">
+                             <input class="form-control" name="hostingStartDate" id="example-date-input" type="date"  required>
                             </div>
                            </div>
                         <!-- End the hostingStartDate label-->
@@ -114,20 +114,18 @@
                         <!-- Start a new label -->
                         <div class="mb-3">
                             <label class="col-md-2 col-form-label">
-                             نوع المصاب
+                                نوع المصاب
                             </label>
                             <div class="col-md-10">
-                             <select name="gender" class="form-select">
-                              <option value="ذكر">
-                               ذكر
-                              </option>
-                              <option value="انثى">
-                               انثى
-                              </option>
-                             </select>
+                                <select name="gender" class="form-select" required >
+                                    <option value="" disabled selected>اختر نوع المصاب</option>
+                                    <option value="ذكر">ذكر</option>
+                                    <option value="انثى">انثى</option>
+                                </select>
                             </div>
-                           </div>
-                       <!-- End a new label -->
+                        </div>
+                        <!-- End a new label -->
+
                        
                         <!-- Start a new label -->
                        <div class="mb-3">
@@ -135,7 +133,8 @@
                          حالة المستفيد
                         </label>
                         <div class="col-md-10">
-                         <select name="status" class="form-select">
+                         <select name="status" class="form-select" required>
+                            <option value="" disabled selected>اختر حالة المستفيد</option>
                           <option value="داخل السكن">
                             داخل السكن
                           </option>
@@ -181,7 +180,8 @@
                          مستشفى التحويل
                         </label>
                         <div class="col-md-10 form-control">                       
-                        <select name="Hospital" id="mySelect1" class="form-control selecttwoform" style="width: 100%;">
+                        <select name="Hospital" id="mySelect1" class="form-control selecttwoform" style="width: 100%;"  required>
+                            <option value="" disabled selected>اختر اسم المستشفى</option>
                         {% for Hospital in Hospitals %}
                             <option value="{{Hospital.id}}">{{Hospital.name}}</option>
                         {% endfor %}
@@ -200,7 +200,8 @@
                         مكان السكن
                         </label>
                         <div class="col-md-10 form-control">                       
-                        <select name="Apartment" id="mySelect2" class="form-control selecttwoform" style="width: 100%;">
+                        <select name="Apartment" id="mySelect2" class="form-control selecttwoform" style="width: 100%;" required>
+                            <option value="" disabled selected>اختر رقم الشقة</option>
                         {% for Apartment in Apartments %}
                             <option value="{{Apartment.id}}">{{Apartment}}</option>
                         {% endfor %}

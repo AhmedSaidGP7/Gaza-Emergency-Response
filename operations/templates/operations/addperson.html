@@ -56,6 +56,10 @@
                       <p class="card-title-desc">
                         برجاء إدخال بيانات المستفيد, واحرص على إضافة اكبر قدر ممكن من البيانات.
                       </p>
+                      <a href="{% url 'operations:upload_excel_for_person' %}">
+                        <i class="uil-user-times"></i>
+                        <span>رفع قائمة Excel</span><br>
+                         </a>
                       <form action="{% url 'operations:addperson' %}" enctype="multipart/form-data" method="POST" class="custom-validation" novalidate="">
                         {% csrf_token %} 
                         <!-- Start the name label-->
@@ -72,7 +76,7 @@
                         <label class="form-label">
                          رقم الهوية
                         </label>
-                        <input autocomplete="off" class="form-control" name="idNumber" placeholder="قم بإدخال رقم هوية المستفيد" required=""  type="text">      
+                        <input autocomplete="off" class="form-control" name="idNumber" data-parsley-type="digits" placeholder="قم بإدخال رقم هوية المستفيد" required=""  type="text">      
                        </div>
                         <!-- End the id number label -->
 
@@ -82,7 +86,7 @@
                              تاريخ ميلاد المستفيد
                             </label>
                             <div class="col-md-10">
-                             <input class="form-control" name="birthday" id="example-date-input" type="date" value="2019-08-19">
+                             <input class="form-control" name="birthday" id="example-date-input" type="date" required>
                             </div>
                            </div>
                         <!-- End the Birthdate label-->
@@ -93,7 +97,7 @@
                              تاريخ دخول مصر
                             </label>
                             <div class="col-md-10">
-                             <input class="form-control" name="entrydate" id="example-date-input" type="date" value="2019-08-19">
+                             <input class="form-control" name="entrydate" id="example-date-input" type="date" required>
                             </div>
                            </div>
                         <!-- End the Entry date label-->
@@ -104,7 +108,7 @@
                             تاريخ استقبال المصاب
                             </label>
                             <div class="col-md-10">
-                             <input class="form-control" name="hostingStartDate" id="example-date-input" type="date" value="2019-08-19">
+                             <input class="form-control" name="hostingStartDate" id="example-date-input" type="date" required>
                             </div>
                            </div>
                         <!-- End the hostingStartDate label-->
@@ -115,13 +119,14 @@
                              نوع المستفيد
                             </label>
                             <div class="col-md-10">
-                             <select name="gender" class="form-select">
-                              <option value="ذكر">
-                               ذكر
-                              </option>
+                             <select name="gender" class="form-select" required>
+                                <option value="" disabled selected>اختر نوع المستفيد</option>
                               <option value="انثى">
                                انثى
                               </option>
+                              <option value="ذكر">
+                                ذكر
+                               </option>
                              </select>
                             </div>
                            </div>
@@ -133,7 +138,8 @@
                              صفة المستفيد
                             </label>
                             <div class="col-md-10">
-                             <select name="theType" class="form-select">
+                             <select name="theType" class="form-select" required>
+                                <option value="" disabled selected>اختر صفة المستفيد</option>
                               <option value="مرافق">
                                مرافق
                               </option>
@@ -151,7 +157,8 @@
                          حالة المستفيد
                         </label>
                         <div class="col-md-10">
-                         <select name="status" class="form-select">
+                         <select name="status" class="form-select" required>
+                            <option value="" disabled selected>اختر حالة المستفيد</option>
                           <option value="داخل السكن">
                             داخل السكن
                           </option>
@@ -196,7 +203,8 @@
                          المستفيد تابع للمصاب
                         </label>
                         <div class="col-md-10 form-control">                       
-                        <select name="Group" id="mySelect" required="" class="form-control selecttwoform" style="width: 100%;">
+                        <select name="Group" id="mySelect" required="" class="form-control selecttwoform" style="width: 100%;" required>
+                            <option value="" disabled selected>اختر اسم المصاب</option>
                         {% for member in Group %}
                             <option value="{{member.id}}">{{member.groupName}}</option>
                         {% endfor %}
@@ -214,7 +222,8 @@
                          مستشفى التحويل
                         </label>
                         <div class="col-md-10 form-control">                       
-                        <select name="Hospital" id="mySelect1" class="form-control selecttwoform" style="width: 100%;">
+                        <select name="Hospital" id="mySelect1" class="form-control selecttwoform" style="width: 100%;" required>
+                            <option value="" disabled selected>اختر اسم المستشفى</option>
                         {% for Hospital in Hospitals %}
                             <option value="{{Hospital.id}}">{{Hospital.name}}</option>
                         {% endfor %}
@@ -233,7 +242,8 @@
                         مكان السكن
                         </label>
                         <div class="col-md-10 form-control">                       
-                        <select name="Apartment" id="mySelect2" class="form-control selecttwoform" style="width: 100%;">
+                        <select name="Apartment" id="mySelect2" class="form-control selecttwoform" style="width: 100%;" required>
+                            <option value="" disabled selected>اختر رقم الشقة</option>
                         {% for Apartment in Apartments %}
                             <option value="{{Apartment.id}}">{{Apartment}}</option>
                         {% endfor %}

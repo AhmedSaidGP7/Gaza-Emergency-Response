@@ -32,6 +32,9 @@
            <p class="text-muted">
             {{ person.theType }}
            </p>
+           <p class="text-muted">
+            {{person.idNumber}}
+           </p>
          
           </div>
           <hr class="my-4">
@@ -71,6 +74,36 @@
                 </h5>
                </div>
 
+            {% if person.birthday %}  
+            <div class="mt-4">
+               <p class="mb-1">
+               تاريخ الميلاد:
+               </p>
+               <h5 class="font-size-16">
+                  {{ person.birthday }}
+               </h5>
+            </div>
+            {% endif %}
+            {% if person.entryDate %}  
+            <div class="mt-4">
+               <p class="mb-1">
+               تاريخ دخول مصر:
+               </p>
+               <h5 class="font-size-16">
+                  {{ person.entryDate }}
+               </h5>
+            </div>
+            {% endif %}
+            {% if person.hostingStartDate %}  
+            <div class="mt-4">
+               <p class="mb-1">
+               تاريخ الإستقبال:
+               </p>
+               <h5 class="font-size-16">
+                  {{ person.hostingStartDate }}
+               </h5>
+            </div>
+            {% endif %}
 
             {% if person.phoneNumber %}  
             <div class="mt-4">
@@ -100,6 +133,7 @@
         <div class="card mb-0">
          <!-- Nav tabs -->
          <ul class="nav nav-tabs nav-tabs-custom nav-justified" role="tablist">
+
           <li class="nav-item">
            <a class="nav-link active" data-bs-toggle="tab" href="#about" role="tab">
             <i class="uil uil-user-circle font-size-20">
@@ -109,7 +143,18 @@
             </span>
            </a>
           </li>
-      
+
+          
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#docs" role="tab">
+             <i class="fas fa-file-alt font-size-20">
+             </i>
+             <span class="d-none d-sm-block">
+              المرفقات
+             </span>
+            </a>
+           </li>
+          
 
           <li class="nav-item">
            <a class="nav-link" data-bs-toggle="tab" href="#tasks" role="tab">
@@ -149,6 +194,9 @@
                   الأسم
                  </th>
                  <th scope="col">
+                  رقم الهوية
+                 </th>
+                 <th scope="col">
                   النوع
                  </th>
                  <th scope="col">
@@ -169,8 +217,11 @@
                   </a>
                  </td>
                  <td>
-                    {{ relative.gender }}
+                    {{ relative.idNumber }}
                  </td>
+                 <td>
+                  {{ relative.gender }}
+               </td>
                  <td>
                   
                     {{ relative.status }}
@@ -185,78 +236,120 @@
            </div>
           </div>
 
+         <!-- Docs -->
+         <div class="tab-pane" id="docs" role="tabpanel">
+            <div>
+             <h5 class="font-size-16 mb-3">
+              المستندات
+             </h5>
+             {% if UploadedDocuments %}
+             <div class="table-responsive">
+               <table class="table mb-0">
+                <thead>
+                  
+                 <tr>
+                  <th>
+                   #
+                  </th>
+                  <th>
+                     
+                  اسم المستند
+                  </th>
+                  <th>
+                   تحميل المستند
+                  </th>
+                 
+                 </tr>
+                </thead>
+                <tbody>
+
+                 {%for UploadedDocument in UploadedDocuments %}
+                 <tr>
+                  <th>
+                     {{forloop.counter}}
+                  </th>
+                  <th>
+                  <a href="{{UploadedDocument.document.url}}">
+                  {{UploadedDocument.title}}
+                  </a>
+                  </th>
+                  <th>
+                   <a href="{{UploadedDocument.document.url}}">
+                     <i class="bx bx-archive-out"></i>
+                   </a>
+                  </th>
+                 
+                 </tr>
+                 {% endfor  %}
+              
+                </tbody>
+               </table>
+              </div>
+              {% endif %}
+            </div>
+           </div>
+         
+         
           <!-- Mid History -->
           <div class="tab-pane" id="tasks" role="tabpanel">
            <div>
             <h5 class="font-size-16 mb-3">
-             الأدوية
+             الملف الصحي للمريض 
             </h5>
-            <div class="table-responsive">
-             <table class="table table-nowrap table-centered">
-              <tbody>
-               <tr>
-                <td>
-                 <a class="fw-bold text-dark" href="#">
-                  اسم الدواء والجرعة
-                 </a>
-                </td>
-             
-                <td style="width: 160px;">
-                 <span class="badge bg-soft-success font-size-12">
-                  تم الحصول على الدواء
-                 </span>
-                </td>
-               </tr>
             
-              </tbody>
-             </table>
-            </div>
+            {% if diseases %}
             <h5 class="font-size-16 my-3">
-             المستلزمات الطبية
+             الأمراض
             </h5>
             <div class="table-responsive">
              <table class="table table-nowrap table-centered">
               <tbody>
+               {% for disease in diseases %}
                <tr>
-                <td>
-                 <a class="fw-bold text-dark" href="#">
-                  مسند يدوي
-                 </a>
-                </td>
-                <td>
-                 -
-                </td>
                 <td style="width: 160px;">
-                 <span class="badge bg-soft-secondary font-size-12">
-                  في إنتظار الحصول على الدواء
-                 </span>
-                </td>
+                 <p class="badge bg-soft-secondary font-size-12">
+                  {{ disease.diseases_name }}
+                 </p> 
+                </td> 
                </tr>
+               {% endfor %}
+               
               </tbody>
              </table>
             </div>
+            {% endif %}
+
+            {% if ambulances %}
             <h5 class="font-size-16 my-3">
-             الإحتياجات الطبية (اشعات, تحاليل, علاج طبيعي, جراحات..)
+             طلبات الإسعاف
             </h5>
             <div class="table-responsive">
              <table class="table table-nowrap table-centered">
               <tbody>
+               {% for ambulance in ambulances %}
                <tr>
-                <td>
-                 <a class="fw-bold text-dark" href="#">
-                  علاج طبيعي على القطانية
-                 </a>
+                <td> 
+                  بلاغ رقم:
+                 {{ambulance.report_num}}
                 </td>
-                <td style="width: 160px;">
-                 <span class="badge bg-soft-success font-size-12">
-                  تمت الجلسات الطبيعية
+                <td>
+                 <span >
+                  توجه لمستشفى:
+                  {{ambulance.hospital}}
                  </span>
                 </td>
+                <td>
+                  <span >
+                   توجه بتاريخ:
+                   {{ambulance.date}}
+                  </span>
+                 </td>
                </tr>
-             </tr>
+               {% endfor %}
               </tbody>
              </table>
             </div>
+             {% endif %}
            </div>
           </div>
         

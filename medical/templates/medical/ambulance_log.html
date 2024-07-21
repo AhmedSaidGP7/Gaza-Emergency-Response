@@ -24,6 +24,8 @@
                                             <th scope="col">رقم سيارة الاسعاف</th>
                                             <th scope="col">اسم المسعف</th>
                                             <th scope="col">رقم المسعف</th>
+                                            <th scope="col">الرسوم</th>
+                                            <th scope="col">التقرير</th>
                                             <th scope="col">المستشفى</th>
                                             <th scope="col">التاريخ</th>
                                         </tr>
@@ -38,6 +40,16 @@
                                                 <td>{{ record.ambulance_code }}</td>
                                                 <td>{{ record.paramedic_name }}</td>
                                                 <td>{{ record.paramedic_phone }}</td>
+                                                <td>{{ record.fees }}</td>
+                                                <td>
+                                                    {% if record.scannedDocs != '' and record.scannedDocs != 'False' %}
+                                                        <a class="fw-medium" href="{{ record.scannedDocs.url }}" target="_blank">
+                                                            <i class="bx bx-archive-out"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <i class="fas fa-times"></i>
+                                                    {% endif %}
+                                                </td>
                                                 <td>{{ record.hospital }}</td>
                                                 <td>{{ record.date }}</td>
                                              

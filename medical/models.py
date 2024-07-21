@@ -11,6 +11,8 @@ class ambulance_log(models.Model):
     paramedic_name =  models.CharField(max_length = 64)
     paramedic_phone =  models.CharField(max_length = 64)
     hospital = models.ForeignKey(Hospital, on_delete = models.CASCADE, null=True)
+    fees =  models.CharField(max_length = 64, null=True, blank=True)
+    scannedDocs = models.FileField(upload_to="medical-reports", blank=True)
     date = models.DateTimeField(auto_now_add=True, blank=True)
     def __str__(self):
         return f'المصاب {self.casualty} بلاغ رقم {self.report_num}'

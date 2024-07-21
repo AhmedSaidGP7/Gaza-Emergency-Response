@@ -69,7 +69,8 @@
                         مكان السكن
                         </label>
                         <div class="col-md-10">                       
-                        <select name="Apartment" id="mySelect2" class="col-md-10 form-control selecttwoform" style="width: 100%;">
+                        <select name="Apartment" id="mySelect2" class="col-md-10 form-control selecttwoform" style="width: 100%;" required>
+                            <option value="" disabled selected>اختر الوحدة/الغرفة</option>
                         {% for Apartment in Apartments %}
                             <option value="{{Apartment.id}}">{{Apartment}}</option>
                         {% endfor %}

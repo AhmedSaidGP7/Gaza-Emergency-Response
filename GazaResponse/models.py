@@ -58,7 +58,7 @@ class Building(models.Model):
     bshelter = models.ForeignKey(Shelter, on_delete = models.CASCADE, related_name = "Buildings")
     bGovernorate = models.ForeignKey(Governorate, on_delete = models.CASCADE)
     def __str__(self):
-        return f'{"عمارة"} {self.name}'
+        return f'{"عمارة"} {self.name} - {self.bshelter}'
 
 # This class represents apartments in buildings or room. The apartment number represents the apartment
 # number in the case of buildings or the room number in the case of relief centers. Capacity represents the
@@ -91,12 +91,12 @@ class Group(models.Model):
 class Person(models.Model):
     name = models.CharField(max_length = 64)
     profile_pic = models.ImageField(upload_to="ProfilePics", blank = True)
-    birthday = models.DateField()
+    birthday = models.DateField(null=True, blank=True)
     theType = models.CharField(max_length = 64)
     gender = models.CharField(max_length = 64, default = 'ذكر')
-    idNumber = models.CharField(max_length = 64)
+    idNumber = models.CharField(max_length = 64, blank=True)
     code = models.CharField(max_length = 64, blank=True)
-    status = models.CharField(max_length = 64)
+    status = models.CharField(max_length = 64, blank=True)
     phoneNumber = models.CharField(max_length = 64, blank=True)
     isDisabled  = models.BooleanField(default = False)
     hasCancer = models.BooleanField(default = False)

@@ -35,7 +35,7 @@
         <!-- Start navbar -->
 
         <header id="page-topbar">
-            <div class="navbar-header">
+            <div  class="navbar-header">
 
 
               <button class="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn d-block d-lg-none d-xl-none" type="button">
@@ -259,8 +259,8 @@
                 </a>
                </li>
                <li>
-                <a class="waves-effect" href="{% url 'operations:manual_upload_document' %}">
-                  <i class="fa-solid fa-cloud"></i>
+                <a class="waves-effect" href="{% url 'operations:upload_document' %}">
+                  <i class="fas fa-cloud"></i>
                  <span>
                   رفع مستندات (ذكي)
                  </span>
@@ -268,7 +268,7 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'operations:manual_upload_document' %}">
-                  <i class="fa-solid fa-upload"></i>
+                  <i class="fas fa-upload"></i>
                  <span>
                   رفع مستندات (يدوي)
                  </span>
@@ -280,15 +280,15 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'medical:ambulance'%}">
-                  <i class="fa-solid fa-truck-medical"></i>
+                  <i class="fas fa-ambulance"></i>
                  <span>
                   طلبات سيارات الإسعاف
                  </span>
                 </a>
                </li>
                <li>
-                <a class="waves-effect" href="{% url 'operations:manual_upload_document' %}">
-                  <i class="fa-solid fa-file-medical"></i>
+                <a class="waves-effect" href="{% url 'operations:medical_upload' %}">
+                  <i class="fas fa-file-medical"></i>
                  <span>
                   رفع تقرير طبي
                  </span>
@@ -296,7 +296,7 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'medical:assign_diseases'%}">
-                  <i class="fa-solid fa-disease"></i>
+                  <i class="fas fa-disease"></i>
                  <span>
                   تشخيص بأمراض شائعة
                 </span>
@@ -324,7 +324,7 @@
                  </span>
                 </a> 
                </li>
-
+<!-- 
                <li dir="rtl" class="menu-title text-right">
                 الدعم اللوجستي
                </li>
@@ -345,7 +345,7 @@
                   إدارة التبرعات
                  </span>
                 </a>
-               </li>
+               </li> -->
 
                <li dir="rtl" class="menu-title text-right">
                 بوابة المتطوعين

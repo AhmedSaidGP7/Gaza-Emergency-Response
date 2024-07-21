@@ -36,6 +36,19 @@
                        
                       <h4 class="card-title">رفع ملف المصابين</h4>
                       <p class="card-title-desc">برجاء رفع ملف Excel يحتوي على تفاصيل المصابين.</p>
+
+                      <p>
+                        الأعمدة المطلوبة:
+                      </p>
+                      <p class="card-title-desc">
+                        {'الاسم', 'المستشفى', 'النوع', 'رقم الهوية', 'التشخيص', 'تاريخ الميلاد', 
+                        'رقم المبنى', 'رقم الوحدة/الغرفة', 'مقدم خدمة الإيواء', 'تاريخ تقديم خدمة الايواء', 
+                        'تاريخ دخول مصر', 'رقم الهاتف المصري', 'الوضع الحالي'}
+                      </p>
+                      <a target="_blank" href="https://docs.google.com/spreadsheets/d/1sbImI7qQu36tNgttc2cnzQDvBWtawsHo/edit?usp=sharing&ouid=100362024046644406032&rtpof=true&sd=true">
+                      <p class="card-title">يمكنك تحميل قالب الـ Excel المناسب للبدء في اضافة البيانات المطلوبة, اضغط هنا</p>
+                    </a>
+
                       <form action="{% url 'operations:upload_excel' %}" enctype="multipart/form-data" method="POST" class="custom-validation" novalidate="">
                         {% csrf_token %}
                         <div class="mb-3">

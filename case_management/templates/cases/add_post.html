@@ -60,7 +60,8 @@
                          اسم المستفيد
                         </label>
                         <div class="col-md-10 form-control">                       
-                        <select name="thename" id="mySelect" class="form-control selecttwoform" style="width: 100%;">
+                        <select name="thename" id="mySelect" class="form-control selecttwoform" style="width: 100%;" required>
+                            <option value="" disabled selected>اختر الأسم</option>
                         {% for Person in Persons %}
                             <option value="{{Person.id}}">{{Person}}</option>
                         {% endfor %}
@@ -77,7 +78,8 @@
                              حالة الشكوى
                             </label>
                             <div class="col-md-10">
-                             <select name="theType" class="form-select">
+                             <select name="theType" class="form-select" required>
+                              <option value="" disabled selected>نوع المشكلة</option>
                               <option value="True">
                                عاجلة
                               </option>

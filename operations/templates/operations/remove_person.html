@@ -67,7 +67,8 @@
                          سبب الخروج 
                         </label>
                         <div class="col-md-10">
-                         <select name="status" class="form-select">     
+                         <select name="status" class="form-select" required>     
+                            <option value="" disabled selected>طريقة الخروج</option>
                           <option value="استلام اقارب في مصر">
                            استلام اقارب في مصر
                           </option>
@@ -97,7 +98,7 @@
                             تاريخ الخروج
                             </label>
                             <div class="col-md-10">
-                             <input class="form-control" name="thedate" id="example-date-input" type="date" value="2024-06-10" >
+                             <input class="form-control" name="thedate" id="example-date-input" type="date" required >
                             </div>
                            </div>
                         <!-- End the date label-->

@@ -67,7 +67,8 @@
                          اسم المصاب
                         </label>
                         <div class="col-md-10 form-control">                       
-                        <select name="casualty" id="mySelect" required="" class="form-control selecttwoform" style="width: 100%;">
+                        <select name="casualty" id="mySelect" required="" class="form-control selecttwoform" style="width: 100%;" required>
+                            <option value="" disabled selected>اختر الاسم</option>
                         {% for person in Persons %}
                             <option value="{{person.id}}">{{person.name}}</option>
                         {% endfor %}
@@ -112,6 +113,15 @@
                         <input autocomplete="off" class="form-control" name="paramedic_phone" placeholder="قم بإدخال رقم هاتف المسعف" required=""  type="text">      
                        </div>
                         <!-- End the id number label -->
+
+                         <!-- Start the id number label-->
+                       <div class="mb-3">
+                        <label class="form-label">
+                        التكلفة (إن وجدت)
+                        </label>
+                        <input autocomplete="off" class="form-control" name="fees" placeholder="قم بإدخال رقم هاتف المسعف" required="" value="0" type="text">      
+                       </div>
+                        <!-- End the id number label -->
                
                     <!-- Start Hospital label -->
                     <div>
@@ -119,7 +129,8 @@
                          مستشفى التحويل
                         </label>
                         <div class="col-md-10 form-control">                       
-                        <select name="Hospital" id="mySelect1" class="form-control selecttwoform" style="width: 100%;">
+                        <select name="Hospital" id="mySelect1" class="form-control selecttwoform" style="width: 100%;" required>
+                        <option value="" disabled selected>اسم المستشفى</option>
                         {% for Hospital in Hospitals %}
                             <option value="{{Hospital.id}}">{{Hospital.name}}</option>
                         {% endfor %}
@@ -128,6 +139,13 @@
                         </div>
                        </div> <br>
                     <!-- End Hosptial label -->
+
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">التقرير</label>
+                        <input name="uploadedfile"  class="form-control" type="file" id="formFile">
+                      </div>
+
+
                     <div>
                         <div>
                          <button class="btn btn-primary waves-effect waves-light me-1" type="submit">

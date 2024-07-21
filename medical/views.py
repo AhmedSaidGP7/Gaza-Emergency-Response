@@ -20,6 +20,8 @@ def ambulance(request):
         paramedic_name = request.POST["paramedic_name"]
         paramedic_phone = request.POST["paramedic_phone"]
         theHospital = request.POST["Hospital"]
+        fees = request.POST["fees"]
+        uploadedfile = request.FILES.get("uploadedfile", False)
        
 
         # Check if the person exists in the DB
@@ -43,9 +45,11 @@ def ambulance(request):
             paramedic_name = paramedic_name,
             paramedic_phone = paramedic_phone,
             hospital = hosptialInst,
+            scannedDocs = uploadedfile,
+            fees = fees,
         )
         return render(request, "medical/ambulance.html", {
-                "message" : "تم إضافة المستفيد بنجاح!",
+                "message" : "تم تسجيل البلاغ بنجاح",
                 "Persons" : Person.objects.all(),
                 "Hospitals": Hospital.objects.all(),
 

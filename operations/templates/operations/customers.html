@@ -65,6 +65,7 @@
                                             <th scope="col">السكن</th>
                                             <th scope="col">الهوية</th>
                                             <th scope="col">الحالة</th>
+                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -75,7 +76,16 @@
                                                     <a class="text-body" href="{% url 'operations:profile' person_id=customer.id %}">{{ customer.name }}</a>
                                                 </td>
                                                 <td>{{ customer.theType }}</td>
-                                                <td>{{ customer.phoneNumber }}</td>
+                                                <td>
+                                                    {% if not customer.phoneNumber  %}
+                                                    غير مسجل
+                                                    {% endif %}
+
+                                                    {% if  customer.phoneNumber  %}
+                                                    {{customer.phoneNumber}}
+                                                    {% endif %}
+
+                                                </td>
                                                 <td>{{ customer.idNumber }}</td>
                                                 <td>{{ customer.accommodation }}</td>
                                                 <td>
@@ -88,6 +98,7 @@
                                                     {% endif %}
                                                 </td>
                                                 <td>{{ customer.status }}</td>
+                                            
                                             </tr>
                                             <!-- End new customer -->
                                         {% endfor %}
@@ -95,10 +106,10 @@
                                 </table>
                             </div>
                             <div class="row mt-4">
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
                                     <div></div>
                                 </div>
-                                <div class="col-sm-6 mb-3">
+                                <div class="col-sm-12 mb-3">
                                     <div class="float-sm-end">
                                         <ul class="pagination mb-sm-0">
                                             {% if customers.has_previous %}
