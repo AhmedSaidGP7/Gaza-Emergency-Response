@@ -14,7 +14,7 @@ import pandas as pd
 from dateutil import parser
 from django.core.exceptions import ObjectDoesNotExist  
 from .utils import validate_date_format
-#from .forms import *
+from .forms import *
 from django.db import transaction
 import os
 
@@ -943,67 +943,67 @@ def customersOut(request):
 
   
 
-# @login_required
-# def upload_document(request):
-#     if request.method == 'POST':
-#         form = DocumentForm(request.POST, request.FILES)
-#         files = request.FILES.getlist('document')
-#         if form.is_valid() and files:
-#             associated_persons = []
-#             extracted_ids = []
-#             temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
-#             os.makedirs(temp_dir, exist_ok=True)
-#             for f in files:
-#                 # Save the file to a temporary location
-#                 temp_file_path = os.path.join(temp_dir, f.name)
-#                 with open(temp_file_path, 'wb+') as temp_file:
-#                     for chunk in f.chunks():
-#                         temp_file.write(chunk)
+@login_required
+def upload_document(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        files = request.FILES.getlist('document')
+        if form.is_valid() and files:
+            associated_persons = []
+            extracted_ids = []
+            temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
+            os.makedirs(temp_dir, exist_ok=True)
+            for f in files:
+                # Save the file to a temporary location
+                temp_file_path = os.path.join(temp_dir, f.name)
+                with open(temp_file_path, 'wb+') as temp_file:
+                    for chunk in f.chunks():
+                        temp_file.write(chunk)
                 
-#                 id_numbers = extract_id_number(temp_file_path)
+                id_numbers = extract_id_number(temp_file_path)
                 
-#                 if id_numbers:
-#                     unique_id_numbers = set(id_numbers)
-#                     with transaction.atomic():
-#                         for id_number in unique_id_numbers:
-#                             try:
-#                                 person = Person.objects.get(idNumber=id_number)
-#                                 if not UploadedDocument.objects.filter(document=f, person=person).exists():
-#                                     # Save the file permanently associated with the person
-#                                     uploaded_document = UploadedDocument(document=f, person=person, id_number=id_number)
-#                                     uploaded_document.save()
-#                                     associated_persons.append(person)
-#                             except Person.DoesNotExist:
-#                                 extracted_ids.append(f"{id_number} (اسم الملف: {f.name})")
+                if id_numbers:
+                    unique_id_numbers = set(id_numbers)
+                    with transaction.atomic():
+                        for id_number in unique_id_numbers:
+                            try:
+                                person = Person.objects.get(idNumber=id_number)
+                                if not UploadedDocument.objects.filter(document=f, person=person).exists():
+                                    # Save the file permanently associated with the person
+                                    uploaded_document = UploadedDocument(document=f, person=person, id_number=id_number)
+                                    uploaded_document.save()
+                                    associated_persons.append(person)
+                            except Person.DoesNotExist:
+                                extracted_ids.append(f"{id_number} (اسم الملف: {f.name})")
                 
-#                 # Remove the temporary file
-#                 os.remove(temp_file_path)
+                # Remove the temporary file
+                os.remove(temp_file_path)
             
-#             # حذف المستندات الغير مسندة إلى أي شخص
-#             UploadedDocument.objects.filter(person__isnull=True).delete()
+            # حذف المستندات الغير مسندة إلى أي شخص
+            UploadedDocument.objects.filter(person__isnull=True).delete()
             
-#             if associated_persons:
-#                 return render(request, 'operations/upload.html', {
-#                     'form': form,
-#                     'message': "الملف الذي تم رفعه مسند إلى الأشخاص:",
-#                     'persons': associated_persons,
-#                     'error_message': f"لا يوجد اشخاص يحملوا أرقام الهويات الآتية:" if extracted_ids else None,
-#                     'wrongID' : extracted_ids
-#                 })
-#             else:
-#                 return render(request, 'operations/upload.html', {
-#                     'form': form,
-#                     'error_message': f"لا يوجد اشخاص يحملوا أرقام الهويات الآتية:",
-#                     'wrongID' : extracted_ids
-#                 })
-#         else:
-#             return render(request, 'operations/upload.html', {
-#                 'form': form,
-#                 'error_message': "ملف غير مدعم او لا يوجد ملفات تم رفعها"
-#             })
-#     else:
-#         form = DocumentForm()
-#     return render(request, 'operations/upload.html', {'form': form})
+            if associated_persons:
+                return render(request, 'operations/upload.html', {
+                    'form': form,
+                    'message': "الملف الذي تم رفعه مسند إلى الأشخاص:",
+                    'persons': associated_persons,
+                    'error_message': f"لا يوجد اشخاص يحملوا أرقام الهويات الآتية:" if extracted_ids else None,
+                    'wrongID' : extracted_ids
+                })
+            else:
+                return render(request, 'operations/upload.html', {
+                    'form': form,
+                    'error_message': f"لا يوجد اشخاص يحملوا أرقام الهويات الآتية:",
+                    'wrongID' : extracted_ids
+                })
+        else:
+            return render(request, 'operations/upload.html', {
+                'form': form,
+                'error_message': "ملف غير مدعم او لا يوجد ملفات تم رفعها"
+            })
+    else:
+        form = DocumentForm()
+    return render(request, 'operations/upload.html', {'form': form})
 
 
 @login_required
