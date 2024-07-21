@@ -10,17 +10,17 @@ from django.db.models import Sum, Count
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from datetime import datetime, timedelta
-from django.core.files.uploadedfile import SimpleUploadedFile
+#from django.core.files.uploadedfile import SimpleUploadedFile
 import pandas as pd
 from django.core.exceptions import ObjectDoesNotExist  
 from dateutil import parser
-from django.core.files.storage import FileSystemStorage
+#from django.core.files.storage import FileSystemStorage
 #import pytesseract
 #from PIL import Image
 #import re
-from .forms import *
+#from .forms import *
 #from django.db import transaction
-import os
+#import os
 
 
 @login_required
