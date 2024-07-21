@@ -10,15 +10,10 @@ from django.db.models import Sum, Count
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from datetime import datetime, timedelta
-from django.core.files.uploadedfile import SimpleUploadedFile
 import pandas as pd
-from django.core.exceptions import ObjectDoesNotExist  
 from dateutil import parser
-from django.core.files.storage import FileSystemStorage
-import pytesseract
-from PIL import Image
-import re
-from .utils import validate_date_format
+from django.core.exceptions import ObjectDoesNotExist  
+from .utils import *
 from .forms import *
 from django.db import transaction
 import os
@@ -946,20 +941,7 @@ def customersOut(request):
 
 
 
-def extract_id_number(image_path):
-    # Use pytesseract to do OCR on the image
-    text = pytesseract.image_to_string(Image.open(image_path))
-
-    # Use regex to find all sequences of exactly 9 digits, ignoring spaces
-    potential_ids = re.findall(r'\b\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\b', text)
-
-    # Remove spaces from the extracted numbers
-    potential_ids = [id_number.replace(' ', '') for id_number in potential_ids]
-
-    # Filter the list to find IDs that start with 9, 8, or 4
-    valid_ids = [id_number for id_number in potential_ids if id_number.startswith(('9', '8', '4'))]
-
-    return valid_ids    
+  
 
 @login_required
 def upload_document(request):
