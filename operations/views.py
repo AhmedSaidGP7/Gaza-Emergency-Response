@@ -15,11 +15,11 @@ import pandas as pd
 from django.core.exceptions import ObjectDoesNotExist  
 from dateutil import parser
 from django.core.files.storage import FileSystemStorage
-import pytesseract
-from PIL import Image
-import re
+#import pytesseract
+#from PIL import Image
+#import re
 from .forms import *
-from django.db import transaction
+#from django.db import transaction
 import os
 
 
