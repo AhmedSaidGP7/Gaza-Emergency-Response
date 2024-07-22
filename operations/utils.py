@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
-import pytesseract
-from PIL import Image
-import re
+#import pytesseract
+#from PIL import Image
+#import re
 
 
 
