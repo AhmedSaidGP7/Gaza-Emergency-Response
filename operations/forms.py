@@ -5,7 +5,7 @@ from . import views
 
 
 class DocumentForm(forms.ModelForm):
-    document = MultiFileField(min_num=1, max_num=5, max_file_size=1024*1024*5)  # حدّد العدد الأقصى للملفات والحجم الأقصى لكل ملف
+    document = MultiFileField(min_num=1, max_num=30, max_file_size=1024*1024*5)  # حدّد العدد الأقصى للملفات والحجم الأقصى لكل ملف
 
     class Meta:
         model = UploadedDocument

@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from dateutil import parser
 from django.core.exceptions import ObjectDoesNotExist  
-from .utils import validate_date_format
+from .utils import *
 from .forms import *
 from django.db import transaction
 import os
