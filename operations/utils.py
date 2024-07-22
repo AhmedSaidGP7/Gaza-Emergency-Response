@@ -1,12 +1,10 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
-try:
-    import pytesseract
-    from PIL import Image
-    import re
-except ImportError as e:
-    print(f"Error importing modules: {e}")
+import pytesseract
+from PIL import Image
+import re
+
 
 
 def validate_required_fields(data, required_fields):
