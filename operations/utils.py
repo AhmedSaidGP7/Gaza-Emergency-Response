@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
-import pytesseract
+from pytesseract import image_to_string
 #from PIL import Image
 #import re
 
@@ -35,7 +35,7 @@ def validate_date_format(date_str):
 
 def extract_id_number(image_path):
     # Use pytesseract to do OCR on the image
-    text = pytesseract.image_to_string(Image.open(image_path))
+    text = image_to_string(Image.open(image_path))
 
     # Use regex to find all sequences of exactly 9 digits, ignoring spaces
     potential_ids = re.findall(r'\b\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\b', text)
