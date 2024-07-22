@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
-from pytesseract import image_to_string
-#from PIL import Image
-#import re
+# from pytesseract import image_to_string
+# from PIL import Image
+# from re import findall
 
 
 
@@ -33,17 +33,17 @@ def validate_date_format(date_str):
 
 
 
-def extract_id_number(image_path):
-    # Use pytesseract to do OCR on the image
-    text = image_to_string(Image.open(image_path))
+# def extract_id_number(image_path):
+#     # Use pytesseract to do OCR on the image
+#     text = image_to_string(Image.open(image_path))
 
-    # Use regex to find all sequences of exactly 9 digits, ignoring spaces
-    potential_ids = re.findall(r'\b\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\b', text)
+#     # Use regex to find all sequences of exactly 9 digits, ignoring spaces
+#     potential_ids = findall(r'\b\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\b', text)
 
-    # Remove spaces from the extracted numbers
-    potential_ids = [id_number.replace(' ', '') for id_number in potential_ids]
+#     # Remove spaces from the extracted numbers
+#     potential_ids = [id_number.replace(' ', '') for id_number in potential_ids]
 
-    # Filter the list to find IDs that start with 9, 8, or 4
-    valid_ids = [id_number for id_number in potential_ids if id_number.startswith(('9', '8', '4'))]
+#     # Filter the list to find IDs that start with 9, 8, or 4
+#     valid_ids = [id_number for id_number in potential_ids if id_number.startswith(('9', '8', '4'))]
 
-    return valid_ids  
+#     return valid_ids  
