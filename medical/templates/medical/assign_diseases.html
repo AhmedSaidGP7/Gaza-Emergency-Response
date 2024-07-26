@@ -1,7 +1,7 @@
 {% extends "gaza/layout.html" %}
 {% load static %}
 {% block title %}
-اسناد مرض لـ مستفيد
+التصنيف الدولي للأمراض
 {% endblock %}
 {% block body %}
 
@@ -29,12 +29,22 @@
                                </div> <br>
                         {% endif %}
                        
-                          
+                        {% if errorMessage %}
+                        <div class="col-sm-12 d-flex justify-content-center">
+                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-danger"></i>
+                             <h5 class="text-danger">خطأ في رفع الملف</h5>
+                             <p>{{ errorMessage }}</p>
+                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                            </div>
+                           </div> <br>
+                        {% endif %}
+                        
                       <h4 class="card-title">
-                       اختيار الأمراض للمستفيدين
+                       تشخيص المستفيدين
                       </h4>
                       <p class="card-title-desc">
-                        يمكنك اختيار الأمراض للأشخاص المستفيدين من هنا
+                        يمكنك إضافة تشخيص مدرج في قائمة التصنيف الدولي للأمراض من هنا
                       </p>
                       <form action="{% url 'medical:assign_diseases' %}" method="POST" class="custom-validation" novalidate="">
                         {% csrf_token %} 
@@ -44,7 +54,7 @@
                             <label class="col-md-2 col-form-label " for="exampleDataList0">
                              اسم المستفيد
                             </label>
-                            <select required="" dir="rtl" class="col-md-10 form-control js-example-basic-multiple" name="names[]" multiple="multiple">
+                            <select  dir="rtl" class="col-md-10 form-control js-example-basic-multiple" name="names[]" multiple="multiple">
                                 {% for person in Persons %}
                                 <option value="{{person.id}}">{{person.name}}</option>
                                 {% endfor %}
@@ -58,7 +68,7 @@
                             <label class="col-md-2 col-form-label " for="exampleDataList0">
                              اسم المرض
                             </label>
-                            <select required="" dir="rtl" class="col-md-10 form-control js-example-basic-multiple" name="diseases[]" multiple="multiple">
+                            <select  dir="rtl" class="col-md-10 form-control js-example-basic-multiple" name="diseases[]" multiple="multiple">
                                 {% for disease in diseases %}
                                 <option value="{{disease.id}}">{{disease.diseases_name}}</option>
                                 {% endfor %}

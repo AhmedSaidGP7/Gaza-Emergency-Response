@@ -1,0 +1,83 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+رفع الوثائق الطبية
+{% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div dir="rtl" class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            {% if message %}
+                                <div class="col-sm-12 d-flex justify-content-center">
+                                    <div class="alert alert-success alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                                        <i class="uil uil-check-circle d-block display-4 mt-2 mb-3 text-success"></i>
+                                        <h5 class="text-success">تم بنجاح!</h5>
+                                        <p>{{ message }}</p>
+                                        <ul>
+                                            {% for person in persons %}
+                                                <li>{{ person }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                                    </div>
+                                </div>
+                                <br>
+                            {% endif %}
+
+                            {% if errorMessage %}
+                        <div class="col-sm-12 d-flex justify-content-center">
+                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-danger"></i>
+                             <h5 class="text-danger">خطأ في رفع الملف</h5>
+                             <p>{{ errorMessage }}</p>
+                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                            </div>
+                           </div> <br>
+                        {% endif %}
+
+                            <h4 class="card-title">رفع الوثائق الطبية</h4>
+                            <p class="card-title-desc">قم برفع الوثائق الطبية وإسنادها للمريض بشكل يدوي</p>
+                            <form action="{% url 'medical:uploadmedicaldocs' %}" enctype="multipart/form-data" method="POST" class="custom-validation" novalidate="">
+                                {% csrf_token %}
+                               <!-- Start Group label -->
+                                <div>
+                                    <!-- Start Group label -->
+                                    <div>
+                                    <label class="col-md-2 col-form-label " for="exampleDataList5">
+                                    المريض
+                                    </label>
+                                    <div class="col-md-10 form-control">                       
+                                    <select name="name" id="mySelect"  class="form-control selecttwoform" style="width: 100%;" required>
+                                        <option value="" disabled selected></option>
+                                    {% for person in Persons %}
+                                        <option value="{{person.id}}">{{person.name}}</option>
+                                    {% endfor %}
+                                    <!-- Add more options as needed -->
+                                </select>        
+                                    </div>
+                                    </div> <br>
+                                <!-- End Group label -->
+                                <br>
+                                <div class="mb-3">
+                                    <label class="form-label">الوثائق</label>
+                                    <input class="form-control" name="document" type="file" accept=".png, .jpg, .jpeg, .pdf" multiple required>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary waves-effect waves-light me-1" type="submit">رفع الملفات</button>
+                                </div>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

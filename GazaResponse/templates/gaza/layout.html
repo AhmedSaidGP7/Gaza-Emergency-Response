@@ -287,7 +287,7 @@
                 </a>
                </li>
                <li>
-                <a class="waves-effect" href="{% url 'operations:medical_upload' %}">
+                <a class="waves-effect" href="{% url 'medical:uploadmedicaldocs' %}">
                   <i class="fas fa-file-medical"></i>
                  <span>
                   رفع تقرير طبي
@@ -296,9 +296,36 @@
                </li>
                <li>
                 <a class="waves-effect" href="{% url 'medical:assign_diseases'%}">
-                  <i class="fas fa-disease"></i>
-                 <span>
-                  تشخيص بأمراض شائعة
+                  <i dir="rtl" class="fas fa-book-medical"></i>
+                 <span dir="rtl">
+                  تشخيص ICD-11   
+                </span>
+                </a> 
+               </li>
+
+               <li>
+                <a class="waves-effect" href="{% url 'medical:diagnose'%}">
+                  <i dir="rtl" class="fas fa-disease"></i>
+                 <span dir="rtl">
+                  تشخيص مستفيد
+                </span>
+                </a> 
+               </li>
+
+               <li>
+                <a class="waves-effect" href="{% url 'medical:addpost'%}">
+                  <i dir="rtl" class="fas fa-briefcase-medical"></i>
+                 <span dir="rtl">
+                  تدخل طبي جديد 
+                </span>
+                </a> 
+               </li>
+
+               <li>
+                <a class="waves-effect" href="{% url 'medical:allposts'%}">
+                  <i dir="rtl" class="fas fa-file-signature"></i>
+                 <span dir="rtl">
+                  متابعة التدخلات الطبية 
                 </span>
                 </a> 
                </li>

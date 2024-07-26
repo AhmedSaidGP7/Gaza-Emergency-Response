@@ -110,9 +110,9 @@ WSGI_APPLICATION = 'CSF.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'GER',                      # Database name
-#         'USER': 'ahmedsaidgp7',       # Replace with your PostgreSQL username
-#         'PASSWORD': 'Fuckworld1*fdkfld',   # Replace with your PostgreSQL password
+#         'NAME': 'csf_db',                      # Database name
+#         'USER': 'admin',       # Replace with your PostgreSQL username
+#         'PASSWORD': 'HelloDaddy*5',   # Replace with your PostgreSQL password
 #         'HOST': 'localhost',                # Assuming the database is local
 #         'PORT': '5432',                     # PostgreSQL default port
 #     }

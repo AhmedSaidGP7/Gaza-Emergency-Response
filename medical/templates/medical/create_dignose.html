@@ -1,0 +1,139 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+تشخيص مصاب
+{% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div dir="rtl" class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                     <div class="card-body">
+                        {% if message %}
+                            <div class="col-sm-12 d-flex justify-content-center">
+                                <div class="alert alert-success alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                                 <i class="uil uil-check-circle d-block display-4 mt-2 mb-3 text-success">
+                                 </i>
+                                 <h5 class="text-success">
+                                  تم بنجاح!
+                                 </h5>
+                                 <p>
+                                  {{message}}
+                                 </p>
+                                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                                 </button>
+                                </div>
+                               </div> <br>
+                        {% endif %}
+
+                        {% if errorMessage %}
+                        <div class="col-sm-12 d-flex justify-content-center">
+                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-text-danger">
+                             </i>
+                             <h5 class="text-text-danger">
+                             خطأ في الإدخال
+                             </h5>
+                             <p>
+                              {{errorMessage}}
+                             </p>
+                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                             </button>
+                            </div>
+                           </div> <br>
+                        {% endif %}
+                       
+                      <h4 class="card-title">
+                       إضافة تشخيص لمستفيد
+                      </h4>
+                      <p class="card-title-desc">
+                       برجاء إدخال البيانات الآتية:
+                      </p>
+                      
+                         <br>
+                      <form action="{% url 'medical:diagnose' %}" enctype="multipart/form-data" method="POST" class="custom-validation" novalidate="">
+                        {% csrf_token %} 
+                        
+                    <!-- Start Group label -->
+                     <div>
+                        <label class="col-md-2 col-form-label " for="exampleDataList0">
+                         اسم المستفيد
+                        </label>
+                        <div class="col-md-10 form-control">                       
+                        <select name="patient" id="mySelect"  class="form-control selecttwoform" style="width: 100%;" >
+                            <option value="" disabled selected>اختر الاسم</option>
+                        {% for person in Persons %}
+                            <option value="{{person.id}}">{{person.name}}</option>
+                        {% endfor %}
+                        <!-- Add more options as needed -->
+                    </select>        
+                        </div>
+                       </div> <br>
+                    <!-- End Group label -->
+
+                       
+                   <!-- Start a new label -->
+                   <div class="mb-3">
+                    <label class="col-md-2 col-form-label">
+                        نوع التشخيص  
+                    </label>
+                    <div class="col-md-10">
+                        <select name="diagnose_type" class="form-select" >
+                            <option value="" selected disabled></option>
+                            <option value="عيادة متنقلة">
+                                عيادة متنقلة
+                            </option>
+                            <option value="عيادة خارجية">
+                                عيادة خارجية
+                            </option>
+                            <option value="الهلال الأحمر">
+                                 الهلال الأحمر
+                            </option>
+                            <option value="تشخيص المعبر">
+                                تشخيص المعبر
+                           </option>
+                           <option value="طبيب في غزة">
+                            طبيب في غزة 
+                       </option>
+                           
+                        </select>
+                    </div>
+                </div>
+                <!-- End a new label -->
+
+
+                       <!-- Start Diagnosis label -->
+                        <div class="mt-3">
+                        <label class="form-label">
+                         التشخيص
+                        </label>
+                        <textarea name="diagnosis" class="form-control"  placeholder="قم بإدخال التشخيص" rows="3"></textarea>
+                       </div> <br>
+
+                    <!-- End Diagnosis label-->
+
+                   
+
+                    <div>
+                        <div>
+                         <button class="btn btn-primary waves-effect waves-light me-1" type="submit">
+                          إرسال
+                         </button>
+                         <button class="btn btn-secondary waves-effect" type="reset">
+                          محو الحقول
+                         </button>
+                        </div>
+                       </div>
+                      </form>
+                     </div>
+                    </div>
+                   </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

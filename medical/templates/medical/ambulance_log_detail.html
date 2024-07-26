@@ -1,0 +1,171 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+تعديل بلاغ الإسعاف
+{% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div dir="rtl" class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                     <div class="card-body">
+                        {% if message %}
+                            <div class="col-sm-12 d-flex justify-content-center">
+                                <div class="alert alert-success alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                                 <i class="uil uil-check-circle d-block display-4 mt-2 mb-3 text-success">
+                                 </i>
+                                 <h5 class="text-success">
+                                  تم بنجاح!
+                                 </h5>
+                                 <p>
+                                  {{ message }}
+                                 </p>
+                                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                                 </button>
+                                </div>
+                               </div> <br>
+                        {% endif %}
+
+                        {% if errorMessage %}
+                        <div class="col-sm-12 d-flex justify-content-center">
+                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-text-danger">
+                             </i>
+                             <h5 class="text-text-danger">
+                             خطأ في الإدخال
+                             </h5>
+                             <p>    
+                                {{ errorMessage }}
+                             </p>
+                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                             </button>
+                            </div>
+                           </div> <br>
+                        {% endif %}
+                       
+                      <h4 class="card-title">
+                        إستكمال بلاغ الإسعاف الخاص بـ {{log.casualty}} رقم {{log.report_num}}
+                      </h4>
+                      <p class="card-title-desc">
+                       برجاء إدخال البيانات الآتية:
+                      </p>
+                      <a href="{% url 'medical:ambulance_log' %}">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>إطلاع على الطلبات المسجلة</span><br>
+                         </a>
+
+                         <br>
+                      <form action="{% url 'medical:ambulance_log_detail' log.id %}" enctype="multipart/form-data" method="POST" class="custom-validation" novalidate="">
+                        {% csrf_token %} 
+                        <div class="mb-3">
+                            <label class="form-label">وقت وصول الإسعاف</label>
+                            <input autocomplete="off" class="form-control" name="arrival_time" placeholder="قم بإدخال وقت الوصول" type="time" required="" value="{{ log.arrival_time|date:'H:i' }}">
+
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">اسم المسعف</label>
+                            <input autocomplete="off" class="form-control" name="paramedic_name" placeholder="قم بإدخال اسم المسعف" required="" type="text" value="{{ log.paramedic_name }}">      
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">رقم هاتف المسعف</label>
+                            <input autocomplete="off" class="form-control" name="paramedic_phone" placeholder="قم بإدخال رقم هاتف المسعف" required="" type="text" value="{{ log.paramedic_phone }}">      
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">رقم سيارة الاسعاف</label>
+                            <input autocomplete="off" class="form-control" name="ambulance_code" placeholder="قم بإدخال رقم سيارة الإسعاف" required="" type="text" value="{{ log.ambulance_code }}">      
+                        </div>
+
+                       <!-- Start a new label -->
+                        <div class="mb-3">
+                            <label class="col-md-2 col-form-label">
+                                الإجراء المتخذ 
+                            </label>
+                            <div class="col-md-10">
+                                <select name="status" class="form-select" required>
+                                    <option value="" disabled {% if log.status == "" %}selected{% endif %}></option>
+                                    <option value="تم تحويله للمستشفى" {% if log.status == "تم تحويله للمستشفى" %}selected{% endif %}>
+                                        تم تحويله للمستشفى
+                                    </option>
+                                    <option value="رفض المسعف إستلامه" {% if log.status == "رفض المسعف إستلامه" %}selected{% endif %}>
+                                        رفض المسعف إستلامه
+                                    </option>
+                                    <option value="لم يحضر الإسعاف" {% if log.status == "لم يحضر الإسعاف" %}selected{% endif %}>
+                                        لم يحضر الإسعاف
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- End a new label -->
+
+
+                        <div class="mb-3">
+                            <label class="form-label">التكلفة (إن وجدت)</label>
+                            <input autocomplete="off" class="form-control" name="fees" placeholder="قم بإدخال رقم هاتف المسعف" required="" value="0">      
+                        </div>
+
+                        <!-- Start Group label -->
+                        <div>
+                            <!-- Start Group label -->
+                            <div>
+                              <label class="col-md-2 col-form-label " for="exampleDataList5">
+                               المرافق (إذا وجد)
+                              </label>
+                              <div class="col-md-10 form-control">                       
+                              <select name="companion" id="mySelect"  class="form-control selecttwoform" style="width: 100%;" required>
+                                  <option value="" disabled selected></option>
+                                  <option value="0">لا يوجد مرافقين</option>
+                              {% for person in People %}
+                                  <option value="{{person.id}}" {% if person == log.companion %} selected {% endif %}>{{person.name}}</option>
+                              {% endfor %}
+                              <!-- Add more options as needed -->
+                          </select>        
+                              </div>
+                             </div> <br>
+                          <!-- End Group label -->
+
+                        <div>
+                            <label class="col-md-2 col-form-label " for="exampleDataList0">مستشفى التحويل (إن وجدت)</label>
+                            <div class="col-md-10 form-control">                       
+                                <select name="Hospital" id="mySelect1" class="form-control selecttwoform" style="width: 100%;" required>
+                                    <option value="" selected disabled></option>
+                                    <option value="0" >لم يذهب للمستشفى</option>
+                                    {% for Hospital in Hospitals %}
+                                        <option value="{{ Hospital.id }}" {% if Hospital == log.hospital %} selected {% endif %}>
+                                            {{ Hospital.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>        
+                            </div>
+                        </div> <br>
+
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">المرفقات</label>
+                            <input name="uploadedfile" class="form-control" type="file" id="formFile">
+                        </div>
+
+                        <div>
+                            <div>
+                                <button class="btn btn-primary waves-effect waves-light me-1" type="submit">
+                                    إرسال
+                                </button>
+                                <button class="btn btn-secondary waves-effect" type="reset">
+                                    محو الحقول
+                                </button>
+                            </div>
+                        </div>
+                      </form>
+                     </div>
+                    </div>
+                   </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -71,7 +71,7 @@ class Apartment(models.Model):
     apartmentAccessibility = models.BooleanField()
     code = models.CharField(max_length = 64, blank=True)
     def __str__(self):
-        return f'{"شقة"} {self.apartmentNum} - {self.whichBuilding} - {self.whichBuilding.bshelter}'
+        return f'{"شقة"} {self.apartmentNum} - {self.whichBuilding} '
 
 # This class represents the family or group to which the individual belongs.
 # Since each person affected has companions connecting them, it is assumed that

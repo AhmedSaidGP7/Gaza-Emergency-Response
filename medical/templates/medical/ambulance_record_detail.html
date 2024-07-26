@@ -1,0 +1,114 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+قائمة بلاغات الاسعافات
+{% endblock %}
+{% block body %}
+
+<div dir="rtl" class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- end page title -->
+            <div class="row">
+                <div class="col-lg-12">
+                 <div class="card">
+                  <div class="card-body">
+                   <div class="invoice-title">
+                    <h4 class="float-end font-size-16">
+                    البلاغ رقم {{log.report_num}} الخاص بـ {{log.casualty}}
+                    </h4> <br>
+
+                   </div>
+                  
+                   <hr class="my-4">
+                   <div class="row">
+                    <div class="col-sm-6">
+                     <div class="text-muted">
+                      <h5 class="font-size-16 mb-3">
+                       الإجراء: {{log.status}}
+                      </h5>
+                      <hr class="my-4">
+                      <h6>
+                      
+                        وقت تسجيل طلب الإسعاف : {{log.date}}
+                    
+                      </h6>
+                      <hr class="my-4">
+                      <h6>
+                       {% if log.arrival_time %} 
+                        وقت وصول الإسعاف : {{log.arrival_time}}
+                       {% endif %}
+                      </h6>
+                      <hr class="my-4">
+                      <h6>
+                       {% if log.paramedic_name %} 
+                       اسم المسعف : {{log.paramedic_name}}
+                       {% endif %}
+                      </h6>
+
+                      <hr class="my-4">
+                      <h6>
+                       {% if log.paramedic_phone %} 
+                       رقم هاتف المسعف : {{log.paramedic_phone}}
+                       {% endif %}
+                      </h6>
+
+                      <hr class="my-4">
+                      <h6>
+                       {% if log.ambulance_code %} 
+                       كود سيارة الإسعاف: {{log.ambulance_code}}
+                       {% endif %}
+                      </h6>
+                       
+                      
+                      <hr class="my-4">
+                      <h6>
+                       {% if log.hospital %} 
+                       مستشفى التحويل  : {{log.hospital}}
+                       {% endif %}
+                      </h6>
+                       
+                      <hr class="my-4">
+                      <h6>
+                       {% if log.fees %} 
+                        الرسوم  : {{log.fees}}
+                       {% endif %}
+                      </h6>
+
+                      <hr class="my-4">
+                      <h6>
+                       {% if log.companion %} 
+                        المرافق  : {{log.companion}}
+                       {% endif %}
+                      </h6>
+                      <hr class="my-4">
+                      <h6>
+                        {% if log.scannedDocs != '' and log.scannedDocs != 'False' %}
+                        المرفقات  :  <a class="fw-medium" href="{{ log.scannedDocs.url }}" target="_blank">
+                            <i class="bx bx-archive-out"></i>
+                        </a>
+                       {% endif %}
+                      </h6>
+
+                      <a href="{% url 'medical:ambulance_log_detail' log.id %}" class="btn btn-warning btn-rounded waves-effect waves-light">
+                        تعديل البلاغ
+                    </a>
+                  
+                       
+                     </div>
+                    </div>
+              
+                   </div>
+
+          
+                  </div>
+                 </div>
+                </div>
+               </div>
+           
+        </div>
+        <!-- container-fluid -->
+    </div>
+</div>
+
+{% endblock %}

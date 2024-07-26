@@ -1,0 +1,154 @@
+{% extends "gaza/layout.html" %}
+{% load static %}
+{% block title %}
+تدخل طبي جديدة
+{% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            
+
+
+
+            
+            <div dir="rtl" class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                     <div class="card-body">
+                        {% if message %}
+                            <div class="col-sm-12 d-flex justify-content-center">
+                                <div class="alert alert-success alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                                 <i class="uil uil-check-circle d-block display-4 mt-2 mb-3 text-success">
+                                 </i>
+                                 <h5 class="text-success">
+                                  تم بنجاح!
+                                 </h5>
+                                 <p>
+                                  تم إضافة التدخل الطبي
+                                 </p>
+                                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                                 </button>
+                                </div>
+                               </div> <br>
+                        {% endif %}
+
+                        {% if errorMessage %}
+                        <div class="col-sm-12 d-flex justify-content-center">
+                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-text-danger">
+                             </i>
+                             <h5 class="text-text-danger">
+                             خطأ في الإدخال
+                             </h5>
+                             <p>    
+                                {{ errorMessage }}
+                             </p>
+                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                             </button>
+                            </div>
+                           </div> <br>
+                        {% endif %}
+                       
+                      <h4 class="card-title">
+                       تدخل طبي جديد
+                      </h4>
+                      <p class="card-title-desc">
+                        برجاء ملئ الحقول الآتية
+                      </p>
+                      <form action="{% url 'medical:addpost' %}" enctype="multipart/form-data" method="POST" class="custom-validation" novalidate="">
+                        {% csrf_token %} 
+                      
+                         <!-- Start the new label-->
+                        <div class="mb-3">
+                            <label class="form-label">
+                           نوع التدخل الطبي
+                            </label>
+                            <input class="form-control" name="title" placeholder="قم بإدخال ملخص يصلح كـعنوان للتدخل الطبي"  type="text" required>      
+                        </div>
+                            <!-- End the  label -->
+                         <!-- Start the Entry date label-->
+                         <div class="mb-3">
+                            <label class="col-md-2 col-form-label" for="example-date-input">
+                                ناريخ التدخل الطبي
+                            </label>
+                            <div class="col-md-10">
+                             <input class="form-control" name="date" id="example-date-input" type="date" required>
+                            </div>
+                           </div>
+                        <!-- End the Entry date label-->
+
+                    <!-- Start Group label -->
+                     <div>
+                        <label class="col-md-2 col-form-label " for="exampleDataList0">
+                         اسم المستفيد
+                        </label>
+                        <div class="col-md-10 form-control">                       
+                        <select name="thename" id="mySelect" class="form-control selecttwoform" style="width: 100%;" required >
+                            <option value="" disabled selected>اختر الأسم</option>
+                        {% for Person in Persons %}
+                            <option value="{{Person.id}}">{{Person}}</option>
+                        {% endfor %}
+                        
+                        <!-- Add more options as needed -->
+                    </select>        
+                        </div>
+                       </div> <br>
+                    <!-- End Group label -->
+
+                        <!-- Start a new label -->
+                        <div class="mb-3">
+                            <label class="col-md-2 col-form-label">
+                            مدى الآهمية
+                            </label>
+                            <div class="col-md-10">
+                             <select name="theType" class="form-select" required >
+                              <option value="" disabled selected> </option>
+                              <option value="True">
+                               عاجلة
+                              </option>
+                              <option value="False">
+                               عادية
+                              </option>
+                             </select>
+                            </div>
+                           </div>
+                       <!-- End a new label -->
+
+                    <!-- Start Ticket label -->
+                    <div class="mt-3">
+                        <label class="form-label">
+                         تفاصيل التدخل / الإجراء
+                        </label>
+                        
+                        <textarea  name="content" class="form-control" placeholder="قم بإدخال التفاصيل" rows="3" required></textarea>
+                       </div> <br>
+
+                    <!-- End Ticket label-->
+
+
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">المرفقات</label>
+                        <input name="uploadedfile"  class="form-control" type="file" id="formFile">
+                      </div>
+                       <div>
+                        <div>
+                         <button class="btn btn-primary waves-effect waves-light me-1" type="submit">
+                          إرسال
+                         </button>
+                         <button class="btn btn-secondary waves-effect" type="reset">
+                          محو الحقول
+                         </button>
+                        </div>
+                       </div>
+                      </form>
+                     </div>
+                    </div>
+                   </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

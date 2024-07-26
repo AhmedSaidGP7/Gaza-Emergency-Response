@@ -126,4 +126,4 @@ def addComment(request):
     )
     case.status = 'Ongoing'
     case.save()
-    return HttpResponseRedirect(reverse('case_management:cases'))
+    return HttpResponseRedirect(reverse('case_management:ticket_detail',args=[case.id]))

@@ -56,12 +56,12 @@
 
                     <!-- Start Group label -->
                      <div>
-                        <label class="col-md-2 col-form-label selecttwoform" for="exampleDataList0">
+                        <label class="col-md-2 col-form-label " for="exampleDataList0">
                          اسم المستفيد
                         </label>
                         <div class="col-md-10 form-control">                       
                         <select name="thename" id="mySelect" class="form-control selecttwoform" style="width: 100%;" required>
-                            <option value="" disabled selected>اختر الأسم</option>
+                            <option value="" disabled selected></option>
                         {% for Person in Persons %}
                             <option value="{{Person.id}}">{{Person}}</option>
                         {% endfor %}
@@ -75,11 +75,11 @@
                         <!-- Start a new label -->
                         <div class="mb-3">
                             <label class="col-md-2 col-form-label">
-                             حالة الشكوى
+                              مدى الأهمية
                             </label>
                             <div class="col-md-10">
                              <select name="theType" class="form-select" required>
-                              <option value="" disabled selected>نوع المشكلة</option>
+                              <option value="" disabled selected> </option>
                               <option value="True">
                                عاجلة
                               </option>

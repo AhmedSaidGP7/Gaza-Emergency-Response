@@ -34,13 +34,28 @@
                                 </div>
                                </div> <br>
                         {% endif %}
-                       
+                        {% if errorMessage %}
+                        <div class="col-sm-12 d-flex justify-content-center">
+                            <div class="alert alert-danger alert-dismissible fade show mt-4 px-4 mb-0 text-center" role="alert">
+                             <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-text-danger">
+                             </i>
+                             <h5 class="text-text-danger">
+                             خطأ في الإدخال
+                             </h5>
+                             <p>
+                               {{errorMessage}}
+                             </p>
+                             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                             </button>
+                            </div>
+                           </div> <br>
+                        {% endif %}
                           
                       <h4 class="card-title">
                        اختيار سكن مستفيد
                       </h4>
                       <p class="card-title-desc">
-                        يمكنك اختيار سكن مستفيد او تعديل مكان سكنه من هنا
+                        يمكنك إختيار سكن المستفيد, تعديل مكان سكنه, او إعادة تسكينه بعد خروجه من هنا
                       </p>
                       <form action="{% url 'operations:accommodation' %}"  method="POST" class="custom-validation" novalidate="">
                         {% csrf_token %} 
@@ -53,7 +68,7 @@
                          اسم المستفيد
                         </label>
 
-                        <select required="" dir="rtl" class="col-md-10 form-control js-example-basic-multiple" name="names[]" multiple="multiple">
+                        <select required dir="rtl" class="col-md-10 form-control js-example-basic-multiple" name="names[]" multiple="multiple">
                             {% for member in Person %}
                             <option value="{{member.id}}">{{member.name}}</option>
                         {% endfor %}
@@ -69,7 +84,7 @@
                         مكان السكن
                         </label>
                         <div class="col-md-10">                       
-                        <select name="Apartment" id="mySelect2" class="col-md-10 form-control selecttwoform" style="width: 100%;" required>
+                        <select required name="Apartment" id="mySelect2" class="col-md-10 form-control selecttwoform" style="width: 100%;" >
                             <option value="" disabled selected>اختر الوحدة/الغرفة</option>
                         {% for Apartment in Apartments %}
                             <option value="{{Apartment.id}}">{{Apartment}}</option>

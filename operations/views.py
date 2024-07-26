@@ -360,6 +360,24 @@ def addPerson(request):
                 "Apartments": Apartment.objects.all(),   
                 "Group" : Group.objects.all(),  
                 })
+
+        # Convert dates to datetime objects for comparison
+        birthday_date = datetime.strptime(birthday, '%Y-%m-%d')
+        entrydate_date = datetime.strptime(entrydate, '%Y-%m-%d')
+        hostingStartDate_date = datetime.strptime(hostingStartDate, '%Y-%m-%d')
+        
+        # Validate dates
+        is_valid, error_message = validate_dates(birthday, entrydate, hostingStartDate)
+        if not is_valid:
+            return render(request, 'operations/addperson.html', {
+                "errorMessage": error_message,
+                "users": User.objects.all(),
+                "Hospitals": Hospital.objects.all(),
+                "Apartments": Apartment.objects.all(),
+                "Group": Group.objects.all(),
+            })
+
+
         theType = request.POST["theType"]
         if not theType:
                 return render(request, 'operations/addperson.html', {
@@ -529,6 +547,22 @@ def addCasualty(request):
                 "Hospitals": Hospital.objects.all(),
                 "Apartments": Apartment.objects.all(),   
                 })
+
+         # Convert dates to datetime objects for comparison
+        birthday_date = datetime.strptime(birthday, '%Y-%m-%d')
+        entrydate_date = datetime.strptime(entrydate, '%Y-%m-%d')
+        hostingStartDate_date = datetime.strptime(hostingStartDate, '%Y-%m-%d')
+        
+        # Validate dates
+        is_valid, error_message = validate_dates(birthday, entrydate, hostingStartDate)
+        if not is_valid:
+            return render(request, 'operations/addcasualty.html', {
+                "errorMessage": error_message,
+                "users": User.objects.all(),
+                "Hospitals": Hospital.objects.all(),
+                "Apartments": Apartment.objects.all(),
+            })
+
         theType = 'مصاب '
         gender = request.POST.get("gender", None)
         # Check this value is not empty
@@ -682,11 +716,62 @@ def accommodation(request):
     else:
         # Handle the POST data
         person_ids = request.POST.getlist("names[]")
-        apartment_id = request.POST["Apartment"]
-        apartment_instance = Apartment.objects.get(id=apartment_id)
+        apartment_id = request.POST.get("Apartment")
+        if not person_ids or not apartment_id:
+            return render(request, 'operations/accommodation.html', {
+                "errorMessage": f".حدث خطأ اثناء الإدخال, برجاء التواصل مع الدعم الفني. ",
+                "Person": Person.objects.all(),
+                "users": User.objects.all(),
+                "Person": Person.objects.all(),
+                "Apartments": Apartment.objects.all(),
+            
+        })
+        if not apartment_id.isdigit():
+            return render(request, 'operations/accommodation.html', {
+                    "errorMessage": f".حدث خطأ اثناء الإدخال, برجاء التواصل مع الدعم الفني. ",
+                    "Person": Person.objects.all(),
+                    "users": User.objects.all(),
+                    "Person": Person.objects.all(),
+                    "Apartments": Apartment.objects.all(),
+                   
+                })
 
-        
-        
+        try:
+            apartment_instance = Apartment.objects.get(id=apartment_id)
+        except ObjectDoesNotExist:
+            return render(request, 'operations/accommodation.html', {
+                "errorMessage": f"حدث خطأ اثناء الإدخال, برجاء التواصل مع الدعم الفني",
+                "Person": Person.objects.all(),
+                "users": User.objects.all(),
+                "Person": Person.objects.all(),
+                "Apartments": Apartment.objects.all(),
+               
+            })    
+
+        # Checks if person exists
+        for person_id in person_ids:
+            if not person_id.isdigit() or not person_id:
+                return render(request, 'operations/accommodation.html', {
+                    "errorMessage": f".حدث خطأ اثناء الإدخال, برجاء التواصل مع الدعم الفني. ",
+                    "Person": Person.objects.all(),
+                    "users": User.objects.all(),
+                    "Person": Person.objects.all(),
+                    "Apartments": Apartment.objects.all(),
+                   
+                })
+
+            try:
+                person = Person.objects.get(id=person_id)
+              
+            except ObjectDoesNotExist:
+                return render(request, 'operations/accommodation.html', {
+                    "errorMessage": f"حدث خطأ اثناء الإدخال, برجاء التواصل مع الدعم الفني",
+                    "Person": Person.objects.all(),
+                    "users": User.objects.all(),
+                    "Person": Person.objects.all(),
+                    "Apartments": Apartment.objects.all(),
+                    
+                })
         # Update accommodation for each selected person
         for person_id in person_ids:
             Person.objects.filter(id=person_id).update(accommodation=apartment_instance, status = "داخل السكن")
@@ -898,8 +983,48 @@ def removePerson(request):
         # Handle the POST data
         person_ids = request.POST.getlist("names[]")
         date = request.POST["thedate"]
-        status = request.POST["status"]
+         # Validate the date format
+        if not validate_date_format(date) :
+            error_message = 'احدى التواريخ مدخلة بشكل غير صحيح، يجب أن يكون بتنسيق MM/DD/YYYY'
+            return render(request, 'operations/remove_person.html', {
+                "errorMessage": error_message,
+                "Person": Person.objects.all()
+                })
+
+        current_date = datetime.now()
+        check_date = datetime.strptime(date, '%Y-%m-%d')
+        if check_date > current_date:
+            error_message = 'التواريخ لا يجب أن تكون في المستقبل'
+            return render(request, 'operations/remove_person.html', {
+                "errorMessage": error_message,
+                "Person": Person.objects.all()
+                })
+
+        status = request.POST.get("status")
+        if not status or not person_ids:
+            return render(request, 'operations/remove_person.html', {
+                "errorMessage": 'حدث خطأ عند الإدخال',
+                "Person": Person.objects.all()
+                })
+
         uploadedfile = request.FILES.get("uploadedfile", False)
+        # Check that person exists
+        for person_id in person_ids:
+            if not person_id.isdigit():
+                return render(request, 'operations/remove_person.html', {
+                    "errorMessage": f".حدث خطأ اثناء الإدخال, برجاء التواصل مع الدعم الفني. ",
+                    "Person": Person.objects.all()
+                })
+
+            try:
+                person = Person.objects.get(id=person_id)
+              
+            except ObjectDoesNotExist:
+                return render(request, 'operations/remove_person.html', {
+                    "errorMessage": f"حدث خطأ اثناء الإدخال, برجاء التواصل مع الدعم الفني",
+                    "Person": Person.objects.all()
+                })
+
         # Update accommodation for each selected person
         for person_id in person_ids:
             logOutLogs.objects.create(
@@ -1005,16 +1130,36 @@ def upload_document(request):
         form = DocumentForm()
     return render(request, 'operations/upload.html', {'form': form})
 
-
 @login_required
 def ManualUploadDocument(request):
     if request.method == 'GET':
         return render(request, 'operations/manual_upload.html', {'Persons': Person.objects.all()})
 
-    elif request.method == 'POST' and request.FILES:
+    elif request.method == 'POST':
         # Handle the POST data
         person_ids = request.POST.getlist("names[]")
         uploaded_files = request.FILES.getlist("document")
+
+        # Check if uploaded_files is empty
+        if not uploaded_files:
+            return render(request, 'operations/manual_upload.html', {
+                "errorMessage": "يجب رفع مستند واحد على الأقل.",
+                "Persons": Person.objects.all(),
+            })
+
+        # Check if person_ids is empty or contains non-digit values
+        if not person_ids:
+            return render(request, 'operations/manual_upload.html', {
+                "errorMessage": "يجب تحديد أسماء المستفيدين.",
+                "Persons": Person.objects.all(),
+            })
+
+        for person_id in person_ids:
+            if not person_id.isdigit():
+                return render(request, 'operations/manual_upload.html', {
+                    "errorMessage": "حدث خطأ في الرفع، معرف الشخص غير صحيح.",
+                    "Persons": Person.objects.all(),
+                })
 
         # Update accommodation for each selected person
         for person_id in person_ids:
@@ -1030,3 +1175,6 @@ def ManualUploadDocument(request):
             "message": "تم رفع المستندات بنجاح",
             "Persons": Person.objects.all(),
         })
+
+    # Handle case where method is not GET or POST
+    return render(request, 'operations/manual_upload.html', {'Persons': Person.objects.all()})

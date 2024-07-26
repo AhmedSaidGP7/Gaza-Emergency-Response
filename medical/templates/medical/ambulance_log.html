@@ -21,13 +21,10 @@
                                             <th scope="col">#</th>
                                             <th scope="col">المصاب</th>
                                             <th scope="col">رقم البلاغ</th>
-                                            <th scope="col">رقم سيارة الاسعاف</th>
-                                            <th scope="col">اسم المسعف</th>
-                                            <th scope="col">رقم المسعف</th>
-                                            <th scope="col">الرسوم</th>
-                                            <th scope="col">التقرير</th>
-                                            <th scope="col">المستشفى</th>
+                                            <th scope="col">حالة البلاغ</th>
                                             <th scope="col">التاريخ</th>
+                                            <th scope="cold">اجراء</th>
+                                            <th scope="cold">تفاصيل البلاغ</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -37,21 +34,31 @@
                                                 <td>{{forloop.counter}}</td>
                                                 <td>{{ record.casualty }}</td>
                                                 <td>{{ record.report_num }}</td>
-                                                <td>{{ record.ambulance_code }}</td>
-                                                <td>{{ record.paramedic_name }}</td>
-                                                <td>{{ record.paramedic_phone }}</td>
-                                                <td>{{ record.fees }}</td>
                                                 <td>
-                                                    {% if record.scannedDocs != '' and record.scannedDocs != 'False' %}
-                                                        <a class="fw-medium" href="{{ record.scannedDocs.url }}" target="_blank">
-                                                            <i class="bx bx-archive-out"></i>
-                                                        </a>
+                                                    {% if record.status == 'تم تحويله للمستشفى' %}
+                                                    <span class="badge rounded-pill bg-success">
+                                                        {{record.status}}
+                                                       </span>
+
+                                        
                                                     {% else %}
-                                                        <i class="fas fa-times"></i>
+                                                    <span class="badge bg-danger">
+                                                        {{record.status}}
+                                                       </span>
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ record.hospital }}</td>
                                                 <td>{{ record.date }}</td>
+                                                <td>
+                                                    <a href="{% url 'medical:ambulance_log_detail' record.id %}" class="btn btn-warning btn-rounded waves-effect waves-light">
+                                                        تعديل البلاغ
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'medical:ambulance_record_detail' record.id %}" class="btn btn-info btn-rounded waves-effect waves-light">
+                                                        إطلاع
+                                                    </a>
+                                                </td>
+                                                
                                              
                                             </tr>
                                             <!-- End new record -->
