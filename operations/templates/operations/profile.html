@@ -296,10 +296,198 @@
             <h5 class="font-size-16 mb-3">
              الملف الصحي للمريض 
             </h5>
-            
-            {% if diseases %}
+            {% if Diagnoses %}
+            <hr class="my-4">
             <h5 class="font-size-16 my-3">
-             الأمراض
+             التشخيصات
+            </h5>
+
+            <!-- Start the table -->
+
+            <div class="table-responsive">
+               <table class="table mb-0">
+                <thead>
+                  
+                 <tr>
+                  <th>
+                   #
+                  </th>
+                  <th>
+                     
+                  التشخيص
+                  </th>
+                 
+                 
+                 </tr>
+                </thead>
+                <tbody>
+
+                 {%for Diagnose in Diagnoses %}
+                 <tr>
+                  <th>
+                     {{forloop.counter}}
+                  </th>
+                  <th>
+                  <p>
+                  
+                  {{Diagnose.diagnose}}
+                  
+                  </p>
+                  </th>
+                  <th>
+                  
+                 </tr>
+                 {% endfor  %}
+              
+                </tbody>
+               </table>
+              </div>
+            <!-- End the table-->
+            {% endif %}
+
+            {% if Medical_Interventions %}
+            <hr class="my-4">
+            <h5 class="font-size-16 my-3">
+             التدخلات الطبية
+            </h5>
+
+              <!-- Start the table -->
+
+              <div class="table-responsive">
+               <table class="table mb-0">
+                <thead>
+                  
+                 <tr>
+                  <th>
+                   #
+                  </th>
+                  <th>
+                     
+                  نوع التدخل الطبي
+                  </th>
+                  <th>
+                   رابط التدخل الطبي
+                  </th>
+                  <th>
+                    تاريخ تسجيل التدخل
+                    </th>
+  
+                  <th>
+                     حالته
+                    </th>
+                 
+                 </tr>
+                </thead>
+                <tbody>
+
+                 {%for Medical_Intervention in Medical_Interventions %}
+                 <tr>
+                  <th>
+                     {{forloop.counter}}
+                  </th>
+                  <th>
+                  <p>
+                  <a href="{% url 'medical:ticket_detail' Medical_Intervention.id %}">   
+                  {{Medical_Intervention.title}}
+                  </a>
+                  </p>
+                  </th>
+                  <th>
+                   <a href="{% url 'medical:ticket_detail' Medical_Intervention.id %}">
+                     اضغط هنا للإطلاع على تفاصيل التدخل
+                   </a>
+                  </th>
+                  <th>
+                     {{Medical_Intervention.creation_date}}
+                  </th>
+                  <th>
+                   
+                     {% if Medical_Intervention.status == 'جديد' %}
+                     <div class="badge bg-pill bg-soft-success font-size-12">
+                        {{Medical_Intervention.status}}
+                     </div>
+                     {% elif Medical_Intervention.status == 'جارية' %}
+                     <div class="badge bg-pill bg-soft-warning font-size-12">
+                        {{Medical_Intervention.status}}
+                      </div>
+                      {% else %}
+                      <div class="badge bg-pill bg-soft-dark font-size-12">
+                        {{Medical_Intervention.status}}
+                      </div>
+                     {% endif %}
+                    
+                    </th>
+                 
+                 </tr>
+                 {% endfor  %}
+              
+                </tbody>
+               </table>
+              </div>
+            <!-- End the table-->
+            
+            {% endif %}
+
+            {% if UploadMedicalDoc %}
+            
+            <hr class="my-4">
+            <h5 class="font-size-16 my-3">
+             المرفقات الطبية
+            </h5>
+            
+            <!-- Start the table -->
+
+            <div class="table-responsive">
+               <table class="table mb-0">
+                <thead>
+                  
+                 <tr>
+                  <th>
+                   #
+                  </th>
+                  <th>
+                     
+                  اسم المستند
+                  </th>
+                  <th>
+                   تحميل المستند
+                  </th>
+                 
+                 </tr>
+                </thead>
+                <tbody>
+
+                 {%for UploadMedicalDocs in UploadMedicalDoc %}
+                 <tr>
+                  <th>
+                     {{forloop.counter}}
+                  </th>
+                  <th>
+                  <a href="{{UploadedDocument.document.url}}">
+                  {{UploadMedicalDocs.title}}
+                  </a>
+                  </th>
+                  <th>
+                   <a href="{{UploadMedicalDocs.document.url}}">
+                     <i class="bx bx-archive-out"></i>
+                   </a>
+                  </th>
+                 
+                 </tr>
+                 {% endfor  %}
+              
+                </tbody>
+               </table>
+              </div>
+            <!-- End the table-->
+            
+            {% endif %}
+
+
+            {% if diseases %}
+            <hr class="my-4">
+            <h5 class="font-size-16 my-3">
+             امراض تصنيف ICD-11
             </h5>
             <div class="table-responsive">
              <table class="table table-nowrap table-centered">
@@ -320,6 +508,7 @@
             {% endif %}
 
             {% if ambulances %}
+            <hr class="my-4">
             <h5 class="font-size-16 my-3">
              طلبات الإسعاف
             </h5>

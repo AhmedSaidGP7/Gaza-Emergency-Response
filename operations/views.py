@@ -959,6 +959,15 @@ def profile(request, person_id):
     # Get the ambulance_log of the person
     ambulance = ambulance_log.objects.filter(casualty = person)
 
+    # Get the medical interventions of the person
+    Medical_Interventions = Medical_Intervention.objects.filter(patient = person)
+
+    # Get the diagnoses of the person
+    Diagnoses = Diagnose.objects.filter(patient = person)
+
+    # Get the medical docs of the person
+    UploadMedicalDocs = UploadMedicalDoc.objects.filter(person = person)
+
     # Get the docs of the person
     UploadedDocuments = UploadedDocument.objects.filter(person = person)
 
@@ -969,6 +978,9 @@ def profile(request, person_id):
         'diseases': diseases,
         'ambulances': ambulance,
         'UploadedDocuments':UploadedDocuments,
+        'Medical_Interventions' : Medical_Interventions,
+        'Diagnoses': Diagnoses,
+        'UploadMedicalDoc': UploadMedicalDocs,
         
     }
     return render(request, 'operations/profile.html', context)
